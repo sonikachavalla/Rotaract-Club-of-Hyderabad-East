@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel | Rotaract HE</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#F4F5F7;color:#1a202c;min-height:100vh;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font-family:'Inter',sans-serif}
+:root{
+  --purple:#9F7AEA;--purple-d:#7C3AED;--purple-l:#EDE9FE;
+  --pink:#ED64A6;--green:#48BB78;--red:#F56565;--blue:#4299E1;
+  --sidebar-w:260px;--header-h:64px;
+  --shadow:0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md:0 4px 20px rgba(0,0,0,0.10);
+  --r:12px;
+}
+/* ── Login ── */
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#EDE9FE,#FDF2F8)}
+.login-box{background:#fff;border-radius:20px;padding:48px;width:420px;box-shadow:var(--shadow-md)}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo img{height:60px}
+.login-box h1{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;text-align:center;margin-bottom:6px}
+.login-box p{text-align:center;color:#718096;font-size:0.9rem;margin-bottom:28px}
+.login-field{margin-bottom:18px}
+.login-field label{display:block;font-size:0.8rem;font-weight:600;color:#4a5568;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em}
+.login-field input{width:100%;padding:12px 16px;border:1.5px solid #E2E8F0;border-radius:10px;font-size:0.95rem;font-family:'Inter',sans-serif;transition:border 0.2s}
+.login-field input:focus{outline:none;border-color:var(--purple)}
+.login-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:50px;font-size:1rem;font-weight:700;margin-top:8px;transition:opacity 0.2s}
+.login-btn:hover{opacity:0.9}
+.login-btn:disabled{opacity:0.6;cursor:not-allowed}
+.login-err{color:var(--red);font-size:0.85rem;text-align:center;margin-top:10px;min-height:20px}
+/* ── Shell ── */
+.admin-shell{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:#1A202C;color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sb-brand{padding:20px 20px 16px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sb-brand img{height:44px;filter:brightness(0) invert(1);opacity:0.85}
+.sb-section{padding:20px 12px 4px;font-size:0.65rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.sb-nav{padding:0 10px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:0.875rem;font-weight:500;color:rgba(255,255,255,0.6);cursor:pointer;margin-bottom:2px;transition:all 0.18s}
+.sb-item svg{width:17px;height:17px;flex-shrink:0}
+.sb-item:hover{background:rgba(255,255,255,0.07);color:#fff}
+.sb-item.active{background:rgba(159,122,234,0.3);color:#fff;font-weight:600}
+.sb-footer{margin-top:auto;padding:14px 10px;border-top:1px solid rgba(255,255,255,0.07)}
+.logout-btn{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px;border-radius:8px;background:rgba(245,101,101,0.15);color:#FCA5A5;font-size:0.85rem;font-weight:600;border:none;transition:all 0.18s}
+.logout-btn:hover{background:rgba(245,101,101,0.25)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column}
+.topbar{height:var(--header-h);background:#fff;border-bottom:1px solid #E2E8F0;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow)}
+.topbar-title{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700}
+.topbar-badge{font-size:0.75rem;font-weight:700;padding:4px 12px;border-radius:999px;background:#F0FFF4;color:var(--green)}
+.topbar-actions{display:flex;align-items:center;gap:12px}
+.btn-preview{display:flex;align-items:center;gap:6px;padding:8px 18px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:999px;font-size:0.82rem;font-weight:600;transition:opacity 0.2s}
+.btn-preview:hover{opacity:0.88}
+.content{padding:28px;flex:1}
+.page{display:none}.page.active{display:block}
+/* ── Cards ── */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:var(--r);padding:20px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;transition:transform 0.18s}
+.stat-card:hover{transform:translateY(-2px)}
+.stat-num{font-family:'Poppins',sans-serif;font-size:2rem;font-weight:800;line-height:1;margin-bottom:4px}
+.stat-lbl{font-size:0.78rem;color:#718096;font-weight:500}
+.stat-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+.s-purple{background:#EDE9FE}.s-pink{background:#FDF2F8}.s-green{background:#F0FFF4}.s-blue{background:#EBF8FF}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}
+.card-header{padding:16px 22px;border-bottom:1px solid #F7F7F7;display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:700}
+.card-body{padding:22px}
+.section-2col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+/* ── Form ── */
+.form-group{margin-bottom:18px}
+.form-label{display:block;font-size:0.75rem;font-weight:700;color:#4a5568;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:7px}
+.form-label .req{color:var(--pink)}
+.form-input{width:100%;padding:10px 14px;border:1.5px solid #E2E8F0;border-radius:8px;font-family:'Inter',sans-serif;font-size:0.9rem;transition:border 0.18s;outline:none}
+.form-input:focus{border-color:var(--purple)}
+.form-input::placeholder{color:#a0aec0}
+textarea.form-input{resize:vertical;min-height:90px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.save-btn{padding:11px 28px;background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;border:none;border-radius:999px;font-size:0.9rem;font-weight:700;transition:opacity 0.2s}
+.save-btn:hover{opacity:0.88}
+.save-btn:disabled{opacity:0.6;cursor:not-allowed}
+.save-msg{display:inline-flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:600;margin-left:14px}
+.save-msg.ok{color:var(--green)}.save-msg.err{color:var(--red)}
+/* ── Table ── */
+.tbl{width:100%;border-collapse:collapse;font-size:0.875rem}
+.tbl th{text-align:left;padding:11px 16px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#718096;background:#F9FAFB;border-bottom:1px solid #F0F0F0}
+.tbl td{padding:13px 16px;border-bottom:1px solid #F9FAFB;vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#FAFAF9}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:0.7rem;font-weight:700}
+.badge-purple{background:#EDE9FE;color:#7C3AED}
+.badge-pink{background:#FDF2F8;color:#ED64A6}
+.badge-green{background:#F0FFF4;color:#276749}
+/* ── Buttons ── */
+.btn-group{display:flex;gap:6px}
+.btn-icon{width:32px;height:32px;border:1.5px solid #E2E8F0;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;transition:all 0.18s}
+.btn-icon:hover{background:var(--purple-l);border-color:var(--purple)}
+.btn-icon svg{width:14px;height:14px;color:#4a5568}
+.btn-icon.del:hover{background:#FFF5F5;border-color:var(--red)}
+.btn-icon.del svg{color:var(--red)}
+.btn-sm{padding:7px 16px;border-radius:999px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;transition:all 0.18s}
+.btn-add{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff}
+.btn-add:hover{opacity:0.88}
+.btn-outline-sm{background:#fff;border:1.5px solid var(--purple);color:var(--purple)}
+.btn-outline-sm:hover{background:var(--purple-l)}
+/* ── Modal ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(3px);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:20px;width:560px;max-width:96vw;max-height:92vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2);animation:slideUp 0.25s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.modal-header{padding:20px 24px 16px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-family:'Poppins',sans-serif;font-size:1.05rem;font-weight:700}
+.modal-close{width:30px;height:30px;border-radius:50%;border:none;background:#F7F7F7;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;line-height:1}
+.modal-close:hover{background:#F0F0F0}
+.modal-body{padding:22px 24px}
+.modal-footer{padding:14px 24px 22px;display:flex;justify-content:flex-end;gap:10px}
+/* ── Toast ── */
+.toast-wrap{position:fixed;top:20px;right:20px;z-index:2000;display:flex;flex-direction:column;gap:8px}
+.toast{background:#1A202C;color:#fff;padding:13px 18px;border-radius:10px;font-size:0.875rem;font-weight:500;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-md);animation:fadeInRight 0.3s ease;max-width:320px}
+.toast.ok{border-left:4px solid var(--green)}
+.toast.err{border-left:4px solid var(--red)}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+/* ── Loading overlay ── */
+.page-loading{display:flex;align-items:center;justify-content:center;min-height:200px;flex-direction:column;gap:12px;color:#718096}
+.spinner{width:36px;height:36px;border:3px solid #EDE9FE;border-top-color:var(--purple);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ── Firebase sync notice ── */
+.sync-notice{background:#EBF8FF;border:1.5px solid #90CDF4;border-radius:10px;padding:14px 18px;font-size:0.85rem;color:#2B6CB0;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px}
+/* ── PDF year section ── */
+.year-pdf-section{margin-bottom:28px}
+.month-pdf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.month-pdf-item{background:#F9FAFB;border:1.5px solid #E2E8F0;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.month-pdf-status{font-size:0.72rem;color:#a0aec0}
+.month-pdf-status.has-pdf{color:var(--green);font-weight:600}
+@media(max-width:900px){.stat-row{grid-template-columns:1fr 1fr}.section-2col{grid-template-columns:1fr}}
+@media(max-width:640px){.stat-row{grid-template-columns:1fr}.sidebar{transform:translateX(-100%)}.sidebar.open{transform:none}.main{margin-left:0}}
+</style>
+</head>
+<body>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- ══ LOGIN SCREEN ══ -->
+<div id="loginScreen" class="login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="../assets/Rotaract_Hyderabad_East_Logo.png" alt="Rotaract HE" onerror="this.style.display='none'">
+    </div>
+    <h1>Admin Portal</h1>
+    <p>Rotaract Club of Hyderabad East</p>
+    <div class="login-field">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="admin@rche.org" autocomplete="email">
+    </div>
+    <div class="login-field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">Sign In →</button>
+    <div class="login-err" id="loginErr"></div>
+    <p style="text-align:center;font-size:0.75rem;color:#a0aec0;margin-top:16px">Secured by Firebase Authentication</p>
+  </div>
+</div>
+
+<!-- ══ ADMIN SHELL ══ -->
+<div id="adminShell" class="admin-shell" style="display:none">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <img src="../assets/Rotaract_Hyderabad_East_Logo.png" alt="RCHE" onerror="this.style.display='none'">
+    </div>
+    <div class="sb-section">Main</div>
+    <div class="sb-nav">
+      <div class="sb-item active" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard
+      </div>
+    </div>
+    <div class="sb-section">Content</div>
+    <div class="sb-nav">
+      <div class="sb-item" data-page="events">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Events
+      </div>
+      <div class="sb-item" data-page="gallery">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Gallery Photos
+      </div>
+      <div class="sb-item" data-page="pdfs">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Monthly PDFs
+      </div>
+      <div class="sb-item" data-page="team">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Team Members
+      </div>
+    </div>
+    <div class="sb-section">Admin</div>
+    <div class="sb-nav">
+      <div class="sb-item" data-page="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings
+      </div>
+    </div>
+    <div class="sb-footer">
+      <button class="logout-btn" onclick="doLogout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-actions">
+        <span class="topbar-badge" id="syncBadge">🔄 Connecting…</span>
+        <a href="../index.html" target="_blank" class="btn-preview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>View Site
+        </a>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ══ DASHBOARD ══ -->
+      <div class="page active" id="page-dashboard">
+        <div class="sync-notice">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex-shrink:0;margin-top:1px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span><strong>Firebase Cloud Sync Active.</strong> All changes are saved to Firestore and instantly reflected on every device and browser worldwide — no refreshes needed.</span>
+        </div>
+        <div class="stat-row" id="dashStats">
+          <div class="stat-card"><div><div class="stat-num" style="color:var(--purple)">—</div><div class="stat-lbl">Upcoming Events</div></div><div class="stat-icon s-purple">📅</div></div>
+          <div class="stat-card"><div><div class="stat-num" style="color:var(--green)">—</div><div class="stat-lbl">Past Events</div></div><div class="stat-icon s-green">✅</div></div>
+          <div class="stat-card"><div><div class="stat-num" style="color:var(--pink)">—</div><div class="stat-lbl">Team Members</div></div><div class="stat-icon s-pink">👥</div></div>
+          <div class="stat-card"><div><div class="stat-num" style="color:var(--blue)">—</div><div class="stat-lbl">Gallery Photos</div></div><div class="stat-icon s-blue">📸</div></div>
+        </div>
+        <div class="section-2col">
+          <div class="card">
+            <div class="card-header"><h3>Quick Actions</h3></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:10px">
+              <button class="save-btn" style="width:100%;text-align:left;padding:12px 18px;border-radius:10px" onclick="goto('events')">📅 Add / Edit Events</button>
+              <button class="save-btn" style="width:100%;text-align:left;padding:12px 18px;border-radius:10px" onclick="goto('pdfs')">📄 Manage Monthly PDFs</button>
+              <button class="save-btn" style="width:100%;text-align:left;padding:12px 18px;border-radius:10px" onclick="goto('team')">👥 Manage Team Members</button>
+              <button class="save-btn" style="width:100%;text-align:left;padding:12px 18px;border-radius:10px" onclick="goto('settings')">⚙️ Club Settings</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Recent Activity</h3></div>
+            <div class="card-body" id="activityLog" style="font-size:0.85rem;color:#718096;display:flex;flex-direction:column;gap:8px">
+              <div class="page-loading"><div class="spinner"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ GALLERY ══ -->
+      <div class="page" id="page-gallery">
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-body" style="padding:0">
+            <label for="galleryUpload" id="galleryDropZone"
+              style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:48px 24px;border:2.5px dashed #C4B5FD;border-radius:16px;cursor:pointer;background:#FAFAFF;transition:all 0.2s;text-align:center"
+              ondragover="event.preventDefault();this.style.background='#EDE9FE';this.style.borderColor='#7C3AED'"
+              ondragleave="this.style.background='#FAFAFF';this.style.borderColor='#C4B5FD'"
+              ondrop="event.preventDefault();this.style.background='#FAFAFF';this.style.borderColor='#C4B5FD';handleGalleryDrop(event)">
+              <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#EDE9FE,#FDF2F8);display:flex;align-items:center;justify-content:center;font-size:2rem">📷</div>
+              <div>
+                <p style="font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:#4A5568;margin-bottom:4px">Click to upload or drag &amp; drop photos</p>
+                <p style="font-size:0.82rem;color:#a0aec0">JPG, PNG · Multiple files · Stored in Firebase Storage</p>
+              </div>
+              <div style="padding:10px 28px;background:linear-gradient(135deg,#9F7AEA,#ED64A6);color:#fff;border-radius:50px;font-family:'Poppins',sans-serif;font-size:0.9rem;font-weight:700">+ Upload Photos</div>
+              <input type="file" id="galleryUpload" accept="image/*" multiple style="display:none" onchange="handleGalleryUpload(event)">
+            </label>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div><h3 style="margin-bottom:2px">Gallery Photos</h3><p style="font-size:0.78rem;color:#a0aec0;margin:0" id="galleryPhotoCount"></p></div>
+            <button onclick="clearAllGallery()" id="clearAllBtn" style="display:none;padding:7px 14px;background:#FFF5F5;color:#C53030;border:1.5px solid #FEB2B2;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer">🗑 Clear All</button>
+          </div>
+          <div class="card-body">
+            <div id="galleryAdminGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px"></div>
+            <div id="galleryAdminEmpty" style="text-align:center;padding:48px;color:#a0aec0">
+              <div style="font-size:3.5rem;margin-bottom:12px">🖼️</div>
+              <h4 style="font-family:'Poppins',sans-serif;color:#4A5568;margin-bottom:8px">No photos yet</h4>
+              <p style="font-size:0.875rem">Upload photos above — they'll appear on the Gallery page of your website.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ EVENTS ══ -->
+      <div class="page" id="page-events">
+        <div class="card">
+          <div class="card-header">
+            <h3>Events — 2025-26 (Current Year)</h3>
+            <button class="btn-sm btn-add" onclick="openEventModal()">+ Add Event</button>
+          </div>
+          <div class="card-body" style="padding:0;overflow-x:auto">
+            <table class="tbl">
+              <thead><tr><th>Title</th><th>Date</th><th>Category</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="eventsTableBody"><tr><td colspan="5"><div class="page-loading"><div class="spinner"></div></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ MONTHLY PDFs ══ -->
+      <div class="page" id="page-pdfs">
+        <div class="card">
+          <div class="card-header">
+            <h3>Monthly PDFs — Past Years</h3>
+            <button class="btn-sm btn-add" onclick="openAddYearModal()">+ Add Year</button>
+          </div>
+          <div class="card-body">
+            <p style="font-size:0.875rem;color:#718096;margin-bottom:20px">Add a Google Drive shareable link for each month's report. Visitors can open the PDF inline.</p>
+            <div id="pdfYearsContainer"><div class="page-loading"><div class="spinner"></div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ TEAM ══ -->
+      <div class="page" id="page-team">
+        <div class="card">
+          <div class="card-header">
+            <h3>Team Members</h3>
+            <button class="btn-sm btn-add" onclick="openTeamModal()">+ Add Member</button>
+          </div>
+          <div class="card-body" style="padding:0;overflow-x:auto">
+            <table class="tbl">
+              <thead><tr><th style="width:50px">Order</th><th>Name</th><th>Role</th><th>Type</th><th>LinkedIn</th><th>Actions</th></tr></thead>
+              <tbody id="teamTableBody"><tr><td colspan="6"><div class="page-loading"><div class="spinner"></div></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ SETTINGS ══ -->
+      <div class="page" id="page-settings">
+        <div class="section-2col">
+          <div class="card">
+            <div class="card-header"><h3>Club Information</h3></div>
+            <div class="card-body">
+              <div class="form-group"><label class="form-label">Club Name</label><input class="form-input" id="s-clubname" placeholder="Rotaract Club of Hyderabad East"></div>
+              <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="s-email" placeholder="rchyderabadeast@gmail.com"></div>
+              <div class="form-group"><label class="form-label">Phone</label><input class="form-input" id="s-phone" placeholder="+91 99511 43775"></div>
+              <div class="form-group"><label class="form-label">Instagram URL</label><input class="form-input" id="s-instagram" placeholder="https://instagram.com/..."></div>
+              <div class="form-group"><label class="form-label">LinkedIn URL</label><input class="form-input" id="s-linkedin" placeholder="https://linkedin.com/company/..."></div>
+              <div class="form-group"><label class="form-label">Join Form URL</label><input class="form-input" id="s-joinform" placeholder="https://forms.google.com/..."></div>
+              <button class="save-btn" id="saveSettingsBtn" onclick="saveSettingsHandler()">Save Club Info</button>
+              <span id="settingsSaveMsg" class="save-msg"></span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Admin Account</h3></div>
+            <div class="card-body">
+              <p style="font-size:0.875rem;color:#718096;margin-bottom:18px">Admin authentication is managed through Firebase Console → Authentication. To change the admin password or add new admins, visit your Firebase project.</p>
+              <div id="adminUserInfo" style="background:#F9FAFB;border-radius:10px;padding:14px;font-size:0.875rem;color:#4a5568">
+                <strong>Signed in as:</strong><br>
+                <span id="adminEmail" style="color:var(--purple);font-weight:600">loading…</span>
+              </div>
+              <div style="margin-top:20px;padding-top:18px;border-top:1px solid #F0F0F0">
+                <h4 style="font-size:0.9rem;margin-bottom:8px;font-family:'Poppins',sans-serif">Data Export</h4>
+                <p style="font-size:0.78rem;color:#a0aec0;margin-bottom:12px">Download a JSON backup of all site content from Firestore.</p>
+                <button class="btn-outline-sm btn-sm" style="border-radius:10px;padding:10px 16px;text-align:left" onclick="exportData()">📤 Export All Data (JSON)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ EVENT MODAL ══ -->
+<div class="modal-bg" id="eventModal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="eventModalTitle">Add Event</h3><button class="modal-close" onclick="closeModal('eventModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="ev-id">
+      <div class="form-group"><label class="form-label">Title <span class="req">*</span></label><input class="form-input" id="ev-title" placeholder="Event name"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Date <span class="req">*</span></label><input class="form-input" type="date" id="ev-date"></div>
+        <div class="form-group"><label class="form-label">Time</label><input class="form-input" id="ev-time" placeholder="6:00 PM – 9:00 PM"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="ev-location" placeholder="Venue, Hyderabad"></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Category</label>
+          <select class="form-input" id="ev-category">
+            <option>Community Service</option><option>Professional Development</option>
+            <option>Fellowship</option><option>Club Service</option>
+            <option>Fundraiser</option><option>Environment</option><option>Health</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-input" id="ev-status">
+            <option value="upcoming">Upcoming</option><option value="past">Past</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" id="ev-desc" placeholder="Brief description…"></textarea></div>
+      <div class="form-group"><label class="form-label">Registration Link (for upcoming)</label><input class="form-input" id="ev-link" placeholder="https://forms.google.com/..."></div>
+      <div class="form-group">
+        <label class="form-label">Event Poster / Cover Image</label>
+        <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
+          <label style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:1.5px dashed #C4B5FD;border-radius:10px;cursor:pointer;font-size:0.85rem;color:#7C3AED;font-weight:600;background:#F5F3FF">
+            📷 Upload Poster
+            <input type="file" id="ev-poster-upload" accept="image/*" style="display:none" onchange="handlePosterUpload(event)">
+          </label>
+          <div id="ev-poster-preview" style="width:80px;height:60px;border-radius:8px;overflow:hidden;background:#F0F0F0;display:none">
+            <img id="ev-poster-img" src="" alt="Poster" style="width:100%;height:100%;object-fit:cover">
+          </div>
+          <button type="button" id="ev-poster-clear" style="display:none;padding:6px 12px;border:1.5px solid #FEB2B2;border-radius:8px;background:#FFF5F5;color:#C53030;font-size:0.8rem;font-weight:600" onclick="clearPoster()">Remove</button>
+        </div>
+        <input type="hidden" id="ev-poster">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline-sm btn-sm" onclick="closeModal('eventModal')">Cancel</button>
+      <button class="save-btn btn-sm" id="saveEventBtn" onclick="saveEvent()">Save Event</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TEAM MODAL ══ -->
+<div class="modal-bg" id="teamModal">
+  <div class="modal">
+    <div class="modal-header"><h3 id="teamModalTitle">Add Member</h3><button class="modal-close" onclick="closeModal('teamModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="tm-id">
+      <div class="form-group">
+        <label class="form-label">Profile Photo</label>
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+          <div id="tm-photo-preview" style="width:72px;height:72px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#EDE9FE,#FDF2F8);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid #E2E8F0">
+            <span id="tm-photo-initials" style="font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:800;color:#9F7AEA"></span>
+            <img id="tm-photo-img" src="" alt="" style="width:100%;height:100%;object-fit:cover;display:none;border-radius:50%">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <label style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:1.5px dashed #C4B5FD;border-radius:10px;cursor:pointer;font-size:0.85rem;color:#7C3AED;font-weight:600;background:#F5F3FF">
+              📷 Upload Photo
+              <input type="file" id="tm-photo-upload" accept="image/*" style="display:none" onchange="handleMemberPhotoUpload(event)">
+            </label>
+            <button type="button" id="tm-photo-clear" onclick="clearMemberPhoto()" style="display:none;padding:6px 12px;border:1.5px solid #FEB2B2;border-radius:8px;background:#FFF5F5;color:#C53030;font-size:0.8rem;font-weight:600;cursor:pointer">Remove Photo</button>
+          </div>
+        </div>
+        <input type="hidden" id="tm-photo">
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Full Name <span class="req">*</span></label><input class="form-input" id="tm-name" placeholder="Rtn. Name"></div>
+        <div class="form-group"><label class="form-label">Member Type</label>
+          <select class="form-input" id="tm-type">
+            <option value="executive">Executive Board</option>
+            <option value="director">Director</option>
+            <option value="member">General Member</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">Role / Designation <span class="req">*</span></label><input class="form-input" id="tm-role" placeholder="President / Secretary / Director - CS"></div>
+      <div class="form-group"><label class="form-label">LinkedIn Profile URL</label><input class="form-input" id="tm-linkedin" placeholder="https://linkedin.com/in/..."></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="tm-email" placeholder="member@email.com" type="email"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline-sm btn-sm" onclick="closeModal('teamModal')">Cancel</button>
+      <button class="save-btn btn-sm" id="saveTeamBtn" onclick="saveMember()">Save Member</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PDF LINK MODAL ══ -->
+<div class="modal-bg" id="pdfLinkModal">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header"><h3 id="pdfLinkModalTitle">Add PDF Link</h3><button class="modal-close" onclick="closeModal('pdfLinkModal')">✕</button></div>
+    <div class="modal-body">
+      <input type="hidden" id="pdfLinkKey">
+      <div class="form-group">
+        <label class="form-label">Google Drive / PDF Link <span class="req">*</span></label>
+        <input class="form-input" id="pdfLinkUrl" placeholder="https://drive.google.com/file/d/...">
+        <p style="font-size:0.78rem;color:#a0aec0;margin-top:6px">Make sure sharing is set to "Anyone with the link can view".</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline-sm btn-sm" onclick="closeModal('pdfLinkModal')">Cancel</button>
+      <button class="save-btn btn-sm" onclick="savePdfLink()">Save Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADD YEAR MODAL ══ -->
+<div class="modal-bg" id="addYearModal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header"><h3>Add Past Year</h3><button class="modal-close" onclick="closeModal('addYearModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">RI Year <span class="req">*</span></label>
+        <input class="form-input" id="new-year-input" placeholder="e.g. 2021-2022" maxlength="9">
+        <p style="font-size:0.78rem;color:#a0aec0;margin-top:6px">Format: YYYY-YYYY</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-outline-sm btn-sm" onclick="closeModal('addYearModal')">Cancel</button>
+      <button class="save-btn btn-sm" onclick="addNewYear()">Add Year</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONFIRM MODAL ══ -->
+<div class="modal-bg" id="confirmModal">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header"><h3>Confirm Delete</h3><button class="modal-close" onclick="closeModal('confirmModal')">✕</button></div>
+    <div class="modal-body"><p id="confirmMsg" style="font-size:0.95rem;color:#4a5568"></p></div>
+    <div class="modal-footer">
+      <button class="btn-outline-sm btn-sm" onclick="closeModal('confirmModal')">Cancel</button>
+      <button class="btn-sm" style="background:var(--red);color:#fff;border-radius:999px;border:none" onclick="confirmAction()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FIREBASE SDK (modular ESM) ══ -->
+<script type="module">
+import { initializeApp }                                      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+                                                              from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, doc, getDocs, addDoc, setDoc,
+         updateDoc, deleteDoc, onSnapshot, query, orderBy,
+         serverTimestamp, getDoc }                            from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL, deleteObject }
+                                                              from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+// ══════════════════════════════════════════════════════════════
+//  FIREBASE CONFIG — Replace with your own project credentials
+// ══════════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyDmo4lOSCygeUTqqapSDKJmYyMV2BWPY5U",
+  authDomain: "rche-bfbee.firebaseapp.com",
+  projectId: "rche-bfbee",
+  storageBucket: "rche-bfbee.firebasestorage.app",
+  messagingSenderId: "881384272453",
+  appId: "1:881384272453:web:826b2d8ad421923e55292c",
+  measurementId: "G-YDCKP4B35T"
+};
+// ══════════════════════════════════════════════════════════════
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const stor = getStorage(app);
+
+// ── Expose to non-module global scope ─────────────────────────
+window._fb = { auth, db, stor, signInWithEmailAndPassword, signOut,
+               collection, doc, getDocs, addDoc, setDoc, updateDoc,
+               deleteDoc, onSnapshot, query, orderBy, serverTimestamp,
+               getDoc, sRef, uploadBytes, getDownloadURL, deleteObject };
+
+// ── Auth state watcher ────────────────────────────────────────
+onAuthStateChanged(auth, user => {
+  if (user) {
+    document.getElementById('loginScreen').style.display  = 'none';
+    document.getElementById('adminShell').style.display   = 'flex';
+    document.getElementById('adminEmail').textContent     = user.email;
+    document.getElementById('syncBadge').textContent      = '🟢 Firebase Live';
+    window._adminUser = user;
+    initAdmin();
+  } else {
+    document.getElementById('loginScreen').style.display  = 'flex';
+    document.getElementById('adminShell').style.display   = 'none';
+    window._adminUser = null;
+  }
+});
+</script>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  HELPERS — wait for Firebase SDK, then run
+// ══════════════════════════════════════════════════════════════
+function fb() { return window._fb; }
+function waitFb(fn) {
+  if (window._fb) { fn(); }
+  else { setTimeout(() => waitFb(fn), 80); }
+}
+
+// ── Toast ─────────────────────────────────────────────────────
+function toast(msg, type = 'ok') {
+  const wrap = document.getElementById('toastWrap');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.innerHTML = (type === 'ok' ? '✅ ' : '⚠️ ') + msg;
+  wrap.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3500);
+}
+
+// ── Modal helpers ─────────────────────────────────────────────
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-bg').forEach(bg =>
+  bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); })
+);
+
+// ── Navigation ────────────────────────────────────────────────
+const PAGE_TITLES = { dashboard:'Dashboard', events:'Events', pdfs:'Monthly PDFs', team:'Team Members', gallery:'Gallery Photos', settings:'Settings' };
+function goto(id) {
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.toggle('active', el.dataset.page === id));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('topbarTitle').textContent = PAGE_TITLES[id] || id;
+  if (id === 'settings') loadSettings();
+  if (id === 'events')   renderEventsTable();
+  if (id === 'team')     renderTeamTable();
+  if (id === 'gallery')  renderGalleryAdmin();
+  if (id === 'pdfs')     renderPdfYears();
+}
+document.querySelectorAll('.sb-item[data-page]').forEach(el =>
+  el.addEventListener('click', () => goto(el.dataset.page))
+);
+
+// ══════════════════════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════════════════════
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass  = document.getElementById('loginPass').value;
+  const btn   = document.getElementById('loginBtn');
+  const err   = document.getElementById('loginErr');
+  if (!email || !pass) { err.textContent = '❌ Please enter email and password.'; return; }
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  err.textContent = '';
+  waitFb(async () => {
+    try {
+      await fb().signInWithEmailAndPassword(fb().auth, email, pass);
+      // onAuthStateChanged handles the UI switch
+    } catch (e) {
+      err.textContent = '❌ ' + (e.code === 'auth/invalid-credential' ? 'Invalid email or password.' : e.message);
+      btn.disabled = false; btn.textContent = 'Sign In →';
+    }
+  });
+}
+async function doLogout() {
+  waitFb(async () => {
+    await fb().signOut(fb().auth);
+    toast('Signed out successfully');
+  });
+}
+document.getElementById('loginEmail').addEventListener('keydown', e => e.key === 'Enter' && document.getElementById('loginPass').focus());
+document.getElementById('loginPass').addEventListener('keydown', e => e.key === 'Enter' && doLogin());
+
+// ══════════════════════════════════════════════════════════════
+//  INIT — called once after auth succeeds
+// ══════════════════════════════════════════════════════════════
+function initAdmin() {
+  renderDashboard();
+}
+
+// ══════════════════════════════════════════════════════════════
+//  IMAGE COMPRESSION (client-side before upload)
+// ══════════════════════════════════════════════════════════════
+function compressImage(file, maxW = 1200, maxH = 900, quality = 0.82) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        if (w > maxW || h > maxH) {
+          const ratio = Math.min(maxW / w, maxH / h);
+          w = Math.round(w * ratio); h = Math.round(h * ratio);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        canvas.toBlob(blob => resolve(blob), 'image/jpeg', quality);
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+async function uploadImage(file, path, maxW = 1200, maxH = 900, quality = 0.82) {
+  const blob = await compressImage(file, maxW, maxH, quality);
+  const storageRef = fb().sRef(fb().stor, path);
+  const snap = await fb().uploadBytes(storageRef, blob);
+  return fb().getDownloadURL(snap.ref);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════════════════════
+async function renderDashboard() {
+  const { db, collection, getDocs, query, orderBy } = fb();
+  try {
+    const [evSnap, tmSnap, galSnap, logSnap] = await Promise.all([
+      getDocs(collection(db, 'events')),
+      getDocs(collection(db, 'team')),
+      getDocs(collection(db, 'gallery')),
+      getDocs(query(collection(db, 'activityLog'), orderBy('createdAt', 'desc')))
+    ]);
+    const events = evSnap.docs.map(d => d.data());
+    const up   = events.filter(e => e.status === 'upcoming').length;
+    const past = events.filter(e => e.status === 'past').length;
+    document.getElementById('dashStats').innerHTML = `
+      <div class="stat-card"><div><div class="stat-num" style="color:var(--purple)">${up}</div><div class="stat-lbl">Upcoming Events</div></div><div class="stat-icon s-purple">📅</div></div>
+      <div class="stat-card"><div><div class="stat-num" style="color:var(--green)">${past}</div><div class="stat-lbl">Past Events</div></div><div class="stat-icon s-green">✅</div></div>
+      <div class="stat-card"><div><div class="stat-num" style="color:var(--pink)">${tmSnap.size}</div><div class="stat-lbl">Team Members</div></div><div class="stat-icon s-pink">👥</div></div>
+      <div class="stat-card"><div><div class="stat-num" style="color:var(--blue)">${galSnap.size}</div><div class="stat-lbl">Gallery Photos</div></div><div class="stat-icon s-blue">📸</div></div>`;
+    const logEl = document.getElementById('activityLog');
+    const logs  = logSnap.docs.slice(0, 10).map(d => d.data());
+    logEl.innerHTML = logs.length
+      ? logs.map(l => `<div style="display:flex;justify-content:space-between;gap:8px"><span>${l.msg}</span><span style="color:#a0aec0;font-size:0.75rem;white-space:nowrap">${l.ts}</span></div>`).join('')
+      : '<p>No recent activity yet.</p>';
+  } catch (e) { console.error('Dashboard error:', e); }
+}
+
+async function logActivity(msg) {
+  const { db, collection, addDoc, serverTimestamp } = fb();
+  const ts = new Date().toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+  try { await addDoc(collection(db, 'activityLog'), { msg, ts, createdAt: serverTimestamp() }); } catch {}
+}
+
+// ══════════════════════════════════════════════════════════════
+//  GALLERY
+// ══════════════════════════════════════════════════════════════
+async function handleGalleryDrop(e) {
+  const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+  if (!files.length) return;
+  await processGalleryFiles(files);
+}
+async function handleGalleryUpload(e) {
+  const files = Array.from(e.target.files);
+  if (!files.length) return;
+  await processGalleryFiles(files);
+  e.target.value = '';
+}
+async function processGalleryFiles(files) {
+  const { db, stor, collection, addDoc, serverTimestamp, sRef, uploadBytes, getDownloadURL } = fb();
+  toast(`Uploading ${files.length} photo${files.length > 1 ? 's' : ''}…`);
+  try {
+    await Promise.all(files.map(async file => {
+      const blob = await compressImage(file, 1200, 900, 0.82);
+      const name = `${Date.now()}_${Math.random().toString(36).slice(2)}.jpg`;
+      const storageRef = sRef(stor, `gallery/${name}`);
+      const snap = await uploadBytes(storageRef, blob);
+      const url  = await getDownloadURL(snap.ref);
+      const id   = 'g' + Date.now() + Math.random().toString(36).slice(2);
+      await addDoc(collection(db, 'gallery'), { id, src: url, storagePath: `gallery/${name}`, createdAt: serverTimestamp() });
+    }));
+    toast(`${files.length} photo${files.length > 1 ? 's' : ''} uploaded ✓`);
+    await logActivity(`${files.length} gallery photo(s) added`);
+    renderGalleryAdmin();
+    renderDashboard();
+  } catch (e) { toast('Upload failed: ' + e.message, 'err'); }
+}
+
+async function deleteGalleryPhoto(docId, storagePath) {
+  if (!confirm('Remove this photo?')) return;
+  const { db, stor, doc, deleteDoc, sRef, deleteObject } = fb();
+  try {
+    await deleteDoc(doc(db, 'gallery', docId));
+    if (storagePath) {
+      try { await deleteObject(sRef(stor, storagePath)); } catch {}
+    }
+    toast('Photo removed ✓');
+    await logActivity('Gallery photo removed');
+    renderGalleryAdmin();
+    renderDashboard();
+  } catch (e) { toast('Delete failed: ' + e.message, 'err'); }
+}
+
+async function clearAllGallery() {
+  if (!confirm('Remove ALL gallery photos? This cannot be undone.')) return;
+  const { db, stor, collection, getDocs, deleteDoc, doc, sRef, deleteObject } = fb();
+  const snap = await getDocs(collection(db, 'gallery'));
+  await Promise.all(snap.docs.map(async d => {
+    const data = d.data();
+    await deleteDoc(doc(db, 'gallery', d.id));
+    if (data.storagePath) {
+      try { await deleteObject(sRef(stor, data.storagePath)); } catch {}
+    }
+  }));
+  toast('Gallery cleared ✓');
+  renderGalleryAdmin();
+  renderDashboard();
+}
+
+async function renderGalleryAdmin() {
+  const { db, collection, getDocs } = fb();
+  const snap   = await getDocs(collection(db, 'gallery'));
+  const photos = snap.docs.map(d => ({ _docId: d.id, ...d.data() }));
+  const grid   = document.getElementById('galleryAdminGrid');
+  const empty  = document.getElementById('galleryAdminEmpty');
+  const count  = document.getElementById('galleryPhotoCount');
+  const clearBtn = document.getElementById('clearAllBtn');
+  if (count)    count.textContent    = photos.length ? `${photos.length} photo${photos.length > 1 ? 's' : ''} uploaded` : '';
+  if (clearBtn) clearBtn.style.display = photos.length ? '' : 'none';
+  if (!photos.length) { grid.style.display = 'none'; empty.style.display = 'block'; return; }
+  grid.style.display = ''; empty.style.display = 'none';
+  grid.innerHTML = photos.map((p, i) => `
+    <div style="position:relative;border-radius:12px;overflow:hidden;aspect-ratio:1;background:#EDE9FE;box-shadow:0 2px 8px rgba(0,0,0,0.08)" onmouseover="this.querySelector('.del-btn').style.opacity='1'" onmouseout="this.querySelector('.del-btn').style.opacity='0'">
+      <img src="${p.src}" alt="Gallery photo ${i + 1}" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy">
+      <div class="del-btn" style="position:absolute;inset:0;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s">
+        <button onclick="deleteGalleryPhoto('${p._docId}','${p.storagePath || ''}')" style="background:#fff;color:#DC2626;border:none;border-radius:50px;padding:7px 16px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:700;cursor:pointer">🗑 Remove</button>
+      </div>
+      <div style="position:absolute;bottom:6px;left:8px;font-size:0.65rem;color:rgba(255,255,255,0.9);font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,0.6);background:rgba(0,0,0,0.25);padding:2px 6px;border-radius:4px">${i + 1}</div>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  EVENTS
+// ══════════════════════════════════════════════════════════════
+let editEventId = null;
+let _posterFile = null;
+
+function handlePosterUpload(e) {
+  const file = e.target.files[0]; if (!file) return;
+  _posterFile = file;
+  const url = URL.createObjectURL(file);
+  document.getElementById('ev-poster').value = url;
+  document.getElementById('ev-poster-img').src = url;
+  document.getElementById('ev-poster-preview').style.display = 'block';
+  document.getElementById('ev-poster-clear').style.display = 'inline-flex';
+  e.target.value = '';
+}
+function clearPoster() {
+  _posterFile = null;
+  document.getElementById('ev-poster').value = '';
+  document.getElementById('ev-poster-img').src = '';
+  document.getElementById('ev-poster-preview').style.display = 'none';
+  document.getElementById('ev-poster-clear').style.display = 'none';
+}
+
+async function openEventModal(id = null) {
+  editEventId = id; _posterFile = null;
+  const { db, doc, getDoc } = fb();
+  let ev = null;
+  if (id) {
+    const snap = await getDoc(doc(db, 'events', id));
+    if (snap.exists()) ev = { id: snap.id, ...snap.data() };
+  }
+  document.getElementById('eventModalTitle').textContent = ev ? 'Edit Event' : 'Add Event';
+  document.getElementById('ev-id').value       = ev?.id       || '';
+  document.getElementById('ev-title').value    = ev?.title    || '';
+  document.getElementById('ev-date').value     = ev?.date     || '';
+  document.getElementById('ev-time').value     = ev?.time     || '';
+  document.getElementById('ev-location').value = ev?.location || '';
+  document.getElementById('ev-category').value = ev?.category || 'Community Service';
+  document.getElementById('ev-status').value   = ev?.status   || 'upcoming';
+  document.getElementById('ev-desc').value     = ev?.desc     || '';
+  document.getElementById('ev-link').value     = ev?.link     || '';
+  const poster = ev?.poster || '';
+  document.getElementById('ev-poster').value = poster;
+  if (poster) {
+    document.getElementById('ev-poster-img').src = poster;
+    document.getElementById('ev-poster-preview').style.display = 'block';
+    document.getElementById('ev-poster-clear').style.display = 'inline-flex';
+  } else { clearPoster(); }
+  openModal('eventModal');
+}
+
+async function saveEvent() {
+  const title = document.getElementById('ev-title').value.trim();
+  const date  = document.getElementById('ev-date').value;
+  if (!title || !date) { toast('Title and date are required.', 'err'); return; }
+  const { db, doc, setDoc, updateDoc, serverTimestamp, sRef, stor } = fb();
+  const btn = document.getElementById('saveEventBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const id  = editEventId || ('e' + Date.now());
+    let poster = document.getElementById('ev-poster').value || '';
+    // Upload new poster to Firebase Storage if a new file was selected
+    if (_posterFile) {
+      poster = await uploadImage(_posterFile, `events/${id}/poster.jpg`, 800, 600, 0.85);
+    }
+    const evData = {
+      id, title, date,
+      time:     document.getElementById('ev-time').value.trim(),
+      location: document.getElementById('ev-location').value.trim(),
+      category: document.getElementById('ev-category').value,
+      status:   document.getElementById('ev-status').value,
+      desc:     document.getElementById('ev-desc').value.trim(),
+      link:     document.getElementById('ev-link').value.trim(),
+      poster,
+      updatedAt: serverTimestamp()
+    };
+    await setDoc(doc(db, 'events', id), evData, { merge: true });
+    closeModal('eventModal');
+    await Promise.all([renderEventsTable(), renderDashboard(), logActivity(editEventId ? `Event updated: ${title}` : `Event added: ${title}`)]);
+    toast(editEventId ? 'Event updated ✓' : 'Event added ✓');
+  } catch (e) { toast('Save failed: ' + e.message, 'err'); }
+  finally { btn.disabled = false; btn.textContent = 'Save Event'; }
+}
+
+async function renderEventsTable() {
+  const { db, collection, getDocs } = fb();
+  const snap   = await getDocs(collection(db, 'events'));
+  const events = snap.docs.map(d => ({ _docId: d.id, ...d.data() }));
+  const tbody  = document.getElementById('eventsTableBody');
+  if (!events.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:#a0aec0">No events yet. Click "+ Add Event".</td></tr>';
+    return;
+  }
+  tbody.innerHTML = events.sort((a, b) => (b.date || '').localeCompare(a.date || '')).map(ev => `
+    <tr>
+      <td><strong>${ev.title}</strong><br><span style="font-size:0.78rem;color:#718096">${ev.desc || ''}</span></td>
+      <td>${ev.date || '—'}</td>
+      <td><span class="badge badge-purple">${ev.category}</span></td>
+      <td><span class="badge ${ev.status === 'upcoming' ? 'badge-green' : 'badge-pink'}">${ev.status}</span></td>
+      <td><div class="btn-group">
+        <button class="btn-icon" onclick="openEventModal('${ev._docId}')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="btn-icon del" onclick="deleteItem('events','${ev._docId}','${ev.title}')" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+      </div></td>
+    </tr>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  TEAM
+// ══════════════════════════════════════════════════════════════
+let editTeamId = null;
+let _memberPhotoFile = null;
+
+function _getInitials(name) {
+  return (name || '?').replace(/^Rtn\.\s*/i, '').split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0, 2) || '?';
+}
+function _setMemberPhotoPreview(src, name) {
+  const img = document.getElementById('tm-photo-img');
+  const ini = document.getElementById('tm-photo-initials');
+  const clr = document.getElementById('tm-photo-clear');
+  if (src) { img.src = src; img.style.display = 'block'; ini.style.display = 'none'; clr.style.display = 'block'; }
+  else { img.src = ''; img.style.display = 'none'; ini.textContent = _getInitials(name || ''); ini.style.display = 'block'; clr.style.display = 'none'; }
+}
+document.getElementById('tm-name').addEventListener('input', function () {
+  if (!document.getElementById('tm-photo').value) document.getElementById('tm-photo-initials').textContent = _getInitials(this.value);
+});
+
+function handleMemberPhotoUpload(e) {
+  const file = e.target.files[0]; if (!file) return;
+  _memberPhotoFile = file;
+  const url = URL.createObjectURL(file);
+  document.getElementById('tm-photo').value = url;
+  _setMemberPhotoPreview(url, document.getElementById('tm-name').value);
+  e.target.value = '';
+}
+function clearMemberPhoto() {
+  _memberPhotoFile = null;
+  document.getElementById('tm-photo').value = '';
+  _setMemberPhotoPreview('', document.getElementById('tm-name').value);
+}
+
+async function openTeamModal(id = null) {
+  editTeamId = id; _memberPhotoFile = null;
+  const { db, doc, getDoc } = fb();
+  let m = null;
+  if (id) {
+    const snap = await getDoc(doc(db, 'team', id));
+    if (snap.exists()) m = { id: snap.id, ...snap.data() };
+  }
+  document.getElementById('teamModalTitle').textContent = m ? 'Edit Member' : 'Add Member';
+  document.getElementById('tm-id').value       = m?.id       || '';
+  document.getElementById('tm-name').value     = m?.name     || '';
+  document.getElementById('tm-role').value     = m?.role     || '';
+  document.getElementById('tm-type').value     = m?.type     || 'executive';
+  document.getElementById('tm-linkedin').value = m?.linkedin || '';
+  document.getElementById('tm-email').value    = m?.email    || '';
+  document.getElementById('tm-photo').value    = m?.photo    || '';
+  _setMemberPhotoPreview(m?.photo || '', m?.name || '');
+  openModal('teamModal');
+}
+
+async function saveMember() {
+  const name = document.getElementById('tm-name').value.trim();
+  const role = document.getElementById('tm-role').value.trim();
+  if (!name || !role) { toast('Name and role are required.', 'err'); return; }
+  const { db, doc, setDoc, serverTimestamp } = fb();
+  const btn = document.getElementById('saveTeamBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const id = editTeamId || ('t' + Date.now());
+    let photo = document.getElementById('tm-photo').value || '';
+    if (_memberPhotoFile) {
+      photo = await uploadImage(_memberPhotoFile, `team/${id}/photo.jpg`, 400, 400, 0.85);
+    }
+    const mData = {
+      id, name, role,
+      type:     document.getElementById('tm-type').value,
+      linkedin: document.getElementById('tm-linkedin').value.trim(),
+      email:    document.getElementById('tm-email').value.trim(),
+      photo,
+      order:    Date.now(),
+      updatedAt: serverTimestamp()
+    };
+    await setDoc(doc(db, 'team', id), mData, { merge: true });
+    closeModal('teamModal');
+    await Promise.all([renderTeamTable(), renderDashboard(), logActivity(editTeamId ? `Team member updated: ${name}` : `Team member added: ${name}`)]);
+    toast(editTeamId ? 'Member updated ✓' : 'Member added ✓');
+  } catch (e) { toast('Save failed: ' + e.message, 'err'); }
+  finally { btn.disabled = false; btn.textContent = 'Save Member'; }
+}
+
+async function moveTeamMember(id, direction) {
+  const { db, collection, getDocs, doc, updateDoc, serverTimestamp } = fb();
+  const snap = await getDocs(collection(db, 'team'));
+  const typeOrder = { executive: 0, director: 1, member: 2 };
+  const sorted = snap.docs.map(d => ({ _docId: d.id, ...d.data() })).sort((a, b) => {
+    const td = (typeOrder[a.type] || 9) - (typeOrder[b.type] || 9);
+    return td !== 0 ? td : (a.order || 0) - (b.order || 0);
+  });
+  const idx     = sorted.findIndex(m => m._docId === id);
+  const swapIdx = idx + direction;
+  if (idx < 0 || swapIdx < 0 || swapIdx >= sorted.length) return;
+  if (sorted[idx].type !== sorted[swapIdx].type) return;
+  const aO = sorted[idx].order || idx;
+  const bO = sorted[swapIdx].order || swapIdx;
+  await Promise.all([
+    updateDoc(doc(db, 'team', sorted[idx]._docId),     { order: bO, updatedAt: serverTimestamp() }),
+    updateDoc(doc(db, 'team', sorted[swapIdx]._docId), { order: aO, updatedAt: serverTimestamp() })
+  ]);
+  renderTeamTable();
+}
+
+async function renderTeamTable() {
+  const { db, collection, getDocs } = fb();
+  const snap = await getDocs(collection(db, 'team'));
+  const members = snap.docs.map(d => ({ _docId: d.id, ...d.data() }));
+  const tbody = document.getElementById('teamTableBody');
+  if (!members.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:#a0aec0">No members yet.</td></tr>'; return; }
+  const typeOrder = { executive: 0, director: 1, member: 2 };
+  const sorted = [...members].sort((a, b) => {
+    const td = (typeOrder[a.type] || 9) - (typeOrder[b.type] || 9);
+    return td !== 0 ? td : (a.order || 0) - (b.order || 0);
+  });
+  const groupCounts = {};
+  sorted.forEach(m => { groupCounts[m.type] = (groupCounts[m.type] || 0) + 1; });
+  const typePos = {};
+  tbody.innerHTML = sorted.map(m => {
+    if (!(m.type in typePos)) typePos[m.type] = 0; else typePos[m.type]++;
+    const pos = typePos[m.type];
+    const total = groupCounts[m.type];
+    const initials = _getInitials(m.name);
+    const avatar = m.photo
+      ? `<img src="${m.photo}" alt="${m.name}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #EDE9FE" loading="lazy">`
+      : `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#9F7AEA,#ED64A6);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:0.75rem;font-weight:800;color:#fff;flex-shrink:0">${initials}</div>`;
+    return `<tr>
+      <td><div style="display:flex;flex-direction:column;gap:3px">
+        <button onclick="moveTeamMember('${m._docId}',-1)" ${pos===0?'disabled':''} style="width:22px;height:22px;border:1.5px solid ${pos===0?'#E2E8F0':'#C4B5FD'};border-radius:5px;background:${pos===0?'#F9FAFB':'#F5F3FF'};color:${pos===0?'#CBD5E0':'#7C3AED'};cursor:${pos===0?'default':'pointer'};font-size:0.75rem;display:flex;align-items:center;justify-content:center">▲</button>
+        <button onclick="moveTeamMember('${m._docId}',1)"  ${pos===total-1?'disabled':''} style="width:22px;height:22px;border:1.5px solid ${pos===total-1?'#E2E8F0':'#C4B5FD'};border-radius:5px;background:${pos===total-1?'#F9FAFB':'#F5F3FF'};color:${pos===total-1?'#CBD5E0':'#7C3AED'};cursor:${pos===total-1?'default':'pointer'};font-size:0.75rem;display:flex;align-items:center;justify-content:center">▼</button>
+      </div></td>
+      <td><div style="display:flex;align-items:center;gap:10px">${avatar}<strong>${m.name}</strong></div></td>
+      <td>${m.role}</td>
+      <td><span class="badge ${m.type==='executive'?'badge-purple':m.type==='director'?'badge-pink':'badge-green'}">${m.type}</span></td>
+      <td>${m.linkedin ? `<a href="${m.linkedin}" target="_blank" style="color:var(--purple);font-size:0.82rem">View ↗</a>` : '—'}</td>
+      <td><div class="btn-group">
+        <button class="btn-icon" onclick="openTeamModal('${m._docId}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+        <button class="btn-icon del" onclick="deleteItem('team','${m._docId}','${m.name}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  MONTHLY PDFs
+// ══════════════════════════════════════════════════════════════
+const MONTHS = ['July','August','September','October','November','December','January','February','March','April','May','June'];
+let activePdfKey = null;
+
+async function getPdfYears() {
+  const { db, doc, getDoc } = fb();
+  const snap = await getDoc(doc(db, 'pdfYears', 'list'));
+  return snap.exists() ? (snap.data().years || []) : ['2024-2025', '2023-2024', '2022-2023'];
+}
+async function savePdfYears(years) {
+  const { db, doc, setDoc, serverTimestamp } = fb();
+  await setDoc(doc(db, 'pdfYears', 'list'), { years, updatedAt: serverTimestamp() });
+}
+async function getPdfs() {
+  const { db, doc, getDoc } = fb();
+  const snap = await getDoc(doc(db, 'settings', 'pdfs'));
+  return snap.exists() ? snap.data() : {};
+}
+async function savePdfs(pdfs) {
+  const { db, doc, setDoc, serverTimestamp } = fb();
+  await setDoc(doc(db, 'settings', 'pdfs'), { ...pdfs, updatedAt: serverTimestamp() });
+}
+
+async function renderPdfYears() {
+  const [years, pdfs] = await Promise.all([getPdfYears(), getPdfs()]);
+  const container = document.getElementById('pdfYearsContainer');
+  if (!years.length) {
+    container.innerHTML = '<p style="color:#a0aec0;text-align:center;padding:32px">No years added yet. Click "+ Add Year" to begin.</p>';
+    return;
+  }
+  container.innerHTML = years.map(year => {
+    const monthsHtml = MONTHS.map(m => {
+      const key = year + '_' + m;
+      const url = pdfs[key] || '';
+      return `<div class="month-pdf-item">
+        <label style="font-size:0.75rem;font-weight:700;color:#4a5568">${m}</label>
+        <span class="month-pdf-status ${url ? 'has-pdf' : ''}">${url ? '✅ Linked' : 'No link'}</span>
+        <button class="btn-sm btn-outline-sm" style="margin-top:4px;font-size:0.68rem;padding:4px 8px" onclick="openPdfLinkModal('${key}','${year} – ${m}')">
+          ${url ? '✏️ Edit' : '+ Add'}
+        </button>
+        ${url ? `<button class="btn-sm" style="font-size:0.68rem;padding:4px 8px;margin-top:3px;background:var(--red);color:#fff;border:none;border-radius:999px;cursor:pointer" onclick="removePdf('${key}')">Remove</button>` : ''}
+      </div>`;
+    }).join('');
+    return `<div class="year-pdf-section">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #F0F0F0">
+        <h4 style="font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:700;color:#1A202C;margin:0">RI Year ${year}</h4>
+        <button class="btn-sm" style="font-size:0.72rem;padding:5px 12px;background:#FFF5F5;color:var(--red);border:1.5px solid #FEB2B2;border-radius:8px;cursor:pointer" onclick="deleteYear('${year}')">🗑 Remove Year</button>
+      </div>
+      <div class="month-pdf-grid">${monthsHtml}</div>
+    </div>`;
+  }).join('');
+}
+
+async function openAddYearModal() {
+  document.getElementById('new-year-input').value = '';
+  openModal('addYearModal');
+}
+async function addNewYear() {
+  const val = document.getElementById('new-year-input').value.trim();
+  if (!/^\d{4}-\d{4}$/.test(val)) { toast('Format must be YYYY-YYYY', 'err'); return; }
+  const years = await getPdfYears();
+  if (years.includes(val)) { toast('This year already exists', 'err'); return; }
+  years.unshift(val);
+  await savePdfYears(years);
+  closeModal('addYearModal');
+  renderPdfYears();
+  toast('Year ' + val + ' added ✓');
+}
+async function deleteYear(year) {
+  if (!confirm('Delete year ' + year + ' and all its PDF links?')) return;
+  const [years, pdfs] = await Promise.all([getPdfYears(), getPdfs()]);
+  const newYears = years.filter(y => y !== year);
+  MONTHS.forEach(m => delete pdfs[year + '_' + m]);
+  await Promise.all([savePdfYears(newYears), savePdfs(pdfs)]);
+  renderPdfYears();
+  toast('Year ' + year + ' removed ✓');
+}
+function openPdfLinkModal(key, label) {
+  activePdfKey = key;
+  document.getElementById('pdfLinkModalTitle').textContent = label;
+  document.getElementById('pdfLinkKey').value = key;
+  document.getElementById('pdfLinkUrl').value = '';
+  // Pre-fill existing URL
+  getPdfs().then(pdfs => { document.getElementById('pdfLinkUrl').value = pdfs[key] || ''; });
+  openModal('pdfLinkModal');
+}
+async function savePdfLink() {
+  const url = document.getElementById('pdfLinkUrl').value.trim();
+  if (!url) { toast('Please enter a URL', 'err'); return; }
+  const pdfs = await getPdfs();
+  pdfs[activePdfKey] = url;
+  await savePdfs(pdfs);
+  closeModal('pdfLinkModal');
+  renderPdfYears();
+  toast('PDF link saved ✓');
+}
+async function removePdf(key) {
+  const pdfs = await getPdfs();
+  delete pdfs[key];
+  await savePdfs(pdfs);
+  renderPdfYears();
+  toast('Removed ✓');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════════════════════════
+async function loadSettings() {
+  const { db, doc, getDoc } = fb();
+  const snap = await getDoc(doc(db, 'settings', 'global'));
+  const s = snap.exists() ? snap.data() : {};
+  document.getElementById('s-clubname').value  = s.clubname  || 'Rotaract Club of Hyderabad East';
+  document.getElementById('s-email').value     = s.email     || 'rchyderabadeast@gmail.com';
+  document.getElementById('s-phone').value     = s.phone     || '+91 99511 43775';
+  document.getElementById('s-instagram').value = s.instagram || '';
+  document.getElementById('s-linkedin').value  = s.linkedin  || '';
+  document.getElementById('s-joinform').value  = s.joinform  || '';
+}
+async function saveSettingsHandler() {
+  const { db, doc, setDoc, serverTimestamp } = fb();
+  const btn = document.getElementById('saveSettingsBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    await setDoc(doc(db, 'settings', 'global'), {
+      clubname:  document.getElementById('s-clubname').value.trim(),
+      email:     document.getElementById('s-email').value.trim(),
+      phone:     document.getElementById('s-phone').value.trim(),
+      instagram: document.getElementById('s-instagram').value.trim(),
+      linkedin:  document.getElementById('s-linkedin').value.trim(),
+      joinform:  document.getElementById('s-joinform').value.trim(),
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+    const msg = document.getElementById('settingsSaveMsg');
+    msg.textContent = '✓ Saved! Website will reflect these on next load.';
+    msg.className = 'save-msg ok';
+    setTimeout(() => { msg.textContent = ''; }, 4000);
+    toast('Settings saved ✓');
+    await logActivity('Club settings updated');
+  } catch (e) { toast('Save failed: ' + e.message, 'err'); }
+  finally { btn.disabled = false; btn.textContent = 'Save Club Info'; }
+}
+
+// ══════════════════════════════════════════════════════════════
+//  DELETE
+// ══════════════════════════════════════════════════════════════
+let pendingDelete = null;
+function deleteItem(collName, docId, label) {
+  pendingDelete = { collName, docId, label };
+  document.getElementById('confirmMsg').textContent = `Delete "${label}"? This cannot be undone.`;
+  openModal('confirmModal');
+}
+async function confirmAction() {
+  if (!pendingDelete) return;
+  const { db, doc, deleteDoc } = fb();
+  try {
+    await deleteDoc(doc(db, pendingDelete.collName, pendingDelete.docId));
+    closeModal('confirmModal');
+    if (pendingDelete.collName === 'events') renderEventsTable();
+    if (pendingDelete.collName === 'team')   renderTeamTable();
+    await Promise.all([renderDashboard(), logActivity(`Deleted: ${pendingDelete.label}`)]);
+    toast('Deleted ✓');
+  } catch (e) { toast('Delete failed: ' + e.message, 'err'); }
+  pendingDelete = null;
+}
+
+// ══════════════════════════════════════════════════════════════
+//  EXPORT
+// ══════════════════════════════════════════════════════════════
+async function exportData() {
+  const { db, collection, getDocs, doc, getDoc } = fb();
+  const [evSnap, tmSnap, galSnap, settSnap, pdfSnap, yearsSnap] = await Promise.all([
+    getDocs(collection(db, 'events')),
+    getDocs(collection(db, 'team')),
+    getDocs(collection(db, 'gallery')),
+    getDoc(doc(db, 'settings', 'global')),
+    getDoc(doc(db, 'settings', 'pdfs')),
+    getDoc(doc(db, 'pdfYears', 'list'))
+  ]);
+  const data = {
+    events:   evSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+    team:     tmSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+    gallery:  galSnap.docs.map(d => ({ id: d.id, ...d.data() })),
+    settings: settSnap.exists() ? settSnap.data() : {},
+    pdfs:     pdfSnap.exists()  ? pdfSnap.data()  : {},
+    pdfYears: yearsSnap.exists() ? yearsSnap.data() : {}
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'rche-firebase-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+  toast('Data exported ✓');
+}
+</script>
+</body>
+</html>

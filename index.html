@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotaract Club of Hyderabad East | Service • Leadership • Fellowship</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── index.html responsive overrides ── */
+    @media (max-width: 640px) {
+      .upcoming-inline { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 480px) {
+      .upcoming-inline { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<script type="module">
+import { db } from "./firebase-config.js";
+import {
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const container = document.getElementById("homeUpcomingEvents");
+
+async function loadHomeEvents() {
+
+  const snap = await getDocs(collection(db, "events"));
+
+  const events = snap.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }));
+
+  const upcoming = events
+    .filter(e => e.status === "upcoming")
+    .slice(0, 3);
+
+  container.innerHTML = upcoming.map((event, index) => {
+
+    const colors = ["purple", "pink", "blue", "green"];
+    const color = colors[index % colors.length];
+
+    const date = new Date(event.date);
+
+    return `
+      <div class="event-card">
+
+        <div class="event-banner ${color}">
+          ${event.emoji || "📅"}
+
+          <div class="event-date-chip">
+            <div class="day">
+              ${date.getDate()}
+            </div>
+
+            <div class="month">
+              ${date.toLocaleString('default', { month: 'short' })}
+            </div>
+          </div>
+        </div>
+
+        <div class="event-body">
+
+          <span class="badge badge-purple">
+            ${event.category || "Event"}
+          </span>
+
+          <h3>${event.title}</h3>
+
+          <p>
+            ${event.desc || ""}
+          </p>
+
+          <div class="event-actions">
+            <a href="events.html" class="btn btn-primary btn-sm">
+              Learn More →
+            </a>
+          </div>
+
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const pastEvents = events
+  .filter(e => e.status === "past")
+  .slice(0, 7);
+
+const cards = pastEvents
+  .map((event, index) => createCarouselCard(event, index))
+  .join("");
+
+// duplicate for infinite scrolling
+carouselTrack.innerHTML = cards + cards;
+}
+
+loadHomeEvents()
+const carouselTrack = document.getElementById("carouselTrack");
+
+function createCarouselCard(event, index) {
+
+  const colors = ["purple", "pink", "blue", "green", "yellow"];
+  const color = colors[index % colors.length];
+
+  return `
+    <div class="carousel-card">
+
+      ${
+        event.poster
+        ? `
+          <img src="${event.poster}"
+               alt="${event.title}"
+               class="carousel-poster">
+        `
+        : `
+          <div class="carousel-poster-placeholder ${color}">
+            ${event.short || "EV"}
+          </div>
+        `
+      }
+
+      <div class="carousel-body">
+
+        <span class="carousel-badge">
+          ${event.category || "Event"} ·
+          ${new Date(event.date).getFullYear()}
+        </span>
+
+        <h3>${event.title}</h3>
+
+        <p>${event.desc || ""}</p>
+
+      </div>
+
+    </div>
+  `;
+};
+</script>
+<body>
+
+<!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+
+      <!-- LEFT: Club logo — click → top of home page -->
+      <a href="index.html#top" class="nav-logo-link" id="logoHome" aria-label="Rotaract Club of Hyderabad East Home">
+        <img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract Club of Hyderabad East">
+      </a>
+
+      <!-- CENTER: Nav links -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+
+      <!-- RIGHT: Badges + Join -->
+      <div class="nav-right">
+        <!-- District 3150 — click → rotaract3150.in -->
+        <a href="https://rotaract3150.in" target="_blank" rel="noopener" class="nav-badge-img-link" aria-label="District 3150 Rotaract">
+          <img src="District_3150_Logo.png" alt="District 3150 Rotaract">
+        </a>
+        <!-- Rotary International — click → rotary.org -->
+        <a href="https://www.rotary.org" target="_blank" rel="noopener" class="nav-badge-img-link" aria-label="Rotary International">
+          <img src="Rotary_Logo.png" alt="Rotary International">
+        </a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="joinLinkNav" class="nav-join">Join The Club</a>
+      </div>
+
+      <!-- Hamburger -->
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="nav-mobile" id="navMobile">
+  <a href="index.html" class="active">Home</a>
+  <a href="about.html">About</a>
+  <a href="events.html">Events</a>
+  <a href="team.html">Team</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="contact.html">Contact</a>
+  <div class="nav-mobile-footer">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="joinLinkMobile" class="btn btn-primary btn-sm">Join The Club</a>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ══ HERO ══════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Chartered 2007 · District 3150 · Hyderabad</div>
+      <h1>
+        ROTARACT CLUB<br>
+        <span class="grad">OF HYDERABAD EAST</span>
+      </h1>
+      <p class="hero-tagline">Service &nbsp;•&nbsp; Leadership &nbsp;•&nbsp; Fellowship</p>
+      <div class="hero-actions">
+        <a href="events.html" class="btn btn-primary btn-lg">View Projects</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" class="btn btn-outline btn-lg">Join the Movement</a>
+      </div>
+      <div class="scroll-arrow-wrap">
+        <span class="scroll-arrow-label">Scroll to explore</span>
+        <div class="scroll-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STATS BAR ═══════════════════════════════════════ -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-number" data-count="50" data-suffix="+">50+</div>
+          <div class="stat-label">Projects Completed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number" data-count="120" data-suffix="+">120+</div>
+          <div class="stat-label">Active Members</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number" data-count="5000" data-suffix="+">5,000+</div>
+          <div class="stat-label">Lives Impacted</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-number" data-count="10000" data-suffix="+">10,000+</div>
+          <div class="stat-label">Volunteer Hours</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OUR AVENUES ═════════════════════════════════════ -->
+  <section class="section" style="background:var(--white);">
+    <div class="container">
+      <span class="section-label">What We Do</span>
+      <h2 class="section-title">Our Avenues</h2>
+      <p class="section-subtitle">Discover the activities creating meaningful impact across Hyderabad and beyond</p>
+      <div class="avenues-grid">
+        <div class="avenue-card">
+          <div class="avenue-icon">🌍</div>
+          <h3>International Service</h3>
+          <p>Fostering global connections through cross-border partnerships and collaborative humanitarian projects that transcend boundaries.</p>
+        </div>
+        <div class="avenue-card">
+          <div class="avenue-icon">🤝</div>
+          <h3>Community Service</h3>
+          <p>Driving grassroots change through health drives, literacy campaigns, and direct support for underserved communities in Hyderabad.</p>
+        </div>
+        <div class="avenue-card">
+          <div class="avenue-icon">📈</div>
+          <h3>Professional Development</h3>
+          <p>Equipping members with leadership skills, industry insights, and career networks through workshops, mentorship, and more.</p>
+        </div>
+        <div class="avenue-card">
+          <div class="avenue-icon">🌱</div>
+          <h3>Sustainability</h3>
+          <p>Leading environmental initiatives and tree plantation drives to build a greener, more conscious Hyderabad.</p>
+        </div>
+        <div class="avenue-card">
+          <div class="avenue-icon">🎯</div>
+          <h3>Rotary 7 Areas of Focus</h3>
+          <p>Aligning our work with Rotary's seven global focus areas: peace, disease, water, health, education, economics, and environment.</p>
+        </div>
+        <div class="avenue-card" style="background:var(--gradient-soft);border-color:rgba(159,122,234,0.2);">
+          <div class="avenue-icon">✨</div>
+          <h3>17+ Years of Service</h3>
+          <p>Proudly chartered under Rotary International District 3150 since 2007, building a legacy of impactful community service.</p>
+          <a href="about.html" class="btn btn-outline btn-sm" style="margin-top:18px;">Our Story →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ UPCOMING EVENTS ════════════════════════════════════ -->
+  <section class="section" style="background:var(--purple-xlight);">
+    <div class="container">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:48px;">
+        <div>
+          <span class="section-label">What's Next</span>
+          <h2 class="section-title" style="text-align:left;margin-bottom:4px;">Upcoming Events</h2>
+          <p style="color:var(--text-muted);">Mark your calendar — don't miss these upcoming initiatives</p>
+        </div>
+        <a href="events.html" class="btn btn-outline">View All Events →</a>
+      </div>
+
+      <div class="upcoming-inline events-grid" id="homeUpcomingEvents">
+
+        <!-- Upcoming Event 1 -->
+        <div style="background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(159,122,234,0.08);border:1px solid rgba(159,122,234,0.1);transition:all 0.25s;cursor:default;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 36px rgba(159,122,234,0.16)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(159,122,234,0.08)'">
+          <div style="height:160px;background:linear-gradient(135deg,#9F7AEA,#B794F6);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:3rem;font-weight:800;color:#fff;position:relative;">
+            🎓
+            <div style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.95);border-radius:10px;padding:6px 12px;text-align:center;">
+              <div style="font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:800;color:#7C3AED;line-height:1;">TBD</div>
+              <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;color:#718096;letter-spacing:0.08em;">2026</div>
+            </div>
+          </div>
+          <div style="padding:22px;">
+            <span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:0.7rem;font-weight:700;background:#EDE9FE;color:#7C3AED;margin-bottom:10px;font-family:'Poppins',sans-serif;">Professional Development</span>
+            <h3 style="font-family:'Poppins',sans-serif;font-size:1.05rem;margin-bottom:8px;">Youth Leadership Summit</h3>
+            <p style="font-size:0.875rem;color:#718096;margin-bottom:18px;">An intensive workshop to develop leadership skills and professional networks for aspiring young leaders.</p>
+            <a href="events.html" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">Learn More →</a>
+          </div>
+        </div>
+
+        <!-- Upcoming Event 2 -->
+        <div style="background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(159,122,234,0.08);border:1px solid rgba(159,122,234,0.1);transition:all 0.25s;" onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 36px rgba(159,122,234,0.16)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(159,122,234,0.08)'">
+          <div style="height:160px;background:linear-gradient(135deg,#ED64A6,#F687B3);display:flex;align-items:center;justify-content:center;font-size:3rem;position:relative;">
+            🌱
+            <div style="position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.95);border-radius:10px;padding:6px 12px;text-align:center;">
+              <div style="font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:800;color:#ED64A6;line-height:1;">TBD</div>
+              <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;color:#718096;letter-spacing:0.08em;">2026</div>
+            </div>
+          </div>
+          <div style="padding:22px;">
+            <span style="display:inline-block;padding:3px 12px;border-radius:999px;font-size:0.7rem;font-weight:700;background:#FDF2F8;color:#ED64A6;margin-bottom:10px;font-family:'Poppins',sans-serif;">Environment</span>
+            <h3 style="font-family:'Poppins',sans-serif;font-size:1.05rem;margin-bottom:8px;">Green Hyderabad Drive</h3>
+            <p style="font-size:0.875rem;color:#718096;margin-bottom:18px;">Planting saplings across parks and schools to make Hyderabad greener, one sapling at a time.</p>
+            <a href="events.html" class="btn btn-primary btn-sm" style="width:100%;justify-content:center;">Learn More →</a>
+          </div>
+        </div>
+
+        <!-- Upcoming Event 3 — Add your own -->
+        <div style="background:linear-gradient(135deg,rgba(159,122,234,0.05),rgba(237,100,166,0.04));border-radius:20px;border:2px dashed rgba(159,122,234,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 28px;text-align:center;min-height:280px;">
+          <div style="font-size:2.5rem;margin-bottom:14px;">📅</div>
+          <h3 style="font-family:'Poppins',sans-serif;font-size:1rem;color:#9F7AEA;margin-bottom:8px;">More Coming Soon</h3>
+          <p style="font-size:0.85rem;color:#718096;margin-bottom:20px;">Stay tuned for more events from the 2025-26 board.</p>
+          <a href="events.html" class="btn btn-outline btn-sm">View Events Page →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ AUTO-SCROLLING RECENT EVENTS CAROUSEL (2025-26 Only) ══ -->
+  <section class="carousel-section">
+    <div class="container" style="text-align:center;">
+      <span class="section-label">RI Year 2025–26</span>
+      <h2 class="section-title">Recent Projects &amp; Events</h2>
+      <p class="section-subtitle">A snapshot of what we've accomplished this year</p>
+    </div>
+
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carouselTrack">
+
+        <!-- ── 2025-26 Events (original set) ───────────────────────────── -->
+
+        <div class="carousel-card">
+          
+
+      </div><!-- end track -->
+    </div><!-- end wrapper -->
+
+    <div style="text-align:center;margin-top:40px;">
+      <a href="events.html" class="btn btn-primary">View All 2025-26 Events →</a>
+    </div>
+  </section>
+
+  <!-- ══ CTA BANNER ══════════════════════════════════════ -->
+  <section class="section">
+    <div class="cta-banner">
+      <h2>Ready to Lead and Create Impact?</h2>
+      <p>Join over 120 young leaders already creating lasting change in Hyderabad and beyond. Your journey of service starts here.</p>
+      <div class="cta-actions">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" class="btn btn-white btn-lg">Apply Now</a>
+        <a href="contact.html" class="btn btn-ghost-white btn-lg">Partner With Us</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+
+      <!-- Brand -->
+      <div class="footer-brand">
+        <a href="index.html#top">
+          <img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract Club of Hyderabad East" class="footer-brand-logo" style="opacity:0.9;">
+        </a>
+        <p>Empowering young leaders through service, fellowship, and professional development since 2007.</p>
+        <div class="footer-social-row">
+          <a href="https://www.instagram.com/rchyderabadeast" target="_blank" rel="noopener" class="footer-social-btn" id="ftInstagram" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/rotaract-club-of-hyderabad-east/" target="_blank" rel="noopener" class="footer-social-btn" id="ftLinkedin" aria-label="LinkedIn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="events.html">Events</a></li>
+          <li><a href="team.html">Our Team</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+
+      <!-- Get Involved -->
+      <div class="footer-col">
+        <h5>Get Involved</h5>
+        <ul class="footer-links">
+          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" id="ftJoinLink" target="_blank">Join the Club</a></li>
+          <li><a href="#">Volunteer</a></li>
+          <li><a href="contact.html">Partner With Us</a></li>
+          <li><a href="#">Donate</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <div class="footer-contact-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/></svg>
+          <a id="ftEmail" href="mailto:rchyderabadeast@gmail.com">rchyderabadeast@gmail.com</a>
+        </div>
+        <div class="footer-contact-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/></svg>
+          <a id="ftPhone" href="tel:+919951143775">+91 99511 43775</a>
+        </div>
+        <div class="footer-contact-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+          <span>Hyderabad, Telangana</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="footer-divider"></div>
+    <div class="footer-bottom-bar">
+      <span>© 2026 Rotaract Club of Hyderabad East. All rights reserved.</span>
+      <span>Proudly part of <a href="https://rotaract3150.in" target="_blank" rel="noopener">Rotaract District 3150</a></span>
+    </div>
+    <div class="footer-end-row">
+      <span class="footer-passion">Made with passion for service</span>
+      <img src="RCHE4EVER.png" alt="#RCHE4EVR" class="footer-rche">
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Navbar scroll effect
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20), {passive:true});
+
+  // ── Hamburger menu
+  const hamburger = document.getElementById('hamburger');
+  const navMobile  = document.getElementById('navMobile');
+  hamburger.addEventListener('click', () => {
+    const open = navMobile.classList.toggle('open');
+    const sp = hamburger.querySelectorAll('span');
+    if (open) {
+      sp[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+      sp[1].style.opacity = '0';
+      sp[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+    } else {
+      sp.forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+    }
+  });
+  document.addEventListener('click', e => {
+    if (!hamburger.contains(e.target) && !navMobile.contains(e.target)) {
+      navMobile.classList.remove('open');
+      hamburger.querySelectorAll('span').forEach(s => { s.style.transform = ''; s.style.opacity = ''; });
+    }
+  });
+
+  // ── Counter animation
+  const counters = document.querySelectorAll('[data-count]');
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const dur = 1600;
+      const t0 = performance.now();
+      const tick = now => {
+        const p = Math.min((now - t0) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * ease).toLocaleString() + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      counterObs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterObs.observe(c));
+
+  // ── Logo click → smooth scroll to top of page
+  document.getElementById('logoHome').addEventListener('click', e => {
+    if (window.location.pathname.includes('index') || window.location.pathname === '/' || window.location.pathname.endsWith('/')) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+
+  // ── Fade in on load
+  document.body.style.opacity = '0';
+  document.body.style.transition = 'opacity 0.35s ease';
+  window.addEventListener('load', () => { document.body.style.opacity = '1'; });
+</script>
+
+<script type="module">
+// ── Firebase: load settings from Firestore and apply to page ──
+import { db } from "./firebase-config.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const DEFAULT_JOIN = 'https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform';
+
+async function applySettings() {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'global'));
+    const s = snap.exists() ? snap.data() : {};
+    const joinUrl = s.joinform || DEFAULT_JOIN;
+    ['joinLinkNav','joinLinkMobile','ftJoinLink'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.href = joinUrl;
+    });
+    if (s.instagram) { const el = document.getElementById('ftInstagram'); if (el) el.href = s.instagram; }
+    if (s.linkedin)  { const el = document.getElementById('ftLinkedin');  if (el) el.href = s.linkedin; }
+    if (s.email)     { const el = document.getElementById('ftEmail');     if (el) { el.href = 'mailto:' + s.email; el.textContent = s.email; } }
+    if (s.phone)     { const el = document.getElementById('ftPhone');     if (el) { el.href = 'tel:' + s.phone.replace(/\s/g,''); el.textContent = s.phone; } }
+  } catch(e) { console.warn('Settings load failed:', e); }
+}
+applySettings();
+</script>
+</body>
+</html>

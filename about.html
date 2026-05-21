@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Rotaract | Rotaract Club of Hyderabad East</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* About page specific */
+    .about-intro { max-width:860px; margin:0 auto; text-align:center; padding:72px 24px 48px; }
+    .about-intro h1 { font-family:'Poppins',sans-serif; font-size:clamp(2rem,5vw,3rem); font-weight:800; margin-bottom:12px; }
+    .about-intro h1 span { background:linear-gradient(135deg,#9F7AEA,#ED64A6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .about-intro .subtitle { font-size:1.05rem; color:#718096; }
+
+    .about-body { max-width:860px; margin:0 auto; padding:0 24px 64px; }
+    .about-body p { font-size:1rem; color:#4A5568; line-height:1.85; margin-bottom:18px; }
+
+    /* Mission / Vision */
+    .mv-section { background:#F7F8FF; padding:72px 24px; }
+    .mv-inner { max-width:1100px; margin:0 auto; }
+    .mv-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+    .mv-card { background:#fff; border-radius:20px; padding:36px 32px; box-shadow:0 4px 20px rgba(159,122,234,0.08); border:1px solid rgba(159,122,234,0.12); }
+    .mv-card .icon { font-size:2rem; margin-bottom:18px; display:block; }
+    .mv-card h3 { font-family:'Poppins',sans-serif; font-size:1.3rem; font-weight:700; margin-bottom:14px; color:#1A202C; }
+    .mv-card p  { color:#4A5568; line-height:1.8; font-size:0.95rem; }
+
+    /* Core Values */
+    .values-section { padding:72px 24px; }
+    .values-inner { max-width:1100px; margin:0 auto; text-align:center; }
+    .values-section h2 { font-family:'Poppins',sans-serif; font-size:clamp(1.8rem,3.5vw,2.4rem); font-weight:800; margin-bottom:8px; }
+    .values-section .sec-sub { color:#718096; margin-bottom:48px; font-size:1rem; }
+    .values-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+    .value-item { background:#fff; border-radius:16px; padding:28px 20px; text-align:center; box-shadow:0 4px 16px rgba(159,122,234,0.07); border:1px solid rgba(159,122,234,0.1); transition:transform 0.25s; }
+    .value-item:hover { transform:translateY(-5px); box-shadow:0 8px 28px rgba(159,122,234,0.14); }
+    .value-item .vi-icon { width:52px; height:52px; border-radius:50%; background:linear-gradient(135deg,#EDE9FE,#FDF2F8); display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:1.5rem; }
+    .value-item h4 { font-family:'Poppins',sans-serif; font-size:0.95rem; font-weight:700; margin-bottom:8px; color:#1A202C; }
+    .value-item p  { font-size:0.82rem; color:#718096; line-height:1.6; }
+
+    /* Impact */
+    .impact-section { background:#F7F8FF; padding:72px 24px; }
+    .impact-inner { max-width:900px; margin:0 auto; text-align:center; }
+    .impact-section h2 { font-family:'Poppins',sans-serif; font-size:clamp(1.8rem,3.5vw,2.4rem); font-weight:800; margin-bottom:8px; }
+    .impact-section .sec-sub { color:#718096; margin-bottom:48px; font-size:1rem; }
+    .impact-row { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+    .impact-num-card { background:#fff; border-radius:16px; padding:36px 20px; box-shadow:0 4px 16px rgba(159,122,234,0.08); border:1px solid rgba(159,122,234,0.1); }
+    .impact-num-card .num { font-family:'Poppins',sans-serif; font-size:2.8rem; font-weight:800; background:linear-gradient(135deg,#9F7AEA,#ED64A6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:8px; }
+    .impact-num-card .lbl { font-family:'Poppins',sans-serif; font-size:0.95rem; font-weight:600; color:#1A202C; margin-bottom:6px; }
+    .impact-num-card p   { font-size:0.8rem; color:#718096; }
+
+    /* Chartered */
+    .chartered-section { padding:72px 24px; }
+    .chartered-inner { max-width:700px; margin:0 auto; text-align:center; }
+    .chartered-icon-wrap { width:64px; height:64px; border-radius:50%; background:linear-gradient(135deg,#9F7AEA,#ED64A6); display:flex; align-items:center; justify-content:center; margin:0 auto 24px; font-size:1.8rem; box-shadow:0 8px 24px rgba(159,122,234,0.35); }
+    .chartered-section h2 { font-family:'Poppins',sans-serif; font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; margin-bottom:12px; }
+    .chartered-section p  { color:#718096; font-size:1rem; line-height:1.75; margin-bottom:32px; }
+    .chartered-chips { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+    .chartered-chip { background:#EDE9FE; border-radius:50px; padding:10px 24px; font-family:'Poppins',sans-serif; font-size:0.85rem; font-weight:600; color:#7C3AED; }
+
+    @media(max-width:900px){ .values-grid{grid-template-columns:repeat(2,1fr)} .impact-row{grid-template-columns:1fr 1fr} }
+    @media(max-width:640px){ .mv-grid{grid-template-columns:1fr} .values-grid{grid-template-columns:1fr 1fr} .impact-row{grid-template-columns:1fr} .chartered-chips{flex-direction:column;align-items:center} }
+    @media(max-width:480px){ .values-grid{grid-template-columns:1fr 1fr} }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container"><div class="nav-inner">
+    <a href="index.html" class="nav-logo-link" aria-label="Home"><img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract Club of Hyderabad East"></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li><li><a href="about.html" class="active">About</a></li>
+      <li><a href="events.html">Events</a></li><li><a href="team.html">Team</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://rotaract3150.in" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="District_3150_Logo.png" alt="District 3150 Rotaract"></a>
+      <a href="https://www.rotary.org" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="Rotary_Logo.png" alt="Rotary International"></a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="joinLinkNav" class="nav-join">Join The Club</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div></div>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="index.html">Home</a><a href="about.html" class="active">About</a><a href="events.html">Events</a>
+  <a href="team.html">Team</a><a href="gallery.html">Gallery</a><a href="contact.html">Contact</a>
+  <div class="nav-mobile-footer">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="joinLinkMobile" class="btn btn-primary btn-sm">Join The Club</a>
+  </div>
+</div>
+
+<main>
+
+  <!-- PAGE HERO — simple centered, white bg to match reference -->
+  <section style="background:#fff;text-align:center;padding:72px 24px 48px;border-bottom:1px solid rgba(159,122,234,0.08)">
+    <span class="section-label">Our Story</span>
+    <h1 style="font-family:'Poppins',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;margin:12px 0 8px">About <span style="background:linear-gradient(135deg,#9F7AEA,#ED64A6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Rotaract</span></h1>
+    <p style="color:#718096;font-size:1.05rem;margin:0">Partners in service and integral members of the Rotary family.</p>
+  </section>
+
+  <!-- INTRO TEXT — white background matching reference -->
+  <section class="about-body" style="background:#fff;padding-top:48px;padding-bottom:48px">
+    <p>Rotaract is a Rotary-sponsored service club for young men and women aged 18 and above. These clubs, either community-based or university-based, are sponsored by local Rotary clubs, making them true "partners in service" and integral members of the Rotary family.</p>
+    <p>As one of Rotary's most dynamic and rapidly expanding service programs, with over 7,000 clubs in 163 countries, Rotaract has evolved into a global movement.</p>
+    <p>The Rotaract Club of Hyderabad East, chartered on the 17th of September 2007, stands out as one of the most active clubs in the city, recognized with numerous awards for its contributions. Our members comprise a diverse mix of students and young working professionals aged between 18 and 26, pursuing degrees in fields such as Commerce, Engineering, and more, with some already making strides in their careers.</p>
+    <p>Since its inception, the Rotaract Club of Hyderabad East has been committed to undertaking impactful community service projects, striving to touch lives and make a difference in innovative ways. Our efforts begin at the local, grassroots level, where we address our communities' physical and social needs while fostering international understanding and peace through a foundation of friendship and service. Rotaract embodies the spirit of "Rotary in action," and true to this, we have organized a variety of creative community service initiatives that not only benefit the community but also ensure that our members find joy in their service.</p>
+  </section>
+
+  <!-- MISSION & VISION -->
+  <section class="mv-section">
+    <div class="mv-inner">
+      <div class="mv-grid">
+        <div class="mv-card">
+          <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#EDE9FE,#FDF2F8);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:1.5rem">🎯</div>
+          <h3>Mission</h3>
+          <p>To empower young individuals by raising awareness of the Rotaract movement, guiding them on a path of fellowship and support. Through meaningful community service, we aim to inspire a sense of purpose and drive positive change within our society.</p>
+        </div>
+        <div class="mv-card">
+          <div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#EDE9FE,#FDF2F8);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:1.5rem">🔭</div>
+          <h3>Vision</h3>
+          <p>To build a thriving community where the principle of service above self is deeply ingrained in every individual. We envision a world where affection and empathy are not just ideals, but the standards by which people measure their actions and interactions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE VALUES -->
+  <section class="values-section">
+    <div class="values-inner">
+      <span class="section-label">What We Stand For</span>
+      <h2>Our Core Values</h2>
+      <p class="sec-sub">The principles that guide everything we do</p>
+      <div class="values-grid">
+        <div class="value-item">
+          <div class="vi-icon">🤝</div>
+          <h4>Service Above Self</h4>
+          <p>Committed to serving our community with dedication and passion</p>
+        </div>
+        <div class="value-item">
+          <div class="vi-icon">💡</div>
+          <h4>Leadership Development</h4>
+          <p>Cultivating strong leadership skills to drive meaningful change</p>
+        </div>
+        <div class="value-item">
+          <div class="vi-icon">❤️</div>
+          <h4>Fellowship</h4>
+          <p>Building lasting connections through shared experiences</p>
+        </div>
+        <div class="value-item">
+          <div class="vi-icon">🌍</div>
+          <h4>Diversity & Inclusion</h4>
+          <p>Celebrating diverse perspectives and inclusive engagement</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="impact-section">
+    <div class="impact-inner">
+      <span class="section-label">Our Track Record</span>
+      <h2>Our Impact by Numbers</h2>
+      <p class="sec-sub">Measurable difference that matters</p>
+      <div class="impact-row">
+        <div class="impact-num-card">
+          <div class="num">17+</div>
+          <div class="lbl">Years of Service</div>
+          <p>Since September 2007</p>
+        </div>
+        <div class="impact-num-card">
+          <div class="num">200+</div>
+          <div class="lbl">Community Partners</div>
+          <p>Growing networks</p>
+        </div>
+        <div class="impact-num-card">
+          <div class="num">50K+</div>
+          <div class="lbl">Beneficiaries Reached</div>
+          <p>Lives touched</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHARTERED -->
+  <section class="chartered-section">
+    <div class="chartered-inner">
+      <div class="chartered-icon-wrap">🏅</div>
+      <span class="section-label">Official Recognition</span>
+      <h2>Chartered Since 2007</h2>
+      <p>Recognized as one of the most active clubs in Hyderabad.<br>Awarded for outstanding contributions to community service and leadership development.</p>
+      <div class="chartered-chips">
+        <span class="chartered-chip">District 3150</span>
+        <span class="chartered-chip">September 2007</span>
+        <span class="chartered-chip">Hyderabad, Telangana</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html"><img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract HE" class="footer-brand-logo" style="opacity:0.9;"></a>
+        <p>Empowering young leaders through service, fellowship, and professional development since 2007.</p>
+        <div class="footer-social-row">
+          <a href="https://www.instagram.com/rchyderabadeast" target="_blank" rel="noopener" class="footer-social-btn" id="ftInstagram" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg></a>
+          <a href="https://www.linkedin.com/company/rotaract-club-of-hyderabad-east/" target="_blank" rel="noopener" class="footer-social-btn" id="ftLinkedin" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Quick Links</h5><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="events.html">Events</a></li><li><a href="team.html">Our Team</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div class="footer-col"><h5>Get Involved</h5><ul class="footer-links"><li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" id="ftJoinLink" target="_blank">Join the Club</a></li><li><a href="#">Volunteer</a></li><li><a href="contact.html">Partner With Us</a></li><li><a href="#">Donate</a></li></ul></div>
+      <div class="footer-col"><h5>Contact</h5>
+        <div class="footer-contact-item"><svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/></svg><a id="ftEmail" href="mailto:rchyderabadeast@gmail.com">rchyderabadeast@gmail.com</a></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/></svg><a id="ftPhone" href="tel:+919951143775">+91 99511 43775</a></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg><span>Hyderabad, Telangana</span></div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 Rotaract Club of Hyderabad East. All rights reserved.</span>
+      <span>Proudly part of <a href="https://rotaract3150.in" target="_blank" rel="noopener">Rotaract District 3150</a></span>
+    </div>
+    <div class="footer-end-row">
+      <span class="footer-passion">Made with passion for service</span>
+      <img src="RCHE4EVER.png" alt="#RCHE4EVR" class="footer-rche">
+    </div>
+  </div>
+</footer>
+
+<script>
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>20),{passive:true});
+const ham=document.getElementById('hamburger'),mob=document.getElementById('navMobile');
+ham.addEventListener('click',()=>{const open=mob.classList.toggle('open'),sp=ham.querySelectorAll('span');if(open){sp[0].style.transform='rotate(45deg) translate(5px,5px)';sp[1].style.opacity='0';sp[2].style.transform='rotate(-45deg) translate(5px,-5px)';}else{sp.forEach(s=>{s.style.transform='';s.style.opacity='';})}});
+document.addEventListener('click',e=>{if(!ham.contains(e.target)&&!mob.contains(e.target)){mob.classList.remove('open');ham.querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='';})}});
+document.body.style.opacity='0';document.body.style.transition='opacity 0.35s ease';
+window.addEventListener('load',()=>{document.body.style.opacity='1';});
+</script>
+<script type="module">
+import { db } from "./firebase-config.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const DEFAULT_JOIN = 'https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform';
+(async () => {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'global'));
+    const s = snap.exists() ? snap.data() : {};
+    const joinUrl = s.joinform || DEFAULT_JOIN;
+    ['joinLinkNav','joinLinkMobile','ftJoinLink'].forEach(id => { const el=document.getElementById(id); if(el) el.href=joinUrl; });
+    if(s.instagram){const el=document.getElementById('ftInstagram');if(el)el.href=s.instagram;}
+    if(s.linkedin) {const el=document.getElementById('ftLinkedin'); if(el)el.href=s.linkedin;}
+    if(s.email)    {const el=document.getElementById('ftEmail');    if(el){el.href='mailto:'+s.email;el.textContent=s.email;}}
+    if(s.phone)    {const el=document.getElementById('ftPhone');    if(el){el.href='tel:'+s.phone.replace(/ /g,'');el.textContent=s.phone;}}
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>

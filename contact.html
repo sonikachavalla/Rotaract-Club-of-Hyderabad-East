@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | Rotaract Club of Hyderabad East</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- All global styles embedded inline so page works even if styles.css isn't found -->
+  <style>
+/* =========================================================
+   ROTARACT CLUB OF HYDERABAD EAST — Master Stylesheet
+   ========================================================= */
+
+/* fonts loaded via <link> */
+
+/* ── Design Tokens ─────────────────────────────────────── */
+:root {
+  --purple:        #9F7AEA;
+  --purple-dark:   #7C3AED;
+  --purple-soft:   #B794F6;
+  --purple-light:  #EDE9FE;
+  --purple-xlight: #F5F3FF;
+  --pink:          #ED64A6;
+  --pink-light:    #FDF2F8;
+  --blue:          #4299E1;
+  --blue-light:    #EBF8FF;
+  --green:         #48BB78;
+  --green-light:   #F0FFF4;
+  --yellow:        #ECC94B;
+  --text-dark:     #1A202C;
+  --text-mid:      #4A5568;
+  --text-muted:    #718096;
+  --bg:            #F7F8FF;
+  --white:         #FFFFFF;
+  --gradient:      linear-gradient(135deg, var(--purple) 0%, var(--pink) 100%);
+  --gradient-soft: linear-gradient(135deg, rgba(159,122,234,0.08) 0%, rgba(237,100,166,0.06) 100%);
+  --shadow-xs:     0 1px 4px rgba(159,122,234,0.08);
+  --shadow-sm:     0 4px 16px rgba(159,122,234,0.10);
+  --shadow-md:     0 8px 32px rgba(159,122,234,0.14);
+  --shadow-lg:     0 16px 56px rgba(159,122,234,0.18);
+  --r-sm:  10px;
+  --r-md:  16px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-full: 999px;
+  --nav-h: 72px;
+  --ease:  cubic-bezier(0.4, 0, 0.2, 1);
+  --t:     0.25s;
+}
+
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text-dark);
+  line-height: 1.65;
+  overflow-x: hidden;
+  padding-top: var(--nav-h);
+  -webkit-font-smoothing: antialiased;
+}
+img   { max-width: 100%; height: auto; display: block; }
+a     { color: inherit; text-decoration: none; }
+ul    { list-style: none; }
+button{ cursor: pointer; font-family: inherit; border: none; background: none; }
+
+/* ── Typography ────────────────────────────────────────── */
+h1, h2, h3, h4 { font-family: 'Poppins', system-ui, sans-serif; line-height: 1.2; color: var(--text-dark); }
+h1 { font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; }
+h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 700; }
+h3 { font-size: clamp(1.1rem, 2vw, 1.4rem); font-weight: 700; }
+p  { color: var(--text-mid); line-height: 1.75; }
+
+/* Gradient text utility */
+.grad { background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* ── Layout ─────────────────────────────────────────────── */
+.container { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+.section    { padding: 88px 0; }
+.section-sm { padding: 56px 0; }
+
+.section-label {
+  display: inline-block;
+  padding: 5px 16px;
+  background: var(--purple-light);
+  color: var(--purple-dark);
+  border-radius: var(--r-full);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 800;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.section-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 640px;
+  margin: 0 auto 48px;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 30px;
+  border-radius: var(--r-full);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t) var(--ease);
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(159,122,234,0.38);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(159,122,234,0.48); }
+.btn-outline {
+  background: transparent;
+  color: var(--purple-dark);
+  border: 2px solid var(--purple);
+}
+.btn-outline:hover { background: var(--purple-light); transform: translateY(-2px); }
+.btn-white {
+  background: #fff;
+  color: var(--purple-dark);
+  box-shadow: var(--shadow-sm);
+}
+.btn-white:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.btn-ghost-white {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.45);
+  backdrop-filter: blur(8px);
+}
+.btn-ghost-white:hover { background: rgba(255,255,255,0.25); transform: translateY(-2px); }
+.btn-sm { padding: 9px 20px; font-size: 0.82rem; }
+.btn-lg { padding: 16px 40px; font-size: 1rem; }
+
+/* ── Badge ─────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--r-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.badge-purple { background: var(--purple-light); color: var(--purple-dark); }
+.badge-pink   { background: var(--pink-light);   color: var(--pink); }
+.badge-blue   { background: var(--blue-light);   color: #2B6CB0; }
+.badge-green  { background: var(--green-light);  color: #276749; }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(159,122,234,0.12);
+  z-index: 1000;
+  transition: box-shadow var(--t) var(--ease);
+  display: flex;
+  align-items: center;
+}
+.navbar > .container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.navbar.scrolled { box-shadow: var(--shadow-sm); }
+.nav-inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  gap: 16px;
+}
+
+/* Left logo — clickable, goes to top of home */
+.nav-logo-link {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: opacity var(--t);
+}
+.nav-logo-link:hover { opacity: 0.85; }
+.nav-logo-link img { height: 48px; width: auto; object-fit: contain; }
+
+/* Center links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 auto;
+}
+.nav-links a {
+  position: relative;
+  padding: 8px 13px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-mid);
+  border-radius: var(--r-sm);
+  transition: color var(--t);
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: 3px; left: 13px; right: 13px;
+  height: 2px;
+  background: var(--gradient);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t) var(--ease);
+}
+.nav-links a:hover { color: var(--purple-dark); }
+.nav-links a:hover::after,
+.nav-links a.active::after { transform: scaleX(1); }
+.nav-links a.active { color: var(--purple-dark); font-weight: 600; }
+
+/* Right side — badges + join */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.nav-badge-img-link {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: opacity var(--t), transform var(--t);
+}
+.nav-badge-img-link:hover { opacity: 0.82; transform: translateY(-1px); }
+.nav-badge-img-link img { height: 42px; width: auto; object-fit: contain; }
+.nav-join {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 22px;
+  border-radius: var(--r-full);
+  background: var(--gradient);
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(159,122,234,0.38);
+  transition: all var(--t) var(--ease);
+  cursor: pointer;
+}
+.nav-join:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(159,122,234,0.48); }
+
+/* Hamburger */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; border-radius: 2px; background: var(--text-dark); transition: all var(--t) var(--ease); }
+
+/* Mobile menu */
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: var(--nav-h); left: 0; right: 0;
+  background: rgba(255,255,255,0.98);
+  backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(159,122,234,0.12);
+  padding: 20px 24px 28px;
+  z-index: 999;
+  box-shadow: var(--shadow-md);
+}
+.nav-mobile.open { display: block; }
+.nav-mobile a {
+  display: block;
+  padding: 13px 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-mid);
+  border-bottom: 1px solid rgba(159,122,234,0.1);
+  transition: color var(--t), padding-left var(--t);
+}
+.nav-mobile a:hover, .nav-mobile a.active { color: var(--purple-dark); padding-left: 6px; }
+.nav-mobile a:last-of-type { border-bottom: none; }
+.nav-mobile-footer { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; align-items: center; }
+
+/* ============================================================
+   HERO — HOME PAGE
+   ============================================================ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: linear-gradient(180deg, #EDE9FE 0%, #F5F3FF 50%, #FDF2F8 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 100px 24px 80px;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(159,122,234,0.12) 0%, transparent 70%);
+  top: -150px; right: -100px;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(237,100,166,0.09) 0%, transparent 70%);
+  bottom: -100px; left: -50px;
+  pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; max-width: 900px; }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 20px;
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(159,122,234,0.25);
+  border-radius: var(--r-full);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--purple-dark);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.hero-eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gradient); }
+.hero h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+}
+.hero h1 .grad { display: block; }
+.hero-tagline {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-weight: 400;
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  margin-bottom: 36px;
+}
+.hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* ── Scroll arrow ── */
+.scroll-arrow-wrap {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.scroll-arrow-label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+.scroll-arrow {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(159,122,234,0.4);
+  display: flex; align-items: center; justify-content: center;
+  animation: bounce 2.2s ease-in-out infinite;
+}
+.scroll-arrow svg { width: 14px; height: 14px; color: var(--purple); }
+@keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(7px);} }
+
+/* ============================================================
+   STATS BAR
+   ============================================================ */
+.stats-bar {
+  background: var(--white);
+  border-top: 1px solid rgba(159,122,234,0.1);
+  border-bottom: 1px solid rgba(159,122,234,0.1);
+  padding: 40px 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.stat-box {
+  padding: 24px 20px;
+  text-align: center;
+  border-right: 1px solid rgba(159,122,234,0.1);
+  transition: background var(--t);
+}
+.stat-box:last-child { border-right: none; }
+.stat-box:hover { background: var(--purple-xlight); }
+.stat-number {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 6px;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.stat-label { font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+
+/* ============================================================
+   AVENUES / PROGRAMME CARDS
+   ============================================================ */
+.avenues-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.avenue-card {
+  background: var(--white);
+  border: 1px solid rgba(159,122,234,0.12);
+  border-radius: var(--r-lg);
+  padding: 32px 26px;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--t) var(--ease);
+  position: relative;
+  overflow: hidden;
+}
+.avenue-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gradient);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t) var(--ease);
+}
+.avenue-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: rgba(159,122,234,0.25); }
+.avenue-card:hover::after { transform: scaleX(1); }
+.avenue-icon { font-size: 2.2rem; margin-bottom: 18px; }
+.avenue-card h3 { font-family: 'Poppins', sans-serif; margin-bottom: 10px; }
+.avenue-card p  { font-size: 0.9rem; }
+
+/* ============================================================
+   AUTO-SCROLLING EVENTS CAROUSEL
+   ============================================================ */
+.carousel-section { overflow: hidden; padding: 80px 0; background: var(--white); }
+.carousel-section .section-title { margin-bottom: 8px; }
+.carousel-section .section-subtitle { margin-bottom: 48px; }
+
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  /* Fade edges */
+  mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+/* The track auto-scrolls via CSS animation */
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  animation: scrollLeft 32s linear infinite;
+  width: max-content;
+}
+
+/* Pause on hover */
+.carousel-wrapper:hover .carousel-track { animation-play-state: paused; }
+
+@keyframes scrollLeft {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.carousel-card {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--white);
+  border: 1px solid rgba(159,122,234,0.12);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+.carousel-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+
+.carousel-poster {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.carousel-poster-placeholder {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+}
+.carousel-poster-placeholder.purple { background: linear-gradient(135deg, var(--purple), var(--purple-soft)); }
+.carousel-poster-placeholder.pink   { background: linear-gradient(135deg, var(--pink), #F687B3); }
+.carousel-poster-placeholder.blue   { background: linear-gradient(135deg, var(--blue), #63B3ED); }
+.carousel-poster-placeholder.green  { background: linear-gradient(135deg, var(--green), #68D391); }
+.carousel-poster-placeholder.yellow { background: linear-gradient(135deg, var(--yellow), #F6E05E); }
+
+.carousel-body { padding: 20px; }
+.carousel-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--r-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--purple-light);
+  color: var(--purple-dark);
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.04em;
+}
+.carousel-body h3 { font-family: 'Poppins', sans-serif; font-size: 1rem; margin-bottom: 6px; }
+.carousel-body p  { font-size: 0.85rem; color: var(--text-muted); }
+
+/* ============================================================
+   CTA BANNER
+   ============================================================ */
+.cta-banner {
+  background: var(--gradient);
+  border-radius: var(--r-xl);
+  padding: 72px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin: 0 24px;
+}
+.cta-banner::before { content: ''; position: absolute; width: 420px; height: 420px; border-radius: 50%; background: rgba(255,255,255,0.08); top: -160px; right: -80px; pointer-events: none; }
+.cta-banner::after  { content: ''; position: absolute; width: 320px; height: 320px; border-radius: 50%; background: rgba(255,255,255,0.06); bottom: -120px; left: -40px; pointer-events: none; }
+.cta-banner h2 { font-family: 'Poppins', sans-serif; color: #fff; font-size: clamp(1.8rem, 3.5vw, 2.8rem); margin-bottom: 14px; position: relative; }
+.cta-banner p  { color: rgba(255,255,255,0.88); margin-bottom: 32px; max-width: 520px; margin-left: auto; margin-right: auto; position: relative; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; position: relative; flex-wrap: wrap; }
+
+/* ============================================================
+   PAGE HERO (inner pages)
+   ============================================================ */
+.page-hero {
+  background: linear-gradient(135deg, var(--purple-light) 0%, var(--purple-xlight) 60%, var(--pink-light) 100%);
+  padding: 100px 24px 72px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before { content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(159,122,234,0.1) 0%, transparent 70%); top: -100px; right: -50px; pointer-events: none; }
+.page-hero h1 { font-family: 'Poppins', sans-serif; margin-bottom: 14px; }
+.page-hero .lead { font-size: 1.1rem; color: var(--text-mid); max-width: 560px; margin: 0 auto; }
+
+/* ============================================================
+   ABOUT PAGE
+   ============================================================ */
+.content-section { max-width: 1320px; margin: 0 auto; padding: 80px 24px; }
+.two-col { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: start; }
+.content-text h2 { font-family: 'Poppins', sans-serif; font-size: clamp(1.6rem, 3vw, 2.2rem); margin-bottom: 20px; }
+.content-text p   { margin-bottom: 18px; font-size: 1rem; }
+
+.values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; }
+.value-card {
+  background: var(--white);
+  padding: 32px 24px;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-xs);
+  border-top: 4px solid var(--purple);
+  transition: all var(--t) var(--ease);
+}
+.value-card:nth-child(2) { border-top-color: var(--pink); }
+.value-card:nth-child(3) { border-top-color: var(--blue); }
+.value-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+.value-icon { font-size: 2.2rem; margin-bottom: 16px; }
+.value-card h3 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; margin-bottom: 10px; }
+
+.mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.mv-card { background: var(--white); border: 1px solid rgba(159,122,234,0.12); border-radius: var(--r-lg); padding: 36px 30px; box-shadow: var(--shadow-xs); transition: all var(--t) var(--ease); }
+.mv-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.mv-card.mission { background: var(--gradient); border: none; }
+.mv-card.mission h3, .mv-card.mission p { color: rgba(255,255,255,0.92); }
+.mv-card .mv-icon { font-size: 2.2rem; margin-bottom: 18px; }
+.mv-card h3 { font-family: 'Poppins', sans-serif; font-size: 1.3rem; margin-bottom: 12px; }
+
+.impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.impact-card { background: var(--white); border: 1px solid rgba(159,122,234,0.12); border-radius: var(--r-lg); padding: 40px 28px; text-align: center; box-shadow: var(--shadow-xs); transition: all var(--t) var(--ease); }
+.impact-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.impact-num { font-family: 'Poppins', sans-serif; font-size: 3rem; font-weight: 800; background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 8px; }
+.impact-lbl { font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
+.impact-card p { font-size: 0.82rem; }
+
+/* ============================================================
+   EVENTS PAGE
+   ============================================================ */
+.events-container { max-width: 1320px; margin: 0 auto; padding: 64px 24px; }
+.filter-tabs { display: flex; gap: 10px; justify-content: center; margin-bottom: 48px; flex-wrap: wrap; }
+.filter-tab {
+  padding: 9px 24px;
+  background: var(--white);
+  border: 2px solid var(--purple);
+  color: var(--purple-dark);
+  border-radius: var(--r-full);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--t) var(--ease);
+}
+.filter-tab:hover, .filter-tab.active { background: var(--purple); color: #fff; box-shadow: 0 4px 14px rgba(159,122,234,0.35); }
+.events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+.event-card { background: var(--white); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-xs); border: 1px solid rgba(159,122,234,0.1); transition: all var(--t) var(--ease); }
+.event-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+.event-banner { height: 200px; display: flex; align-items: center; justify-content: center; font-family: 'Poppins', sans-serif; font-size: 3.5rem; font-weight: 800; color: #fff; position: relative; overflow: hidden; }
+.event-banner img { width: 100%; height: 100%; object-fit: cover; }
+.event-banner.purple { background: linear-gradient(135deg, var(--purple), var(--purple-soft)); }
+.event-banner.pink   { background: linear-gradient(135deg, var(--pink), #F687B3); }
+.event-banner.blue   { background: linear-gradient(135deg, var(--blue), #63B3ED); }
+.event-banner.green  { background: linear-gradient(135deg, var(--green), #68D391); }
+.event-date-chip {
+  position: absolute; top: 12px; right: 12px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  border-radius: var(--r-sm);
+  padding: 6px 12px;
+  text-align: center;
+  box-shadow: var(--shadow-xs);
+}
+.event-date-chip .day { font-family: 'Poppins', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--purple-dark); line-height: 1; }
+.event-date-chip .month { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.08em; }
+.event-body { padding: 22px; }
+.event-body h3 { font-family: 'Poppins', sans-serif; font-size: 1.05rem; margin-bottom: 8px; }
+.event-body p  { font-size: 0.875rem; margin-bottom: 16px; }
+.event-meta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.event-meta span { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+.event-meta svg { width: 13px; height: 13px; color: var(--purple); }
+.event-actions { display: flex; gap: 10px; }
+
+/* ============================================================
+   TEAM PAGE
+   ============================================================ */
+.team-container { max-width: 1320px; margin: 0 auto; padding: 72px 24px; }
+.team-section-header { text-align: center; margin-bottom: 48px; }
+.team-section-header .ri-year { font-size: 1rem; color: var(--purple); font-weight: 700; margin-bottom: 6px; font-family: 'Poppins', sans-serif; }
+.team-section-header h2 { font-family: 'Poppins', sans-serif; margin-bottom: 10px; }
+
+.exec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px; margin-bottom: 72px; }
+.team-card {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  padding: 36px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-xs);
+  border-top: 4px solid var(--purple);
+  border: 1px solid rgba(159,122,234,0.1);
+  border-top: 4px solid var(--purple);
+  transition: all var(--t) var(--ease);
+}
+.team-card:nth-child(2) { border-top-color: var(--pink); }
+.team-card:nth-child(3) { border-top-color: var(--blue); }
+.team-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-md); }
+.team-photo-wrap {
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(159,122,234,0.25);
+  background: linear-gradient(135deg, var(--purple), var(--purple-soft));
+  display: flex; align-items: center; justify-content: center;
+}
+.team-photo-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.team-photo-initials { font-family: 'Poppins', sans-serif; font-size: 3rem; font-weight: 800; color: #fff; }
+.team-card:nth-child(2) .team-photo-wrap { background: linear-gradient(135deg, var(--pink), #F687B3); box-shadow: 0 8px 24px rgba(237,100,166,0.25); }
+.team-card:nth-child(3) .team-photo-wrap { background: linear-gradient(135deg, var(--blue), #63B3ED); box-shadow: 0 8px 24px rgba(66,153,225,0.25); }
+.team-card h3 { font-family: 'Poppins', sans-serif; font-size: 1.3rem; margin-bottom: 6px; }
+.team-role { color: var(--purple); font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 0.95rem; margin-bottom: 18px; }
+.team-social { display: flex; gap: 10px; justify-content: center; }
+.team-social a {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--purple-light);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--purple-dark);
+  transition: all var(--t) var(--ease);
+}
+.team-social a:hover { background: var(--gradient); color: #fff; transform: translateY(-3px); }
+
+.board-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.board-card {
+  background: var(--white);
+  border-radius: var(--r-md);
+  padding: 24px 18px;
+  text-align: center;
+  box-shadow: var(--shadow-xs);
+  border: 1px solid rgba(159,122,234,0.1);
+  transition: all var(--t) var(--ease);
+}
+.board-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-sm); border-color: rgba(159,122,234,0.25); }
+.board-photo {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  margin: 0 auto 14px;
+  background: linear-gradient(135deg, var(--purple), var(--purple-soft));
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Poppins', sans-serif; font-size: 1.8rem; font-weight: 800; color: #fff;
+  overflow: hidden;
+}
+.board-photo img { width: 100%; height: 100%; object-fit: cover; }
+.board-card h4 { font-family: 'Poppins', sans-serif; font-size: 0.95rem; margin-bottom: 4px; }
+.board-role { font-size: 0.8rem; color: var(--purple); font-weight: 600; margin-bottom: 12px; }
+
+/* ============================================================
+   GALLERY PAGE
+   ============================================================ */
+.gallery-container { max-width: 1320px; margin: 0 auto; padding: 64px 24px; }
+.gallery-filter-bar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px; }
+.gal-filter-btn {
+  padding: 8px 20px;
+  border-radius: var(--r-full);
+  border: 1.5px solid rgba(159,122,234,0.3);
+  background: var(--white);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem; font-weight: 600;
+  color: var(--text-mid);
+  cursor: pointer;
+  transition: all var(--t) var(--ease);
+}
+.gal-filter-btn:hover  { border-color: var(--purple); color: var(--purple-dark); }
+.gal-filter-btn.active { background: var(--gradient); color: #fff; border-color: transparent; box-shadow: 0 4px 14px rgba(159,122,234,0.35); }
+.gallery-masonry { columns: 4; column-gap: 16px; }
+.gallery-item { break-inside: avoid; margin-bottom: 16px; border-radius: var(--r-md); overflow: hidden; position: relative; cursor: pointer; }
+.gallery-item img { width: 100%; display: block; transition: transform 0.5s var(--ease); }
+.gallery-item:hover img { transform: scale(1.06); }
+.gallery-item-overlay { position: absolute; inset: 0; background: rgba(159,122,234,0.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity var(--t); }
+.gallery-item:hover .gallery-item-overlay { opacity: 1; }
+.gallery-item-overlay svg { width: 32px; height: 32px; color: #fff; }
+.gallery-placeholder { background: linear-gradient(135deg, var(--purple-light), var(--pink-light)); aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; text-align: center; padding: 12px; }
+
+/* Lightbox */
+.lightbox { position: fixed; inset: 0; background: rgba(10,8,20,0.94); backdrop-filter: blur(16px); z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; padding: 20px; }
+.lightbox.open { opacity: 1; pointer-events: all; }
+.lightbox-content { position: relative; max-width: 90vw; max-height: 90vh; }
+.lightbox-content img { max-width: 90vw; max-height: 85vh; border-radius: var(--r-md); object-fit: contain; }
+.lightbox-close { position: absolute; top: -48px; right: 0; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.12); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: background var(--t); }
+.lightbox-close:hover { background: rgba(255,255,255,0.22); }
+.lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background var(--t); }
+.lightbox-nav:hover { background: rgba(255,255,255,0.22); }
+.lightbox-prev { left: -56px; }
+.lightbox-next { right: -56px; }
+
+/* ============================================================
+   CONTACT PAGE
+   ============================================================ */
+.contact-container { max-width: 1320px; margin: 0 auto; padding: 72px 24px; }
+.contact-layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: start; }
+.contact-form-card { background: var(--white); border: 1px solid rgba(159,122,234,0.12); border-radius: var(--r-xl); padding: 48px; box-shadow: var(--shadow-md); }
+.contact-form-card h3 { font-family: 'Poppins', sans-serif; font-size: 1.5rem; margin-bottom: 6px; }
+.contact-form-card > p { margin-bottom: 32px; }
+.form-group { margin-bottom: 20px; }
+.form-label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-mid); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; font-family: 'Poppins', sans-serif; }
+.form-label span { color: var(--pink); }
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--r-sm);
+  border: 1.5px solid rgba(159,122,234,0.2);
+  background: var(--bg);
+  color: var(--text-dark);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color var(--t), box-shadow var(--t);
+  outline: none;
+}
+.form-control:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(159,122,234,0.12); background: #fff; }
+.form-control::placeholder { color: rgba(113,128,150,0.7); }
+textarea.form-control { resize: vertical; min-height: 130px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-submit { width: 100%; padding: 14px; border-radius: var(--r-full); font-size: 0.95rem; font-family: 'Poppins', sans-serif; }
+.form-msg { padding: 12px 16px; border-radius: var(--r-sm); margin-top: 14px; font-size: 0.875rem; font-weight: 500; display: none; }
+.form-msg.success { background: var(--green-light); border: 1px solid rgba(72,187,120,0.3); color: #276749; display: block; }
+.form-msg.error   { background: #FFF5F5; border: 1px solid rgba(245,101,101,0.3); color: #C53030; display: block; }
+
+.contact-info { display: flex; flex-direction: column; gap: 16px; }
+.contact-info-card { background: var(--white); border: 1px solid rgba(159,122,234,0.12); border-radius: var(--r-lg); padding: 24px; box-shadow: var(--shadow-xs); transition: border-color var(--t); }
+.contact-info-card:hover { border-color: rgba(159,122,234,0.3); }
+.contact-info-card h4 { font-family: 'Poppins', sans-serif; font-size: 0.9rem; margin-bottom: 14px; }
+.contact-info-item { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
+.contact-info-item:last-child { margin-bottom: 0; }
+.contact-info-icon { width: 34px; height: 34px; border-radius: var(--r-sm); background: var(--purple-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.contact-info-icon svg { width: 16px; height: 16px; color: var(--purple-dark); }
+.contact-info-text strong { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; color: var(--text-dark); }
+.contact-info-text span { font-size: 0.78rem; color: var(--text-muted); }
+.social-pill { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.social-pill a { padding: 7px 14px; border-radius: var(--r-full); border: 1.5px solid rgba(159,122,234,0.2); font-size: 0.75rem; font-weight: 600; color: var(--text-mid); display: flex; align-items: center; gap: 5px; transition: all var(--t); font-family: 'Poppins', sans-serif; }
+.social-pill a:hover { background: var(--gradient); border-color: transparent; color: #fff; transform: translateY(-2px); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer { background: #0F172A; color: rgba(255,255,255,0.65); padding: 64px 0 0; }
+.footer-inner { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+.footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; }
+.footer-brand-logo { height: 52px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; }
+.footer-brand p { color: rgba(255,255,255,0.55); font-size: 0.875rem; line-height: 1.75; max-width: 260px; margin-bottom: 20px; }
+.footer-social-row { display: flex; gap: 10px; }
+.footer-social-btn {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.65);
+  transition: all var(--t) var(--ease);
+}
+.footer-social-btn:hover { background: var(--purple); border-color: var(--purple); color: #fff; transform: translateY(-3px); }
+.footer-social-btn svg { width: 17px; height: 17px; }
+.footer-col h5 { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.38); margin-bottom: 18px; }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 10px; }
+.footer-links a { color: rgba(255,255,255,0.6); font-size: 0.9rem; transition: color var(--t), padding-left var(--t); }
+.footer-links a:hover { color: rgba(255,255,255,0.95); padding-left: 4px; }
+.footer-contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.875rem; }
+.footer-contact-item svg { width: 16px; height: 16px; color: var(--purple-soft); flex-shrink: 0; margin-top: 2px; }
+.footer-contact-item a { color: rgba(255,255,255,0.6); transition: color var(--t); }
+.footer-contact-item a:hover { color: rgba(255,255,255,0.95); }
+.footer-contact-item span { color: rgba(255,255,255,0.6); }
+
+.footer-divider { height: 1px; background: rgba(255,255,255,0.08); }
+.footer-bottom-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; font-size: 0.8rem; color: rgba(255,255,255,0.35); flex-wrap: wrap; gap: 8px; }
+.footer-bottom-bar a { color: var(--purple-soft); font-weight: 600; transition: color var(--t); }
+.footer-bottom-bar a:hover { color: #fff; }
+.footer-end-row { padding: 20px 0 28px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.footer-passion { font-size: 0.8rem; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; }
+.footer-rche { height: 52px; width: auto; object-fit: contain; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .avenues-grid { grid-template-columns: repeat(2, 1fr); }
+  .two-col { grid-template-columns: 1fr; gap: 40px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+  .gallery-masonry { columns: 3; }
+  .contact-layout { grid-template-columns: 1fr; }
+  .mv-grid { grid-template-columns: 1fr; }
+  .impact-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  :root { --nav-h: 64px; }
+  .nav-links, .nav-right { display: none; }
+  .nav-hamburger { display: flex; }
+  .section { padding: 64px 0; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-box { border-right: none; border-bottom: 1px solid rgba(159,122,234,0.1); }
+  .stat-box:nth-child(odd) { border-right: 1px solid rgba(159,122,234,0.1); }
+  .stat-box:nth-last-child(-n+2) { border-bottom: none; }
+  .avenues-grid { grid-template-columns: 1fr; }
+  .values-grid { grid-template-columns: 1fr; }
+  .impact-grid { grid-template-columns: 1fr; }
+  .gallery-masonry { columns: 2; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .footer-bottom-bar { flex-direction: column; align-items: flex-start; }
+  .cta-banner { padding: 52px 28px; margin: 0 16px; }
+  .form-row { grid-template-columns: 1fr; }
+  .contact-form-card { padding: 28px; }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
+}
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .stat-box { border-right: none; }
+  .stat-box:nth-child(odd) { border-right: none; }
+  .hero-actions { flex-direction: column; align-items: center; }
+  .hero-actions .btn { width: 100%; justify-content: center; }
+  .exec-grid { grid-template-columns: 1fr; }
+  .board-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-masonry { columns: 2; }
+  .cta-actions { flex-direction: column; align-items: center; }
+  .nav-badge-img-link img { height: 32px; }
+}
+
+
+    /* ── Contact page specific styles ── */
+    .contact-wrap{max-width:1200px;margin:0 auto;padding:72px 24px}
+    .contact-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:start}
+    .c-card{background:#fff;border-radius:20px;padding:36px 32px;box-shadow:0 4px 20px rgba(0,0,0,0.07);border:1px solid rgba(159,122,234,0.12)}
+    .c-card h2{font-family:"Poppins",sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:28px;color:#1A202C}
+    .info-item{display:flex;gap:16px;margin-bottom:22px;align-items:flex-start}
+    .info-icon{width:44px;height:44px;border-radius:12px;background:#EDE9FE;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .info-icon svg{color:#7C3AED;width:20px;height:20px}
+    .info-content h3{font-family:"Poppins",sans-serif;font-size:0.95rem;font-weight:700;margin-bottom:3px;color:#1A202C}
+    .info-content p{font-size:0.875rem;color:#718096;line-height:1.6;margin:0}
+    .info-content a{color:#718096;transition:color 0.2s;text-decoration:none}
+    .info-content a:hover{color:#9F7AEA}
+    .social-row{display:flex;gap:10px;margin-top:24px}
+    .sc{width:42px;height:42px;border-radius:50%;background:#EDE9FE;display:flex;align-items:center;justify-content:center;color:#7C3AED;transition:all 0.2s;border:none;cursor:pointer;text-decoration:none}
+    .sc:hover{background:#9F7AEA;color:#fff;transform:translateY(-2px)}
+    .sc svg{width:18px;height:18px}
+    .form-subtitle{font-size:0.875rem;color:#718096;margin-bottom:28px;line-height:1.6}
+    .cf-success{display:none;background:#F0FFF4;border:1.5px solid #9AE6B4;border-radius:14px;padding:24px;text-align:center;margin-bottom:20px}
+    .cf-success h3{font-family:"Poppins",sans-serif;color:#276749;margin:10px 0 6px}
+    .cf-success p{color:#2F855A;font-size:0.9rem;margin:0}
+    .cf-error{display:none;background:#FFF5F5;border:1.5px solid #FEB2B2;border-radius:10px;padding:14px 18px;font-size:0.875rem;color:#C53030;margin-bottom:16px}
+    .cf-error a{color:#9B2C2C;font-weight:700}
+    .cf-g{margin-bottom:18px}
+    .cf-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .cf-lbl{display:block;font-family:"Poppins",sans-serif;font-size:0.78rem;font-weight:700;color:#4A5568;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:7px}
+    .cf-lbl .req{color:#ED64A6}
+    .cf-inp{width:100%;padding:12px 16px;border:1.5px solid #E2E8F0;border-radius:10px;font-family:"Inter",sans-serif;font-size:0.9rem;color:#1A202C;background:#F8F8FF;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+    .cf-inp:focus{border-color:#9F7AEA;box-shadow:0 0 0 3px rgba(159,122,234,0.12);background:#fff}
+    .cf-inp::placeholder{color:#A0AEC0}
+    textarea.cf-inp{resize:vertical;min-height:130px}
+    #cfSubmit{display:block;width:100%;padding:16px 24px;margin-top:10px;border:none;border-radius:50px;background-image:linear-gradient(135deg,#9F7AEA 0%,#ED64A6 100%);color:#ffffff;font-family:"Poppins",sans-serif;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:0.02em;box-shadow:0 4px 18px rgba(159,122,234,0.45);transition:transform 0.2s ease,box-shadow 0.2s ease,opacity 0.2s ease}
+    #cfSubmit:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(159,122,234,0.58)}
+    #cfSubmit:active{transform:translateY(-1px)}
+    #cfSubmit:disabled{opacity:0.65;cursor:not-allowed;transform:none;box-shadow:none}
+    .join-section{background-image:linear-gradient(135deg,#9F7AEA,#ED64A6);border-radius:24px;padding:64px 48px;text-align:center;margin-top:56px;position:relative;overflow:hidden;box-shadow:0 16px 48px rgba(159,122,234,0.28)}
+    .join-section::before{content:"";position:absolute;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,0.08);top:-120px;right:-60px;pointer-events:none}
+    .join-section h2{font-family:"Poppins",sans-serif;color:#fff;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:12px;position:relative}
+    .join-section>p{color:rgba(255,255,255,0.88);max-width:560px;margin:0 auto 36px;position:relative}
+    .join-benefits{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:1000px;margin:0 auto 36px;position:relative}
+    .benefit-card{background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);border-radius:16px;padding:24px 20px;text-align:left}
+    .benefit-card h3{font-family:"Poppins",sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:8px}
+    .benefit-card p{font-size:0.875rem;color:rgba(255,255,255,0.85);line-height:1.6;margin:0}
+    .join-cta-btn{display:inline-block;padding:14px 36px;background:#fff;color:#7C3AED;border-radius:50px;font-family:"Poppins",sans-serif;font-size:1rem;font-weight:700;transition:all 0.2s;position:relative;box-shadow:0 4px 16px rgba(0,0,0,0.12);text-decoration:none}
+    .join-cta-btn:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.18)}
+    @media(max-width:900px){.contact-grid{grid-template-columns:1fr}}
+    @media(max-width:540px){.cf-row{grid-template-columns:1fr}.c-card{padding:24px 20px}.join-section{padding:48px 24px}}
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo-link" aria-label="Home">
+        <img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract Club of Hyderabad East">
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="team.html">Team</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="https://rotaract3150.in" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="District_3150_Logo.png" alt="District 3150 Rotaract"></a>
+        <a href="https://www.rotary.org" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="Rotary_Logo.png" alt="Rotary International"></a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="joinLinkNav" class="nav-join">Join The Club</a>
+      </div>
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+<div class="nav-mobile" id="navMobile">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="events.html">Events</a>
+  <a href="team.html">Team</a><a href="gallery.html">Gallery</a><a href="contact.html" class="active">Contact</a>
+  <div class="nav-mobile-footer">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="joinLinkMobile" class="btn btn-primary btn-sm">Join The Club</a>
+  </div>
+</div>
+
+<main>
+  <section class="page-hero">
+    <span class="section-label">Get In Touch</span>
+    <h1>Get in <span class="grad">Touch</span></h1>
+    <p class="lead">Have a question, partnership idea, or want to join us? We'd love to hear from you.</p>
+  </section>
+
+  <div class="contact-wrap">
+    <div class="contact-grid">
+
+      <!-- Info Card -->
+      <div class="c-card">
+        <h2>Contact Information</h2>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          <div class="info-content"><h3>Email</h3><p><a href="mailto:rchyderabadeast@gmail.com" id="ftEmail">rchyderabadeast@gmail.com</a></p></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.79 19.79 0 0 1 4.69 12 19.79 19.79 0 0 1 1.57 3.41 2 2 0 0 1 3.54 1h3a2 2 0 0 1 2 1.72A12.84 12.84 0 0 0 9.7 5.53a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.81-.81a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="info-content"><h3>Phone</h3><p><a href="tel:+919951143775" id="ftPhone">+91 99511 43775</a></p><p style="font-size:0.78rem;margin-top:2px">Mon&#8211;Sat, 10 AM &#8211; 6 PM</p></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="info-content"><h3>Location</h3><p>Hyderabad East, Telangana, India</p></div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <div class="info-content"><h3>Meeting Schedule</h3><p>Every 2nd &amp; 4th Saturday<br>6:00 PM &#8211; 8:00 PM</p></div>
+        </div>
+        <h3 style="font-family:'Poppins',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:12px;color:#1A202C">Follow Us</h3>
+        <div class="social-row">
+          <a href="https://www.instagram.com/rchyderabadeast" target="_blank" rel="noopener" id="ftInstagram" class="sc" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="https://www.linkedin.com/company/rotaract-club-of-hyderabad-east/" target="_blank" rel="noopener" id="ftLinkedin" class="sc" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        </div>
+      </div>
+
+      <!-- Form Card -->
+      <div class="c-card">
+        <h2>Send Us a Message</h2>
+        <p class="form-subtitle">Your message goes directly to <strong>rchyderabadeast@gmail.com</strong>. We reply within 48 hours.</p>
+        <div class="cf-success" id="cfSuccess">
+          <div style="font-size:2.2rem">&#x2705;</div>
+          <h3>Message Sent!</h3>
+          <p>Thank you for reaching out. We'll reply within 48 hours.</p>
+        </div>
+        <div class="cf-error" id="cfError"></div>
+        <form id="contactForm" novalidate>
+          <div class="cf-row">
+            <div class="cf-g">
+              <label class="cf-lbl" for="cf-name">Full Name <span class="req">*</span></label>
+              <input class="cf-inp" type="text" id="cf-name" name="user_name" placeholder="Your full name" required autocomplete="name">
+            </div>
+            <div class="cf-g">
+              <label class="cf-lbl" for="cf-email">Email <span class="req">*</span></label>
+              <input class="cf-inp" type="email" id="cf-email" name="user_email" placeholder="you@email.com" required autocomplete="email">
+            </div>
+          </div>
+          <div class="cf-row">
+            <div class="cf-g">
+              <label class="cf-lbl" for="cf-phone">Phone</label>
+              <input class="cf-inp" type="tel" id="cf-phone" name="user_phone" placeholder="+91 XXXXX XXXXX" autocomplete="tel">
+            </div>
+            <div class="cf-g">
+              <label class="cf-lbl" for="cf-subject">Subject <span class="req">*</span></label>
+              <select class="cf-inp" id="cf-subject" name="subject" required style="cursor:pointer">
+                <option value="">Select a subject&#x2026;</option>
+                <option>General Inquiry</option>
+                <option>Join the Club</option>
+                <option>Partnership Opportunity</option>
+                <option>Volunteer Interest</option>
+                <option>Sponsorship</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="cf-g">
+            <label class="cf-lbl" for="cf-message">Message <span class="req">*</span></label>
+            <textarea class="cf-inp" id="cf-message" name="message" placeholder="Tell us how we can help&#x2026;" required></textarea>
+          </div>
+          <button type="submit" id="cfSubmit">Send Message &#x2192;</button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Join section -->
+    <div class="join-section">
+      <h2>Ready to Make a Difference?</h2>
+      <p>Join our community of young leaders dedicated to service, fellowship, and professional development.</p>
+      <div class="join-benefits">
+        <div class="benefit-card"><h3>&#x1F31F; Leadership Development</h3><p>Build leadership skills through hands-on experience and mentorship.</p></div>
+        <div class="benefit-card"><h3>&#x1F91D; Network Building</h3><p>Connect with like-minded young professionals across Hyderabad.</p></div>
+        <div class="benefit-card"><h3>&#x1F4BC; Professional Growth</h3><p>Access workshops, training sessions, and career opportunities.</p></div>
+        <div class="benefit-card"><h3>&#x1F30D; Global Impact</h3><p>Be part of a worldwide movement creating positive change.</p></div>
+      </div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="ftJoinLink" class="join-cta-btn">Join Rotaract Today &#x2192;</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html"><img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract HE" class="footer-brand-logo" style="opacity:0.9;"></a>
+        <p>Empowering young leaders through service, fellowship, and professional development since 2007.</p>
+        <div class="footer-social-row">
+          <a href="https://www.instagram.com/rchyderabadeast" target="_blank" rel="noopener" class="footer-social-btn" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg></a>
+          <a href="https://www.linkedin.com/company/rotaract-club-of-hyderabad-east/" target="_blank" rel="noopener" class="footer-social-btn" aria-label="LinkedIn"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="currentColor" viewBox="0 0 16 16"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h5>Quick Links</h5><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="events.html">Events</a></li><li><a href="team.html">Our Team</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div class="footer-col"><h5>Get Involved</h5><ul class="footer-links"><li><a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank">Join the Club</a></li><li><a href="#">Volunteer</a></li><li><a href="contact.html">Partner With Us</a></li><li><a href="#">Donate</a></li></ul></div>
+      <div class="footer-col"><h5>Contact</h5>
+        <div class="footer-contact-item"><svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/></svg><a href="mailto:rchyderabadeast@gmail.com">rchyderabadeast@gmail.com</a></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/></svg><a href="tel:+919951143775">+91 99511 43775</a></div>
+        <div class="footer-contact-item"><svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg><span>Hyderabad, Telangana</span></div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom-bar">
+      <span>&copy; 2026 Rotaract Club of Hyderabad East. All rights reserved.</span>
+      <span>Proudly part of <a href="https://rotaract3150.in" target="_blank" rel="noopener">Rotaract District 3150</a></span>
+    </div>
+    <div class="footer-end-row">
+      <span class="footer-passion">Made with passion for service</span>
+      <img src="RCHE4EVER.png" alt="#RCHE4EVR" class="footer-rche">
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+const EMAILJS_PUBLIC_KEY="YOUR_PUBLIC_KEY",EMAILJS_SERVICE_ID="YOUR_SERVICE_ID",EMAILJS_TEMPLATE_ID="YOUR_TEMPLATE_ID";
+try{emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});}catch(e){}
+document.getElementById("contactForm").addEventListener("submit",async function(e){
+  e.preventDefault();
+  const btn=document.getElementById("cfSubmit"),success=document.getElementById("cfSuccess"),errEl=document.getElementById("cfError");
+  const name=document.getElementById("cf-name").value.trim(),email=document.getElementById("cf-email").value.trim(),subject=document.getElementById("cf-subject").value,message=document.getElementById("cf-message").value.trim(),phone=document.getElementById("cf-phone").value.trim();
+  success.style.display="none";errEl.style.display="none";
+  if(!name||!email||!subject||!message){errEl.textContent="\u26a0\ufe0f Please fill in all required fields.";errEl.style.display="block";errEl.scrollIntoView({behavior:"smooth",block:"nearest"});return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEl.textContent="\u26a0\ufe0f Please enter a valid email address.";errEl.style.display="block";return;}
+  btn.disabled=true;btn.textContent="Sending\u2026";
+  try{
+    if(EMAILJS_PUBLIC_KEY==="YOUR_PUBLIC_KEY"){
+      const body=encodeURIComponent("Name: "+name+"\nEmail: "+email+"\nPhone: "+(phone||"\u2014")+"\nSubject: "+subject+"\n\nMessage:\n"+message);
+      window.open("mailto:rchyderabadeast@gmail.com?subject="+encodeURIComponent("Website Message: "+subject)+"&body="+body,"_blank");
+      this.reset();this.style.display="none";success.style.display="block";success.scrollIntoView({behavior:"smooth",block:"nearest"});
+    }else{
+      await emailjs.sendForm(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,this);
+      this.reset();this.style.display="none";success.style.display="block";success.scrollIntoView({behavior:"smooth",block:"nearest"});
+    }
+  }catch(err){errEl.innerHTML="\u26a0\ufe0f Could not send. Please email us at <a href=\"mailto:rchyderabadeast@gmail.com\">rchyderabadeast@gmail.com</a>";errEl.style.display="block";}
+  finally{btn.disabled=false;btn.textContent="Send Message \u2192";}
+});
+</script>
+<script>
+const navbar=document.getElementById("navbar");
+window.addEventListener("scroll",()=>navbar.classList.toggle("scrolled",window.scrollY>20),{passive:true});
+const ham=document.getElementById("hamburger"),mob=document.getElementById("navMobile");
+ham.addEventListener("click",()=>{const open=mob.classList.toggle("open"),sp=ham.querySelectorAll("span");if(open){sp[0].style.transform="rotate(45deg) translate(5px,5px)";sp[1].style.opacity="0";sp[2].style.transform="rotate(-45deg) translate(5px,-5px)";}else{sp.forEach(s=>{s.style.transform="";s.style.opacity="";})}});
+document.addEventListener("click",e=>{if(!ham.contains(e.target)&&!mob.contains(e.target)){mob.classList.remove("open");ham.querySelectorAll("span").forEach(s=>{s.style.transform="";s.style.opacity="";})}});
+document.body.style.opacity="0";document.body.style.transition="opacity 0.35s ease";
+window.addEventListener("load",()=>{document.body.style.opacity="1";});
+</script>
+<script type="module">
+import { db } from "./firebase-config.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const DEFAULT_JOIN = 'https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform';
+(async () => {
+  try {
+    const snap = await getDoc(doc(db, 'settings', 'global'));
+    const s = snap.exists() ? snap.data() : {};
+    const joinUrl = s.joinform || DEFAULT_JOIN;
+    ['joinLinkNav','joinLinkMobile','ftJoinLink'].forEach(id => { const el=document.getElementById(id); if(el) el.href=joinUrl; });
+    if(s.instagram){const el=document.getElementById('ftInstagram');if(el)el.href=s.instagram;}
+    if(s.linkedin) {const el=document.getElementById('ftLinkedin'); if(el)el.href=s.linkedin;}
+    if(s.email)    {const el=document.getElementById('ftEmail');    if(el){el.href='mailto:'+s.email;el.textContent=s.email;}}
+    if(s.phone)    {const el=document.getElementById('ftPhone');    if(el){el.href='tel:'+s.phone.replace(/ /g,'');el.textContent=s.phone;}}
+  } catch(e) {}
+})();
+</script>
+</body>
+</html>
