@@ -1,0 +1,69 @@
+name: Deploy Website to cPanel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-deployment
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to public_html
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v4
+
+      - name: Create deployment package
+        run: |
+          tar \
+            --exclude=".git" \
+            --exclude=".github" \
+            --exclude=".cpanel.yml" \
+            --exclude="deploy.tar.gz" \
+            -czf deploy.tar.gz .
+
+      - name: Upload deployment package
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USERNAME }}
+          port: ${{ secrets.CPANEL_PORT }}
+          key: ${{ secrets.CPANEL_SSH_KEY }}
+          passphrase: ${{ secrets.CPANEL_SSH_PASSPHRASE }}
+          source: "deploy.tar.gz"
+          target: "/home/rotaract/"
+
+      - name: Deploy website
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.CPANEL_HOST }}
+          username: ${{ secrets.CPANEL_USERNAME }}
+          port: ${{ secrets.CPANEL_PORT }}
+          key: ${{ secrets.CPANEL_SSH_KEY }}
+          passphrase: ${{ secrets.CPANEL_SSH_PASSPHRASE }}
+          script: |
+            set -e
+
+            STAGING="/home/rotaract/deployment_staging"
+            LIVE="/home/rotaract/public_html"
+
+            rm -rf "$STAGING"
+            mkdir -p "$STAGING"
+
+            tar -xzf /home/rotaract/deploy.tar.gz -C "$STAGING"
+
+            cp -a "$STAGING"/. "$LIVE"/
+
+            rm -rf "$STAGING"
+            rm -f /home/rotaract/deploy.tar.gz
+
+            echo "Website deployment completed successfully."
