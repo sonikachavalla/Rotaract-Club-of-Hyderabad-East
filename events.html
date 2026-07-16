@@ -325,30 +325,20 @@ const COLORS = ['c1','c2','c3','c4','c5'];
 // ── State ──────────────────────────────────────────────────────
 let _events = [], _pdfs = {}, _settings = {}, _pdfYears = [];
 
-// ── Load all data from Firestore ───────────────────────────────
 async function loadAllData() {
-  try {
-    const [evSnap, settSnap, pdfSnap, yearsSnap] = await Promise.all([
-      getDocs(collection(db, 'events')),
-      getDoc(doc(db, 'settings', 'global')),
-      getDoc(doc(db, 'settings', 'pdfs')),
-      getDoc(doc(db, 'pdfYears', 'list'))
-    ]);
-    _events   = evSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    _settings = settSnap.exists()  ? settSnap.data()        : {};
-    _pdfs     = pdfSnap.exists()   ? pdfSnap.data()         : {};
-    _pdfYears = yearsSnap.exists() ? (yearsSnap.data().years || []) : ['2024-2025','2023-2024','2022-2023'];
-  } catch(e) {
-    console.warn('Firestore load error:', e);
-    // Use built-in defaults so page still works without data
-    _events = [
-      {id:'e1',title:'Annual Installation Ceremony',date:'2025-07-15',time:'6:00 PM',location:'Club Venue, Hyderabad',category:'Club Service',status:'past',desc:'Grand installation of the 2025-26 board.'},
-      {id:'e2',title:'Blood Donation Drive',date:'2026-01-26',time:'10:00 AM',location:'Multiple Locations',category:'Community Service',status:'past',desc:'Collected 150+ units of blood.'},
-      {id:'e3',title:'Youth Leadership Summit',date:'2026-03-22',time:'9:00 AM',location:'Virtual (Zoom)',category:'Professional Development',status:'upcoming',desc:'Interactive leadership workshop.',link:'#'}
-    ];
-  }
-}
+    try {
+        const response = await fetch("api/getEvents.php");
+        _events = await response.json();
 
+        _settings = {};
+        _pdfs = {};
+        _pdfYears = ['2025-2026','2024-2025','2023-2024'];
+
+    } catch (e) {
+        console.error(e);
+        _events = [];
+    }
+}
 // ── Apply settings ─────────────────────────────────────────────
 function applySettings() {
   const s = _settings;

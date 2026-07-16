@@ -9,8 +9,18 @@ $events = [];
 
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $events[] = $row;
-    }
+    $events[] = [
+        "id" => $row["id"],
+        "title" => $row["title"],
+        "desc" => $row["description"],
+        "category" => $row["category"],
+        "date" => $row["event_date"],
+        "time" => $row["event_time"],
+        "location" => $row["location"],
+        "status" => strtolower($row["status"]),
+        "poster" => $row["poster"]
+    ];
+}
 }
 
 header("Content-Type: application/json");
