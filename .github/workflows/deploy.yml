@@ -32,10 +32,10 @@ jobs:
           protocol: ftps
           security: loose
           local-dir: ./
-          server-dir: public_html/
+          server-dir: ./
           exclude: |
-            **/.git*
-            **/.github/**
-            **/node_modules/**
-            README.md
-            .gitignore
+             **/.git/**
+             **/.github/**
+             **/node_modules/**
+             **/.gitignore
+             **/README.md
