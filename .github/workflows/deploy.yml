@@ -19,53 +19,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download repository
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create deployment package
-        run: |
-          tar \
-            --exclude=".git" \
-            --exclude=".github" \
-            --exclude=".cpanel.yml" \
-            -czf /tmp/deploy.tar.gz .
-
-          mv /tmp/deploy.tar.gz deploy.tar.gz
-
-      - name: Upload deployment package
-        uses: appleboy/scp-action@v1
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: ${{ secrets.CPANEL_HOST }}
-          username: ${{ secrets.CPANEL_USERNAME }}
-          port: ${{ secrets.CPANEL_PORT }}
-          key: ${{ secrets.CPANEL_SSH_KEY }}
-          passphrase: ${{ secrets.CPANEL_SSH_PASSPHRASE }}
-          source: deploy.tar.gz
-          target: /home/rotaract/
-
-      - name: Deploy website
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.CPANEL_HOST }}
-          username: ${{ secrets.CPANEL_USERNAME }}
-          port: ${{ secrets.CPANEL_PORT }}
-          key: ${{ secrets.CPANEL_SSH_KEY }}
-          passphrase: ${{ secrets.CPANEL_SSH_PASSPHRASE }}
-          script: |
-            set -e
-
-            STAGING="/home/rotaract/deployment_staging"
-            LIVE="/home/rotaract/public_html"
-            ARCHIVE="/home/rotaract/deploy.tar.gz"
-
-            rm -rf "$STAGING"
-            mkdir -p "$STAGING"
-
-            tar -xzf "$ARCHIVE" -C "$STAGING"
-
-            cp -a "$STAGING"/. "$LIVE"/
-
-            rm -rf "$STAGING"
-            rm -f "$ARCHIVE"
-
-            echo "Website deployment completed successfully."
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT }}
+          protocol: ftps
+          security: strict
+          local-dir: ./
+          server-dir: public_html/
+          exclude: |
+            **/.git*
+            **/.github/**
+            **/node_modules/**
+            README.md
+            .gitignore
