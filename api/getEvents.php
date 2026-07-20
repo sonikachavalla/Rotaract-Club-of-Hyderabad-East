@@ -2,29 +2,37 @@
 
 require "db.php";
 
-$sql = "SELECT * FROM events ORDER BY event_date ASC";
+header("Content-Type: application/json");
+
+$sql = "SELECT * FROM events ORDER BY event_date DESC";
+
 $result = $conn->query($sql);
 
 $events = [];
 
-if ($result) {
-    while ($row = $result->fetch_assoc()) {
+while ($row = $result->fetch_assoc()) {
+
+    $row["status"] = ($row["status"] == "Completed") ? "past" : "upcoming";
+
     $events[] = [
         "id" => $row["id"],
         "title" => $row["title"],
         "desc" => $row["description"],
-        "category" => $row["category"],
         "date" => $row["event_date"],
         "time" => $row["event_time"],
         "location" => $row["location"],
-        "status" => strtolower($row["status"]),
-        "poster" => $row["poster"]
+        "category" => $row["category"],
+        "status" => $row["status"],
+        "poster" => $row["poster"],
+        "link" => "",
+        "ri_year" => $row["ri_year"]
     ];
 }
-}
 
-header("Content-Type: application/json");
-echo json_encode($events);
+echo json_encode([
+    "success" => true,
+    "events" => $events
+]);
 
 $conn->close();
 
