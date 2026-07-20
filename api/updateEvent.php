@@ -6,7 +6,7 @@ header("Content-Type: application/json");
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (!$data || !isset($data["id"])) {
+if (!$data || empty($data["id"])) {
     echo json_encode([
         "success" => false,
         "message" => "Invalid request"
@@ -14,16 +14,16 @@ if (!$data || !isset($data["id"])) {
     exit;
 }
 
-$id          = intval($data["id"]);
-$title       = $data["title"] ?? "";
-$description = $data["description"] ?? "";
-$category    = $data["category"] ?? "";
+$id          = (int)$data["id"];
+$title       = trim($data["title"] ?? "");
+$description = trim($data["description"] ?? "");
+$category    = trim($data["category"] ?? "");
 $date        = $data["event_date"] ?? "";
-$time        = $data["event_time"] ?? "";
-$location    = $data["location"] ?? "";
-$status      = $data["status"] ?? "Upcoming";
-$poster      = $data["poster"] ?? "";
-$ri_year     = $data["ri_year"] ?? "";
+$time        = !empty($data["event_time"]) ? $data["event_time"] : null;
+$location    = trim($data["location"] ?? "");
+$status      = ($data["status"] ?? "upcoming") === "past" ? "Completed" : "Upcoming";
+$poster      = $data["poster"] ?? null;
+$ri_year     = $data["ri_year"] ?? null;
 
 $sql = "UPDATE events SET
 title=?,
@@ -54,18 +54,12 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
-
-    echo json_encode([
-        "success" => true
-    ]);
-
+    echo json_encode(["success" => true]);
 } else {
-
     echo json_encode([
         "success" => false,
         "message" => $stmt->error
     ]);
-
 }
 
 $stmt->close();

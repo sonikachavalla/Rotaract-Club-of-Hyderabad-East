@@ -823,86 +823,207 @@ function clearPoster() {
 }
 
 async function openEventModal(id = null) {
-  editEventId = id; _posterFile = null;
-  const { db, doc, getDoc } = fb();
-  let ev = null;
-  if (id) {
-    const snap = await getDoc(doc(db, 'events', id));
-    if (snap.exists()) ev = { id: snap.id, ...snap.data() };
-  }
-  document.getElementById('eventModalTitle').textContent = ev ? 'Edit Event' : 'Add Event';
-  document.getElementById('ev-id').value       = ev?.id       || '';
-  document.getElementById('ev-title').value    = ev?.title    || '';
-  document.getElementById('ev-date').value     = ev?.date     || '';
-  document.getElementById('ev-time').value     = ev?.time     || '';
-  document.getElementById('ev-location').value = ev?.location || '';
-  document.getElementById('ev-category').value = ev?.category || 'Community Service';
-  document.getElementById('ev-status').value   = ev?.status   || 'upcoming';
-  document.getElementById('ev-desc').value     = ev?.desc     || '';
-  document.getElementById('ev-link').value     = ev?.link     || '';
-  const poster = ev?.poster || '';
-  document.getElementById('ev-poster').value = poster;
-  if (poster) {
-    document.getElementById('ev-poster-img').src = poster;
-    document.getElementById('ev-poster-preview').style.display = 'block';
-    document.getElementById('ev-poster-clear').style.display = 'inline-flex';
-  } else { clearPoster(); }
-  openModal('eventModal');
+
+    editEventId = id;
+    _posterFile = null;
+
+    let ev = null;
+
+    if (id) {
+
+        const response = await fetch('../api/getEvents.php');
+        const result = await response.json();
+
+        ev = result.events.find(e => Number(e.id) === Number(id));
+
+    }
+
+    document.getElementById('eventModalTitle').textContent =
+        ev ? 'Edit Event' : 'Add Event';
+
+    document.getElementById('ev-id').value = ev?.id || '';
+    document.getElementById('ev-title').value = ev?.title || '';
+    document.getElementById('ev-date').value = ev?.date || '';
+    document.getElementById('ev-time').value = ev?.time || '';
+    document.getElementById('ev-location').value = ev?.location || '';
+    document.getElementById('ev-category').value = ev?.category || 'Community Service';
+    document.getElementById('ev-status').value = ev?.status || 'upcoming';
+    document.getElementById('ev-desc').value = ev?.desc || '';
+    document.getElementById('ev-link').value = ev?.link || '';
+
+    document.getElementById('ev-poster').value = ev?.poster || '';
+
+    if (ev?.poster) {
+
+        document.getElementById('ev-poster-img').src = "../" + ev.poster;
+        document.getElementById('ev-poster-preview').style.display = 'block';
+        document.getElementById('ev-poster-clear').style.display = 'inline-flex';
+
+    } else {
+
+        clearPoster();
+
+    }
+
+    openModal('eventModal');
+
 }
 
 async function saveEvent() {
-  const title = document.getElementById('ev-title').value.trim();
-  const date  = document.getElementById('ev-date').value;
-  if (!title || !date) { toast('Title and date are required.', 'err'); return; }
-  const { db, doc, setDoc, updateDoc, serverTimestamp, sRef, stor } = fb();
-  const btn = document.getElementById('saveEventBtn');
-  btn.disabled = true; btn.textContent = 'Saving…';
-  try {
-    const id  = editEventId || ('e' + Date.now());
-    let poster = document.getElementById('ev-poster').value || '';
-    // Upload new poster to Firebase Storage if a new file was selected
-    if (_posterFile) {
-      poster = await uploadImage(_posterFile, `events/${id}/poster.jpg`, 800, 600, 0.85);
+
+    const title = document.getElementById('ev-title').value.trim();
+    const date = document.getElementById('ev-date').value;
+
+    if (!title || !date) {
+        toast('Title and date are required.', 'err');
+        return;
     }
-    const evData = {
-      id, title, date,
-      time:     document.getElementById('ev-time').value.trim(),
-      location: document.getElementById('ev-location').value.trim(),
-      category: document.getElementById('ev-category').value,
-      status:   document.getElementById('ev-status').value,
-      desc:     document.getElementById('ev-desc').value.trim(),
-      link:     document.getElementById('ev-link').value.trim(),
-      poster,
-      updatedAt: serverTimestamp()
-    };
-    await setDoc(doc(db, 'events', id), evData, { merge: true });
-    closeModal('eventModal');
-    await Promise.all([renderEventsTable(), renderDashboard(), logActivity(editEventId ? `Event updated: ${title}` : `Event added: ${title}`)]);
-    toast(editEventId ? 'Event updated ✓' : 'Event added ✓');
-  } catch (e) { toast('Save failed: ' + e.message, 'err'); }
-  finally { btn.disabled = false; btn.textContent = 'Save Event'; }
+
+    const btn = document.getElementById('saveEventBtn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    try {
+
+        let poster = document.getElementById('ev-poster').value || '';
+
+        if (_posterFile) {
+
+            const formData = new FormData();
+            formData.append('image', _posterFile);
+
+            const upload = await fetch('../api/uploadEventImage.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const uploadResult = await upload.json();
+
+            if (!uploadResult.success) {
+                throw new Error(uploadResult.message);
+            }
+
+            poster = uploadResult.url;
+        }
+
+        const payload = {
+            id: editEventId,
+            title: title,
+            description: document.getElementById('ev-desc').value.trim(),
+            category: document.getElementById('ev-category').value,
+            event_date: date,
+            event_time: document.getElementById('ev-time').value,
+            location: document.getElementById('ev-location').value.trim(),
+            status: document.getElementById('ev-status').value,
+            poster: poster,
+            ri_year: ''
+        };
+
+        const api = editEventId
+            ? '../api/updateEvent.php'
+            : '../api/addEvent.php';
+
+        const response = await fetch(api, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            throw new Error(result.message);
+        }
+
+        closeModal('eventModal');
+
+        await renderEventsTable();
+
+        toast(editEventId ? 'Event updated ✓' : 'Event added ✓');
+
+    } catch (e) {
+
+        toast(e.message, 'err');
+
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Save Event';
+
 }
 
 async function renderEventsTable() {
-  const { db, collection, getDocs } = fb();
-  const snap   = await getDocs(collection(db, 'events'));
-  const events = snap.docs.map(d => ({ _docId: d.id, ...d.data() }));
-  const tbody  = document.getElementById('eventsTableBody');
-  if (!events.length) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:32px;color:#a0aec0">No events yet. Click "+ Add Event".</td></tr>';
-    return;
-  }
-  tbody.innerHTML = events.sort((a, b) => (b.date || '').localeCompare(a.date || '')).map(ev => `
-    <tr>
-      <td><strong>${ev.title}</strong><br><span style="font-size:0.78rem;color:#718096">${ev.desc || ''}</span></td>
-      <td>${ev.date || '—'}</td>
-      <td><span class="badge badge-purple">${ev.category}</span></td>
-      <td><span class="badge ${ev.status === 'upcoming' ? 'badge-green' : 'badge-pink'}">${ev.status}</span></td>
-      <td><div class="btn-group">
-        <button class="btn-icon" onclick="openEventModal('${ev._docId}')" title="Edit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-        <button class="btn-icon del" onclick="deleteItem('events','${ev._docId}','${ev.title}')" title="Delete"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
-      </div></td>
-    </tr>`).join('');
+
+    const response = await fetch('../api/getEvents.php');
+    const result = await response.json();
+
+    const tbody = document.getElementById('eventsTableBody');
+
+    if (!result.success || result.events.length === 0) {
+
+        tbody.innerHTML = `
+        <tr>
+            <td colspan="5" style="text-align:center;padding:32px;color:#a0aec0">
+                No events yet.
+            </td>
+        </tr>`;
+
+        return;
+    }
+
+    tbody.innerHTML = result.events.map(ev => `
+
+        <tr>
+
+            <td>
+                <strong>${ev.title}</strong><br>
+                <span style="font-size:0.78rem;color:#718096">
+                    ${ev.desc ?? ''}
+                </span>
+            </td>
+
+            <td>${ev.date}</td>
+
+            <td>
+                <span class="badge badge-purple">
+                    ${ev.category}
+                </span>
+            </td>
+
+            <td>
+                <span class="badge ${ev.status==='upcoming' ? 'badge-green':'badge-pink'}">
+                    ${ev.status}
+                </span>
+            </td>
+
+            <td>
+
+                <div class="btn-group">
+
+                    <button class="btn-icon"
+                        onclick="openEventModal(${ev.id})">
+
+                        ✏️
+
+                    </button>
+
+                    <button class="btn-icon del"
+                        onclick="deleteItem('events',${ev.id},'${ev.title.replace(/'/g,"\\'")}')">
+
+                        🗑️
+
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    `).join('');
+
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1197,23 +1318,56 @@ async function saveSettingsHandler() {
 //  DELETE
 // ══════════════════════════════════════════════════════════════
 let pendingDelete = null;
-function deleteItem(collName, docId, label) {
-  pendingDelete = { collName, docId, label };
-  document.getElementById('confirmMsg').textContent = `Delete "${label}"? This cannot be undone.`;
-  openModal('confirmModal');
+function deleteItem(type, id, name) {
+
+    pendingDelete = { type, id, name };
+
+    document.getElementById('confirmMsg').textContent =
+        `Delete "${name}"? This cannot be undone.`;
+
+    openModal('confirmModal');
+
 }
 async function confirmAction() {
-  if (!pendingDelete) return;
-  const { db, doc, deleteDoc } = fb();
-  try {
-    await deleteDoc(doc(db, pendingDelete.collName, pendingDelete.docId));
-    closeModal('confirmModal');
-    if (pendingDelete.collName === 'events') renderEventsTable();
-    if (pendingDelete.collName === 'team')   renderTeamTable();
-    await Promise.all([renderDashboard(), logActivity(`Deleted: ${pendingDelete.label}`)]);
-    toast('Deleted ✓');
-  } catch (e) { toast('Delete failed: ' + e.message, 'err'); }
-  pendingDelete = null;
+
+    if (!pendingDelete) return;
+
+    try {
+
+        const response = await fetch('../api/deleteEvent.php', {
+
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+                id: pendingDelete.id
+            })
+
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+            throw new Error(result.message);
+        }
+
+        closeModal('confirmModal');
+
+        await renderEventsTable();
+
+        toast('Deleted ✓');
+
+    } catch (e) {
+
+        toast(e.message, 'err');
+
+    }
+
+    pendingDelete = null;
+
 }
 
 // ══════════════════════════════════════════════════════════════

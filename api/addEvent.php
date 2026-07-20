@@ -14,15 +14,15 @@ if (!$data) {
     exit;
 }
 
-$title       = $data["title"] ?? "";
-$description = $data["description"] ?? "";
-$category    = $data["category"] ?? "";
+$title       = trim($data["title"] ?? "");
+$description = trim($data["description"] ?? "");
+$category    = trim($data["category"] ?? "");
 $date        = $data["event_date"] ?? "";
-$time        = $data["event_time"] ?? "";
-$location    = $data["location"] ?? "";
-$status      = $data["status"] ?? "Upcoming";
-$poster      = $data["poster"] ?? "";
-$ri_year     = $data["ri_year"] ?? "";
+$time        = !empty($data["event_time"]) ? $data["event_time"] : null;
+$location    = trim($data["location"] ?? "");
+$status      = ($data["status"] ?? "upcoming") === "past" ? "Completed" : "Upcoming";
+$poster      = $data["poster"] ?? null;
+$ri_year     = $data["ri_year"] ?? null;
 
 $sql = "INSERT INTO events
 (title, description, category, event_date, event_time, location, status, poster, ri_year)
@@ -44,19 +44,15 @@ $stmt->bind_param(
 );
 
 if ($stmt->execute()) {
-
     echo json_encode([
         "success" => true,
         "id" => $conn->insert_id
     ]);
-
 } else {
-
     echo json_encode([
         "success" => false,
         "message" => $stmt->error
     ]);
-
 }
 
 $stmt->close();
