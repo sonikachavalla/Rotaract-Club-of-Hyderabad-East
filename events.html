@@ -326,18 +326,25 @@ const COLORS = ['c1','c2','c3','c4','c5'];
 let _events = [], _pdfs = {}, _settings = {}, _pdfYears = [];
 
 async function loadAllData() {
+
     try {
+
         const response = await fetch("api/getEvents.php");
-        _events = await response.json();
+        const result = await response.json();
+
+        _events = result.events || [];
 
         _settings = {};
         _pdfs = {};
         _pdfYears = ['2025-2026','2024-2025','2023-2024'];
 
     } catch (e) {
+
         console.error(e);
         _events = [];
+
     }
+
 }
 // ── Apply settings ─────────────────────────────────────────────
 function applySettings() {
