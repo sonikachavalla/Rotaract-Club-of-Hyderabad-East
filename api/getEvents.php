@@ -4,7 +4,30 @@ require "db.php";
 
 header("Content-Type: application/json");
 
-$sql = "SELECT * FROM events ORDER BY event_date DESC";
+$year_id = isset($_GET["year_id"]) ? (int)$_GET["year_id"] : 0;
+
+if ($year_id > 0) {
+
+    $stmt = $conn->prepare("
+        SELECT *
+        FROM events
+        WHERE year_id = ?
+        ORDER BY event_date DESC
+    ");
+
+    $stmt->bind_param("i", $year_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+} else {
+
+    $result = $conn->query("
+        SELECT *
+        FROM events
+        ORDER BY event_date DESC
+    ");
+
+}
 
 $result = $conn->query($sql);
 
@@ -25,7 +48,7 @@ while ($row = $result->fetch_assoc()) {
         "status" => $row["status"],
         "poster" => $row["poster"],
         "link" => "",
-        "ri_year" => $row["ri_year"]
+        "year_id" => $row["year_id"]
     ];
 }
 

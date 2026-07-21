@@ -23,7 +23,7 @@ $time        = !empty($data["event_time"]) ? $data["event_time"] : null;
 $location    = trim($data["location"] ?? "");
 $status      = ($data["status"] ?? "upcoming") === "past" ? "Completed" : "Upcoming";
 $poster      = $data["poster"] ?? null;
-$ri_year     = $data["ri_year"] ?? null;
+$year_id = (int)($data["year_id"] ?? 0);
 
 $sql = "UPDATE events SET
 title=?,
@@ -34,7 +34,7 @@ event_time=?,
 location=?,
 status=?,
 poster=?,
-ri_year=?
+year_id=?
 WHERE id=?";
 
 $stmt = $conn->prepare($sql);
@@ -49,7 +49,7 @@ $stmt->bind_param(
     $location,
     $status,
     $poster,
-    $ri_year,
+    $year_id,
     $id
 );
 
