@@ -245,7 +245,13 @@ p  { color: var(--text-mid); line-height: 1.75; }
   transition: opacity var(--t), transform var(--t);
 }
 .nav-badge-img-link:hover { opacity: 0.82; transform: translateY(-1px); }
-.nav-badge-img-link img { height: 42px; width: auto; object-fit: contain; }
+
+.nav-logo-link img,
+.nav-badge-img-link img {
+    height: 56px;
+    width: auto;
+    display: block;
+}
 .nav-join {
   display: inline-flex;
   align-items: center;
