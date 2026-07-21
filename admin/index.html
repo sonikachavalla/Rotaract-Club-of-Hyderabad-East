@@ -1060,54 +1060,119 @@ function clearMemberPhoto() {
   _setMemberPhotoPreview('', document.getElementById('tm-name').value);
 }
 
-async function openTeamModal(id = null) {
-  editTeamId = id; _memberPhotoFile = null;
-  const { db, doc, getDoc } = fb();
-  let m = null;
-  if (id) {
-    const snap = await getDoc(doc(db, 'team', id));
-    if (snap.exists()) m = { id: snap.id, ...snap.data() };
-  }
-  document.getElementById('teamModalTitle').textContent = m ? 'Edit Member' : 'Add Member';
-  document.getElementById('tm-id').value       = m?.id       || '';
-  document.getElementById('tm-name').value     = m?.name     || '';
-  document.getElementById('tm-role').value     = m?.role     || '';
-  document.getElementById('tm-type').value     = m?.type     || 'executive';
-  document.getElementById('tm-linkedin').value = m?.linkedin || '';
-  document.getElementById('tm-email').value    = m?.email    || '';
-  document.getElementById('tm-photo').value    = m?.photo    || '';
-  _setMemberPhotoPreview(m?.photo || '', m?.name || '');
-  openModal('teamModal');
+function openTeamModal(id = null) {
+
+    editingMember = null;
+
+    document.getElementById("memberForm").reset();
+
+    if (id !== null) {
+
+        editingMember = teamMembers.find(member => member.id === id);
+
+        if (!editingMember) return;
+
+        document.getElementById("memberName").value = editingMember.name;
+        document.getElementById("memberRole").value = editingMember.role;
+        document.getElementById("memberType").value = editingMember.member_type;
+        document.getElementById("memberLinkedin").value = editingMember.linkedin || "";
+        document.getElementById("memberEmail").value = editingMember.email || "";
+        document.getElementById("memberOrder").value = editingMember.display_order || 0;
+
+        document.getElementById("memberModalTitle").textContent = "Edit Team Member";
+
+    } else {
+
+        document.getElementById("memberModalTitle").textContent = "Add Team Member";
+
+    }
+
+    openModal("memberModal");
+
 }
 
 async function saveMember() {
-  const name = document.getElementById('tm-name').value.trim();
-  const role = document.getElementById('tm-role').value.trim();
-  if (!name || !role) { toast('Name and role are required.', 'err'); return; }
-  const { db, doc, setDoc, serverTimestamp } = fb();
-  const btn = document.getElementById('saveTeamBtn');
-  btn.disabled = true; btn.textContent = 'Saving…';
-  try {
-    const id = editTeamId || ('t' + Date.now());
-    let photo = document.getElementById('tm-photo').value || '';
-    if (_memberPhotoFile) {
-      photo = await uploadImage(_memberPhotoFile, `team/${id}/photo.jpg`, 400, 400, 0.85);
+
+    const name = document.getElementById("memberName").value.trim();
+    const role = document.getElementById("memberRole").value.trim();
+    const type = document.getElementById("memberType").value;
+    const linkedin = document.getElementById("memberLinkedin").value.trim();
+    const email = document.getElementById("memberEmail").value.trim();
+    const order = parseInt(document.getElementById("memberOrder").value) || 0;
+
+    if (!name || !role) {
+        showNotification("Please fill all required fields.", "error");
+        return;
     }
-    const mData = {
-      id, name, role,
-      type:     document.getElementById('tm-type').value,
-      linkedin: document.getElementById('tm-linkedin').value.trim(),
-      email:    document.getElementById('tm-email').value.trim(),
-      photo,
-      order:    Date.now(),
-      updatedAt: serverTimestamp()
+
+    let photo = editingMember?.photo || "";
+
+    const imageFile = document.getElementById("memberImage").files[0];
+
+    if (imageFile) {
+
+        const formData = new FormData();
+        formData.append("image", imageFile);
+
+        const upload = await fetch("api/uploadTeamImage.php", {
+            method: "POST",
+            body: formData
+        });
+
+        const uploadResult = await upload.json();
+
+        if (!uploadResult.success) {
+            showNotification(uploadResult.message, "error");
+            return;
+        }
+
+        photo = uploadResult.url;
+    }
+
+    const memberData = {
+        name,
+        role,
+        member_type: type,
+        linkedin,
+        email,
+        photo,
+        display_order: order
     };
-    await setDoc(doc(db, 'team', id), mData, { merge: true });
-    closeModal('teamModal');
-    await Promise.all([renderTeamTable(), renderDashboard(), logActivity(editTeamId ? `Team member updated: ${name}` : `Team member added: ${name}`)]);
-    toast(editTeamId ? 'Member updated ✓' : 'Member added ✓');
-  } catch (e) { toast('Save failed: ' + e.message, 'err'); }
-  finally { btn.disabled = false; btn.textContent = 'Save Member'; }
+
+    let url = "api/addTeam.php";
+
+    if (editingMember) {
+        memberData.id = editingMember.id;
+        url = "api/updateTeam.php";
+    }
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(memberData)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+
+        closeModal("memberModal");
+        editingMember = null;
+
+        await loadTeam();
+
+        showNotification(
+            editingMember ? "Member updated!" : "Member added!",
+            "success"
+        );
+
+    } else {
+
+        showNotification(result.message, "error");
+
+    }
 }
 
 async function moveTeamMember(id, direction) {
@@ -1131,43 +1196,64 @@ async function moveTeamMember(id, direction) {
   renderTeamTable();
 }
 
-async function renderTeamTable() {
-  const { db, collection, getDocs } = fb();
-  const snap = await getDocs(collection(db, 'team'));
-  const members = snap.docs.map(d => ({ _docId: d.id, ...d.data() }));
-  const tbody = document.getElementById('teamTableBody');
-  if (!members.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:#a0aec0">No members yet.</td></tr>'; return; }
-  const typeOrder = { executive: 0, director: 1, member: 2 };
-  const sorted = [...members].sort((a, b) => {
-    const td = (typeOrder[a.type] || 9) - (typeOrder[b.type] || 9);
-    return td !== 0 ? td : (a.order || 0) - (b.order || 0);
-  });
-  const groupCounts = {};
-  sorted.forEach(m => { groupCounts[m.type] = (groupCounts[m.type] || 0) + 1; });
-  const typePos = {};
-  tbody.innerHTML = sorted.map(m => {
-    if (!(m.type in typePos)) typePos[m.type] = 0; else typePos[m.type]++;
-    const pos = typePos[m.type];
-    const total = groupCounts[m.type];
-    const initials = _getInitials(m.name);
-    const avatar = m.photo
-      ? `<img src="${m.photo}" alt="${m.name}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid #EDE9FE" loading="lazy">`
-      : `<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#9F7AEA,#ED64A6);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:0.75rem;font-weight:800;color:#fff;flex-shrink:0">${initials}</div>`;
-    return `<tr>
-      <td><div style="display:flex;flex-direction:column;gap:3px">
-        <button onclick="moveTeamMember('${m._docId}',-1)" ${pos===0?'disabled':''} style="width:22px;height:22px;border:1.5px solid ${pos===0?'#E2E8F0':'#C4B5FD'};border-radius:5px;background:${pos===0?'#F9FAFB':'#F5F3FF'};color:${pos===0?'#CBD5E0':'#7C3AED'};cursor:${pos===0?'default':'pointer'};font-size:0.75rem;display:flex;align-items:center;justify-content:center">▲</button>
-        <button onclick="moveTeamMember('${m._docId}',1)"  ${pos===total-1?'disabled':''} style="width:22px;height:22px;border:1.5px solid ${pos===total-1?'#E2E8F0':'#C4B5FD'};border-radius:5px;background:${pos===total-1?'#F9FAFB':'#F5F3FF'};color:${pos===total-1?'#CBD5E0':'#7C3AED'};cursor:${pos===total-1?'default':'pointer'};font-size:0.75rem;display:flex;align-items:center;justify-content:center">▼</button>
-      </div></td>
-      <td><div style="display:flex;align-items:center;gap:10px">${avatar}<strong>${m.name}</strong></div></td>
-      <td>${m.role}</td>
-      <td><span class="badge ${m.type==='executive'?'badge-purple':m.type==='director'?'badge-pink':'badge-green'}">${m.type}</span></td>
-      <td>${m.linkedin ? `<a href="${m.linkedin}" target="_blank" style="color:var(--purple);font-size:0.82rem">View ↗</a>` : '—'}</td>
-      <td><div class="btn-group">
-        <button class="btn-icon" onclick="openTeamModal('${m._docId}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-        <button class="btn-icon del" onclick="deleteItem('team','${m._docId}','${m.name}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>
-      </div></td>
-    </tr>`;
-  }).join('');
+function renderTeamTable() {
+
+    const tbody = document.getElementById("teamTableBody");
+
+    if (!teamMembers.length) {
+
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="6" style="text-align:center;padding:30px;">
+                    No team members found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = "";
+
+    teamMembers.forEach(member => {
+
+        tbody.innerHTML += `
+            <tr>
+
+                <td>
+                    ${
+                        member.photo
+                            ? `<img src="${member.photo}" class="table-image">`
+                            : "-"
+                    }
+                </td>
+
+                <td>${member.name}</td>
+
+                <td>${member.role}</td>
+
+                <td>${member.member_type}</td>
+
+                <td>${member.display_order}</td>
+
+                <td>
+
+                    <button class="btn btn-sm btn-primary"
+                        onclick="openTeamModal(${member.id})">
+                        Edit
+                    </button>
+
+                    <button class="btn btn-sm btn-danger"
+                        onclick="confirmAction('deleteTeam', ${member.id})">
+                        Delete
+                    </button>
+
+                </td>
+
+            </tr>
+        `;
+
+    });
+
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -1330,43 +1416,62 @@ function deleteItem(type, id, name) {
 }
 async function confirmAction() {
 
-    if (!pendingDelete) return;
+    switch (currentAction.type) {
+
+        case "deleteTeam":
+
+            try {
+
+                const response = await fetch("api/deleteTeam.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        id: currentAction.data
+                    })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    await loadTeam();
+                    showNotification("Team member deleted successfully!", "success");
+                } else {
+                    showNotification(result.message, "error");
+                }
+
+            } catch (error) {
+                showNotification("Failed to delete member.", "error");
+            }
+
+            break;
+    }
+
+    closeModal("confirmModal");
+    currentAction = null;
+}
+
+async function loadTeam() {
 
     try {
 
-        const response = await fetch('../api/deleteEvent.php', {
-
-            method: 'POST',
-
-            headers: {
-                'Content-Type': 'application/json'
-            },
-
-            body: JSON.stringify({
-                id: pendingDelete.id
-            })
-
-        });
-
+        const response = await fetch("api/getTeam.php");
         const result = await response.json();
 
-        if (!result.success) {
-            throw new Error(result.message);
+        if (result.success) {
+
+            teamMembers = result.members || [];
+            renderTeamTable();
+
         }
 
-        closeModal('confirmModal');
+    } catch (error) {
 
-        await renderEventsTable();
-
-        toast('Deleted ✓');
-
-    } catch (e) {
-
-        toast(e.message, 'err');
+        console.error(error);
+        showNotification("Failed to load team.", "error");
 
     }
-
-    pendingDelete = null;
 
 }
 
