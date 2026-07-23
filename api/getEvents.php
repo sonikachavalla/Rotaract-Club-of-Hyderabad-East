@@ -4,18 +4,18 @@ require "db.php";
 
 header("Content-Type: application/json");
 
-$year_id = isset($_GET["year_id"]) ? (int)$_GET["year_id"] : 0;
+$year = $_GET["year_name"] ?? "";
 
-if ($year_id > 0) {
+if (!empty($year)) {
 
     $stmt = $conn->prepare("
         SELECT *
         FROM events
-        WHERE year_id = ?
+        WHERE year_name = ?
         ORDER BY event_date DESC
     ");
 
-    $stmt->bind_param("i", $year_id);
+    $stmt->bind_param("s", $year);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -33,22 +33,36 @@ $events = [];
 
 while ($row = $result->fetch_assoc()) {
 
-    $row["status"] =
-        ($row["status"] == "Completed") ? "past" : "upcoming";
-
     $events[] = [
-        "id" => $row["id"],
+
+        "id" => (int)$row["id"],
+
         "title" => $row["title"],
+
         "desc" => $row["description"],
+
         "date" => $row["event_date"],
+
         "time" => $row["event_time"],
+
         "location" => $row["location"],
+
         "category" => $row["category"],
-        "status" => $row["status"],
+
+        "status" => ($row["status"] === "Completed")
+            ? "past"
+            : "upcoming",
+
         "poster" => $row["poster"],
+
         "link" => "",
-        "year_id" => $row["year_id"]
+
+        "ri_year" => $row["ri_year"],
+
+        "year_name" => $row["year_name"]
+
     ];
+
 }
 
 echo json_encode([

@@ -1,11 +1,11 @@
 <?php
+
 error_reporting(E_ALL);
-ini_set('display_errors', 0);
-ini_set('log_errors', 1);
+ini_set('display_errors', 1);
+
+header('Content-Type: application/json');
 
 require "db.php";
-
-header("Content-Type: application/json");
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -24,23 +24,61 @@ $date        = $data["event_date"] ?? "";
 $time        = !empty($data["event_time"]) ? $data["event_time"] : null;
 $location    = trim($data["location"] ?? "");
 $status      = ($data["status"] ?? "upcoming") === "past" ? "Completed" : "Upcoming";
-$poster      = $data["poster"] ?? null;
-$year_id = (int)($data["year_id"] ?? 0);
+$poster      = $data["poster"] ?? "";
+$ri_year     = trim($data["ri_year"] ?? "");
+$year_name   = trim($data["year_name"] ?? "");
+
+if (
+    empty($title) ||
+    empty($category) ||
+    empty($date)
+) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Please fill all required fields."
+    ]);
+    exit;
+}
 
 $sql = "INSERT INTO events
-(title, description, category, event_date, event_time, location, status, poster, year_id)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+(
+title,
+description,
+category,
+event_date,
+event_time,
+location,
+status,
+poster,
+ri_year,
+year_name
+)
+VALUES
+(
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?,
+?
+)";
 
 $stmt = $conn->prepare($sql);
 
 if (!$stmt) {
-    die(json_encode([
+    echo json_encode([
         "success" => false,
         "message" => $conn->error
-    ]));
+    ]);
+    exit;
 }
+
 $stmt->bind_param(
-    "ssssssssi",
+    "ssssssssss",
     $title,
     $description,
     $category,
@@ -49,19 +87,25 @@ $stmt->bind_param(
     $location,
     $status,
     $poster,
-    $year_id
+    $ri_year,
+    $year_name
 );
 
 if ($stmt->execute()) {
+
     echo json_encode([
         "success" => true,
+        "message" => "Event added successfully.",
         "id" => $conn->insert_id
     ]);
+
 } else {
+
     echo json_encode([
         "success" => false,
         "message" => $stmt->error
     ]);
+
 }
 
 $stmt->close();
