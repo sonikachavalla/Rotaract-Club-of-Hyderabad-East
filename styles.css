@@ -246,12 +246,6 @@ p  { color: var(--text-mid); line-height: 1.75; }
 }
 .nav-badge-img-link:hover { opacity: 0.82; transform: translateY(-1px); }
 
-.nav-logo-link img,
-.nav-badge-img-link img {
-    height: 56px;
-    width: auto;
-    display: block;
-}
 .nav-join {
   display: inline-flex;
   align-items: center;
@@ -268,6 +262,19 @@ p  { color: var(--text-mid); line-height: 1.75; }
 }
 .nav-join:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(159,122,234,0.48); }
 
+.rotaract-logo img{
+    height:58px;
+    width:auto;
+    display:block;
+    object-fit:contain;
+}
+
+.rotary-logo img{
+    height:52px;
+    width:auto;
+    display:block;
+    object-fit:contain;
+}
 /* Hamburger */
 .nav-hamburger {
   display: none;
