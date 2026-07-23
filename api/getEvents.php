@@ -29,13 +29,12 @@ if ($year_id > 0) {
 
 }
 
-$result = $conn->query($sql);
-
 $events = [];
 
 while ($row = $result->fetch_assoc()) {
 
-    $row["status"] = ($row["status"] == "Completed") ? "past" : "upcoming";
+    $row["status"] =
+        ($row["status"] == "Completed") ? "past" : "upcoming";
 
     $events[] = [
         "id" => $row["id"],
