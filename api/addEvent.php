@@ -28,10 +28,16 @@ $year_id = (int)($data["year_id"] ?? 0);
 
 $sql = "INSERT INTO events
 (title, description, category, event_date, event_time, location, status, poster, year_id)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 $stmt = $conn->prepare($sql);
 
+if (!$stmt) {
+    die(json_encode([
+        "success" => false,
+        "message" => $conn->error
+    ]));
+}
 $stmt->bind_param(
     "ssssssssi",
     $title,
