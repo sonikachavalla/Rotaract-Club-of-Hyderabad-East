@@ -14,6 +14,17 @@
     @media (max-width: 480px) {
       .upcoming-inline { grid-template-columns: 1fr !important; }
     }
+    .rotaract-logo{
+    height: 72px;
+    width: auto;
+    object-fit: contain;
+}
+
+.rotary-logo{
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+}
   </style>
 </head>
 <script type="module">
@@ -147,7 +158,7 @@ function createCarouselCard(event, index) {
     <div class="nav-inner">
 
       <!-- LEFT: Club logo — click → top of home page -->
-      <a href="index.html#top"  class="nav-badge-img-link" class="nav-logo-link" id="logoHome" aria-label="Rotaract Club of Hyderabad East Home">
+      <a href="index.html#top"  class="rotaract-logo" id="logoHome" aria-label="Rotaract Club of Hyderabad East Home">
         <img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract Club of Hyderabad East">
       </a>
 
@@ -165,11 +176,11 @@ function createCarouselCard(event, index) {
       <!-- RIGHT: Badges + Join -->
       <div class="nav-right">
         <!-- District 3150 — click → rotaract3150.in -->
-        <a href="https://rotaract3150.in" target="_blank" rel="noopener" class="nav-badge-img-link" aria-label="District 3150 Rotaract">
+        <a href="https://rotaract3150.in" target="_blank" rel="noopener" class="rotaract-logo" aria-label="District 3150 Rotaract">
           <img src="District_3150_Logo.png" alt="District 3150 Rotaract">
         </a>
         <!-- Rotary International — click → rotary.org -->
-        <a href="https://www.rotary.org" target="_blank" rel="noopener" class="nav-badge-img-link" aria-label="Rotary International">
+        <a href="https://www.rotary.org" target="_blank" rel="noopener" class="rotary-logo" aria-label="Rotary International">
           <img src="Rotary_Logo.png" alt="Rotary International">
         </a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform" target="_blank" id="joinLinkNav" class="nav-join">Join The Club</a>
