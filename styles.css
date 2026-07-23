@@ -196,7 +196,27 @@ p  { color: var(--text-mid); line-height: 1.75; }
   transition: opacity var(--t);
 }
 .nav-logo-link:hover { opacity: 0.85; }
-.nav-logo-link img { height: 48px; width: auto; object-fit: contain; }
+
+.nav-logo-link img
+{
+    width:135px;
+    height:auto;
+    display:block;
+}
+/* District logo */
+.nav-right .nav-badge-img-link:first-child img{
+    width:120px;
+    height:auto;
+    display:block;
+}
+
+/* Rotary logo */
+.nav-right .nav-badge-img-link:last-child img{
+    width:115px;
+    height:auto;
+    display:block;
+}
+
 
 /* Center links */
 .nav-links {
