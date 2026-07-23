@@ -821,44 +821,6 @@ textarea.form-control { resize: vertical; min-height: 130px; }
 .social-pill a { padding: 7px 14px; border-radius: var(--r-full); border: 1.5px solid rgba(159,122,234,0.2); font-size: 0.75rem; font-weight: 600; color: var(--text-mid); display: flex; align-items: center; gap: 5px; transition: all var(--t); font-family: 'Poppins', sans-serif; }
 .social-pill a:hover { background: var(--gradient); border-color: transparent; color: #fff; transform: translateY(-2px); }
 
-/* ============================================================
-   FOOTER
-   ============================================================ 
-.footer { background: #0F172A; color: rgba(255,255,255,0.65); padding: 64px 0 0; }
-.footer-inner { max-width: 1320px; margin: 0 auto; padding: 0 24px; }
-.footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; }
-.footer-brand-logo { height: 52px; width: auto; object-fit: contain; margin-bottom: 16px; display: block; }
-.footer-brand p { color: rgba(255,255,255,0.55); font-size: 0.875rem; line-height: 1.75; max-width: 260px; margin-bottom: 20px; }
-.footer-social-row { display: flex; gap: 10px; }
-.footer-social-btn {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.12);
-  display: flex; align-items: center; justify-content: center;
-  color: rgba(255,255,255,0.65);
-  transition: all var(--t) var(--ease);
-}
-.footer-social-btn:hover { background: var(--purple); border-color: var(--purple); color: #fff; transform: translateY(-3px); }
-.footer-social-btn svg { width: 17px; height: 17px; }
-.footer-col h5 { font-family: 'Poppins', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.38); margin-bottom: 18px; }
-.footer-links { list-style: none; }
-.footer-links li { margin-bottom: 10px; }
-.footer-links a { color: rgba(255,255,255,0.6); font-size: 0.9rem; transition: color var(--t), padding-left var(--t); }
-.footer-links a:hover { color: rgba(255,255,255,0.95); padding-left: 4px; }
-.footer-contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.875rem; }
-.footer-contact-item svg { width: 16px; height: 16px; color: var(--purple-soft); flex-shrink: 0; margin-top: 2px; }
-.footer-contact-item a { color: rgba(255,255,255,0.6); transition: color var(--t); }
-.footer-contact-item a:hover { color: rgba(255,255,255,0.95); }
-.footer-contact-item span { color: rgba(255,255,255,0.6); }
-
-.footer-divider { height: 1px; background: rgba(255,255,255,0.08); }
-.footer-bottom-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; font-size: 0.8rem; color: rgba(255,255,255,0.35); flex-wrap: wrap; gap: 8px; }
-.footer-bottom-bar a { color: var(--purple-soft); font-weight: 600; transition: color var(--t); }
-.footer-bottom-bar a:hover { color: #fff; }
-.footer-end-row { padding: 20px 0 28px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.footer-passion { font-size: 0.8rem; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; }
-.footer-rche { height: 52px; width: auto; object-fit: contain; }
 
 /* ============================================================
    RESPONSIVE
@@ -958,37 +920,31 @@ textarea.form-control { resize: vertical; min-height: 130px; }
 <body>
 
 <nav class="navbar" id="navbar">
-  <div class="container">
-    <div class="nav-inner">
-      <a href="index.html"  class="nav-badge-img-link" class="nav-logo-link" aria-label="Home">
-        <img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract Club of Hyderabad East">
-      </a>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="events.html">Events</a></li>
-        <li><a href="team.html">Team</a></li>
-        <li><a href="gallery.html">Gallery</a></li>
-        <li><a href="contact.html" class="active">Contact</a></li>
-        <li><a href="ohmyfrndganesha.html" >Oh My Friend Ganesha</a></li>
-      </ul>
-      <div class="nav-right">
-        <a href="https://rotaract3150.in" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="District_3150_Logo.png" alt="District 3150 Rotaract"></a>
-        <a href="https://www.rotary.org" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="Rotary_Logo.png" alt="Rotary International"></a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="joinLinkNav" class="nav-join">Join The Club</a>
-      </div>
-      <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="container"><div class="nav-inner">
+    <a href="index.html" class="nav-badge-img-link" class="nav-logo-link" aria-label="Home"><img src="Rotaract_Hyderabad_East_Logo.png" alt="Rotaract Club of Hyderabad East"></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="events.html">Events</a></li><li><a href="team.html">Team</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="contact.html" class="active">Contact</a></li>
+      <li><a href="ohmyfrndganesha.html" >Oh My Friend Ganesha</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="https://rotaract3150.in" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="District_3150_Logo.png" alt="District 3150 Rotaract"></a>
+      <a href="https://www.rotary.org" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="Rotary_Logo.png" alt="Rotary International"></a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform" target="_blank" id="joinLinkNav" class="nav-join">Join The Club</a>
     </div>
-  </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div></div>
 </nav>
 <div class="nav-mobile" id="navMobile">
   <a href="index.html">Home</a><a href="about.html">About</a><a href="events.html">Events</a>
   <a href="team.html">Team</a><a href="gallery.html">Gallery</a><a href="contact.html" class="active">Contact</a>
-  <a href="ohmyfrndganesha.html" >Oh My Friend Ganesha</a>
+  <li><a href="ohmyfrndganesha.html" >Oh My Friend Ganesha</a></li>
   <div class="nav-mobile-footer">
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform" target="_blank" id="joinLinkMobile" class="btn btn-primary btn-sm">Join The Club</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform" target="_blank" id="joinLinkMobile" class="btn btn-primary btn-sm">Join The Club</a>
   </div>
 </div>
+
 
 <main>
   <section class="page-hero">
