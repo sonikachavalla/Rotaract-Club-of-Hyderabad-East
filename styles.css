@@ -205,14 +205,14 @@ p  { color: var(--text-mid); line-height: 1.75; }
 }
 /* District logo */
 .nav-right .nav-badge-img-link:first-child img{
-    width:120px;
+     width:135px;
     height:auto;
     display:block;
 }
 
 /* Rotary logo */
 .nav-right .nav-badge-img-link:last-child img{
-    width:115px;
+     width:135px;
     height:auto;
     display:block;
 }
