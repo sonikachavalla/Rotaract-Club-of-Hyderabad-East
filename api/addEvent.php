@@ -27,7 +27,7 @@ $status      = ($data["status"] ?? "upcoming") === "past" ? "Completed" : "Upcom
 $poster      = $data["poster"] ?? "";
 $ri_year     = trim($data["ri_year"] ?? "");
 $year_name   = trim($data["year_name"] ?? "");
-
+$event_link  = trim($data["event_link"] ?? "");
 if (
     empty($title) ||
     empty($category) ||
@@ -50,11 +50,13 @@ event_time,
 location,
 status,
 poster,
+event_link,
 ri_year,
 year_name
 )
 VALUES
 (
+?,
 ?,
 ?,
 ?,
@@ -78,17 +80,18 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "ssssssssss",
+    "sssssssssss",
     $title,
-    $description,
-    $category,
-    $date,
-    $time,
-    $location,
-    $status,
-    $poster,
-    $ri_year,
-    $year_name
+$description,
+$category,
+$date,
+$time,
+$location,
+$status,
+$poster,
+$event_link,
+$ri_year,
+$year_name
 );
 
 if ($stmt->execute()) {

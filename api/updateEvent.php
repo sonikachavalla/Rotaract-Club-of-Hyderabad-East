@@ -27,6 +27,8 @@ $status      = ($data["status"] ?? "upcoming") === "past"
 
 $poster      = $data["poster"] ?? "";
 
+$event_link  = trim($data["event_link"] ?? "");
+
 $ri_year     = trim($data["ri_year"] ?? "");
 
 $year_name   = trim($data["year_name"] ?? "");
@@ -40,6 +42,7 @@ event_time=?,
 location=?,
 status=?,
 poster=?,
+event_link=?,
 ri_year=?,
 year_name=?
 WHERE id=?";
@@ -55,18 +58,19 @@ if (!$stmt) {
 }
 
 $stmt->bind_param(
-    "ssssssssssi",
-    $title,
-    $description,
-    $category,
-    $date,
-    $time,
-    $location,
-    $status,
-    $poster,
-    $ri_year,
-    $year_name,
-    $id
+    "sssssssssssi",
+   $title,
+$description,
+$category,
+$date,
+$time,
+$location,
+$status,
+$poster,
+$event_link,
+$ri_year,
+$year_name,
+$id
 );
 
 if ($stmt->execute()) {

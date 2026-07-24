@@ -380,6 +380,10 @@ textarea.form-input{resize:vertical;min-height:90px}
         <div class="form-group"><label class="form-label">Time</label><input class="form-input" id="ev-time" placeholder="6:00 PM – 9:00 PM"></div>
       </div>
       <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="ev-location" placeholder="Venue, Hyderabad"></div>
+      <div class="form-group">
+    <label>Event Link (Optional)</label>
+    <input type="url" id="ev-link" placeholder="https://...">
+</div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">Category</label>
           <select class="form-input" id="ev-category">
@@ -846,6 +850,7 @@ async function openEventModal(id = null) {
     document.getElementById('ev-date').value = ev?.date || '';
     document.getElementById('ev-time').value = ev?.time || '';
     document.getElementById('ev-location').value = ev?.location || '';
+    document.getElementById('ev-link').value = event.event_link || '';
     document.getElementById('ev-category').value = ev?.category || 'Community Service';
     document.getElementById('ev-status').value = ev?.status || 'upcoming';
     document.getElementById('ev-desc').value = ev?.desc || '';
@@ -920,10 +925,11 @@ const payload = {
     status: document.getElementById('ev-status').value,
     poster: poster,
 
+    event_link: document.getElementById('ev-link').value.trim(),
+
     ri_year: currentYear,
     year_name: currentYear
 };
-
         const api = editEventId
             ? '../api/updateEvent.php'
             : '../api/addEvent.php';
