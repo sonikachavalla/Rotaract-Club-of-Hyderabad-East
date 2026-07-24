@@ -21,9 +21,15 @@ $category    = trim($data["category"] ?? "");
 $date        = $data["event_date"] ?? "";
 $time        = !empty($data["event_time"]) ? $data["event_time"] : null;
 $location    = trim($data["location"] ?? "");
-$status      = ($data["status"] ?? "upcoming") === "past" ? "Completed" : "Upcoming";
-$poster      = $data["poster"] ?? null;
-$year_id = (int)($data["year_id"] ?? 0);
+$status      = ($data["status"] ?? "upcoming") === "past"
+    ? "Completed"
+    : "Upcoming";
+
+$poster      = $data["poster"] ?? "";
+
+$ri_year     = trim($data["ri_year"] ?? "");
+
+$year_name   = trim($data["year_name"] ?? "");
 
 $sql = "UPDATE events SET
 title=?,
@@ -34,13 +40,22 @@ event_time=?,
 location=?,
 status=?,
 poster=?,
-year_id=?
+ri_year=?,
+year_name=?
 WHERE id=?";
 
 $stmt = $conn->prepare($sql);
 
+if (!$stmt) {
+    echo json_encode([
+        "success" => false,
+        "message" => $conn->error
+    ]);
+    exit;
+}
+
 $stmt->bind_param(
-    "sssssssssi",
+    "ssssssssssi",
     $title,
     $description,
     $category,
@@ -49,17 +64,25 @@ $stmt->bind_param(
     $location,
     $status,
     $poster,
-    $year_id,
+    $ri_year,
+    $year_name,
     $id
 );
 
 if ($stmt->execute()) {
-    echo json_encode(["success" => true]);
+
+    echo json_encode([
+        "success" => true,
+        "message" => "Event updated successfully."
+    ]);
+
 } else {
+
     echo json_encode([
         "success" => false,
         "message" => $stmt->error
     ]);
+
 }
 
 $stmt->close();
