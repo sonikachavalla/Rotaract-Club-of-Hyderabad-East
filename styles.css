@@ -885,6 +885,7 @@ textarea.form-control { resize: vertical; min-height: 130px; }
 @media (max-width: 768px) {
   :root { --nav-h: 64px; }
   .nav-links, .nav-right { display: none; }
+  
   .nav-hamburger { display: flex; }
   .section { padding: 64px 0; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
