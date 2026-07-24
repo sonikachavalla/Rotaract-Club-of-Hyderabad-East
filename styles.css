@@ -214,6 +214,7 @@ p  { color: var(--text-mid); line-height: 1.75; }
 .nav-right .nav-badge-img-link:last-child img{
      width:150px;
     height:auto;
+    transform: scale(1.2);
     display:block;
 }
 
