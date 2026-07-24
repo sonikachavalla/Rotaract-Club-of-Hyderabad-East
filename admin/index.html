@@ -841,7 +841,8 @@ async function openEventModal(id = null) {
         const result = await response.json();
 
         ev = result.events.find(e => Number(e.id) === Number(id));
-
+        console.log("Editing ID:", id);
+        console.log("Found event:", ev);
     }
 
     document.getElementById('eventModalTitle').textContent =
@@ -1023,7 +1024,7 @@ async function renderEventsTable() {
                     </button>
 
                     <button class="btn-icon del"
-                        onclick="deleteItem('events',${ev.id},'${ev.title.replace(/'/g,"\\'")}')">
+                        onclick="deleteItem('deleteEvent',${ev.id},'${ev.title.replace(/'/g,"\\'")}')">
 
                         🗑️
 
