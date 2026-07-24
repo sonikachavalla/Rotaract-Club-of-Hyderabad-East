@@ -828,7 +828,26 @@ function clearPoster() {
   document.getElementById('ev-poster-clear').style.display = 'none';
 }
 
+// async function openEventModal(id = null) {
+
+//     editEventId = id;
+//     _posterFile = null;
+
+//     let ev = null;
+
+//     if (id) {
+
+//         const response = await fetch('../api/getEvents.php');
+//         const result = await response.json();
+
+//         ev = result.events.find(e => Number(e.id) === Number(id));
+//         console.log("Editing ID:", id);
+//         console.log("Found event:", ev);
+//     }
+
 async function openEventModal(id = null) {
+
+    console.log("1. Function started");
 
     editEventId = id;
     _posterFile = null;
@@ -837,13 +856,22 @@ async function openEventModal(id = null) {
 
     if (id) {
 
-        const response = await fetch('../api/getEvents.php');
+        console.log("2. Fetching event");
+
+        const response = await fetch("../api/getEvents.php");
+
+        console.log(response);
+
         const result = await response.json();
 
+        console.log(result);
+
         ev = result.events.find(e => Number(e.id) === Number(id));
-        console.log("Editing ID:", id);
-        console.log("Found event:", ev);
+
+        console.log("Found:", ev);
     }
+
+    console.log("3. Filling form");
 
     document.getElementById('eventModalTitle').textContent =
         ev ? 'Edit Event' : 'Add Event';
@@ -872,7 +900,7 @@ async function openEventModal(id = null) {
         clearPoster();
 
     }
-
+    console.log("4. Opening modal");
     openModal('eventModal');
 
 }
