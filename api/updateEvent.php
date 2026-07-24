@@ -1,5 +1,6 @@
 <?php
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 require "db.php";
 
 header("Content-Type: application/json");
@@ -27,7 +28,7 @@ $status      = ($data["status"] ?? "upcoming") === "past"
 
 $poster      = $data["poster"] ?? "";
 
-$event_link  = trim($data["event_link"] ?? "");
+$registration_link  = trim($data["registration_link"] ?? "");
 
 $ri_year     = trim($data["ri_year"] ?? "");
 
@@ -42,7 +43,7 @@ event_time=?,
 location=?,
 status=?,
 poster=?,
-event_link=?,
+registration_link=?,
 ri_year=?,
 year_name=?
 WHERE id=?";
@@ -67,7 +68,7 @@ $time,
 $location,
 $status,
 $poster,
-$event_link,
+$registration_link,
 $ri_year,
 $year_name,
 $id

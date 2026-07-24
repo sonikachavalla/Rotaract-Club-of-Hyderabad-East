@@ -55,7 +55,7 @@ while ($row = $result->fetch_assoc()) {
 
         "poster" => $row["poster"],
 
-        "event_link" => $row["event_link"],
+        "registration_link" => $row["registration_link"],
 
         "link" => "",
 

@@ -27,7 +27,7 @@ $status      = ($data["status"] ?? "upcoming") === "past" ? "Completed" : "Upcom
 $poster      = $data["poster"] ?? "";
 $ri_year     = trim($data["ri_year"] ?? "");
 $year_name   = trim($data["year_name"] ?? "");
-$event_link  = trim($data["event_link"] ?? "");
+$registration_link  = trim($data["registration_link"] ?? "");
 if (
     empty($title) ||
     empty($category) ||
@@ -50,7 +50,7 @@ event_time,
 location,
 status,
 poster,
-event_link,
+registration_link,
 ri_year,
 year_name
 )
@@ -89,7 +89,7 @@ $time,
 $location,
 $status,
 $poster,
-$event_link,
+$registration_link,
 $ri_year,
 $year_name
 );
