@@ -991,10 +991,10 @@ const payload = {
         toast(editEventId ? 'Event updated ✓' : 'Event added ✓');
 
     } catch (e) {
-
-        toast(e.message, 'err');
-
-    }
+    console.error("ERROR:", e);
+    console.error(e.stack);
+    toast(e.message, "err");
+}
 
     btn.disabled = false;
     btn.textContent = 'Save Event';
