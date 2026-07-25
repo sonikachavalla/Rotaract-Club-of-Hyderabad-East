@@ -289,7 +289,18 @@ textarea.form-input{resize:vertical;min-height:90px}
         <div class="card">
           <div class="card-header">
             <h3>Events — 2025-26 (Current Year)</h3>
-            <button class="btn-sm btn-add" onclick="openEventModal()">+ Add Event</button>
+            <!-- <button class="btn-sm btn-add" onclick="openEventModal()">+ Add Event</button> -->
+             <div style="display:flex; gap:10px;">
+
+                <button class="btn btn-outline" onclick="openImportModal()">
+                    📄 Import Events
+                </button>
+
+                <button class="btn btn-primary" onclick="openEventModal()">
+                    + Add Event
+                </button>
+
+          </div>
           </div>
           <div class="card-body" style="padding:0;overflow-x:auto">
             <table class="tbl">
@@ -300,6 +311,68 @@ textarea.form-input{resize:vertical;min-height:90px}
         </div>
       </div>
 
+
+ <div class="modal" id="importModal">
+
+    <div class="modal-content" style="max-width:600px;">
+
+        <div class="modal-header">
+            <h3>Import Events</h3>
+            <button class="modal-close" onclick="closeModal('importModal')">&times;</button>
+        </div>
+
+        <div class="modal-body">
+
+            <label class="form-label">Excel File</label>
+
+            <input
+                type="file"
+                id="excelFile"
+                accept=".xlsx,.xls,.csv"
+                class="form-input">
+
+            <br><br>
+
+            <small>
+                Upload all posters into:
+                <b>uploads/events/</b>
+            </small>
+
+            <br><br>
+
+            <a href="../templates/events_template.csv"
+               download
+               class="btn btn-outline">
+
+               Download Template
+
+            </a>
+
+        </div>
+
+        <div class="modal-footer">
+
+            <button
+                class="btn btn-outline"
+                onclick="closeModal('importModal')">
+
+                Cancel
+
+            </button>
+
+            <button
+                class="btn btn-primary"
+                onclick="importEvents()">
+
+                Import
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>     
       <!-- ══ MONTHLY PDFs ══ -->
       <div class="page" id="page-pdfs">
         <div class="card">
@@ -896,6 +969,13 @@ async function openEventModal(id = null) {
     }
     console.log("4. Opening modal");
     openModal('eventModal');
+
+}
+function openImportModal(){
+
+    document.getElementById("excelFile").value="";
+
+    openModal("importModal");
 
 }
 
@@ -1584,6 +1664,92 @@ async function exportData() {
   a.click();
   toast('Data exported ✓');
 }
+
+async function importEvents() {
+
+    const file = document.getElementById("excelFile").files[0];
+
+    if (!file) {
+        toast("Please choose an Excel file.", "err");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = async function(e) {
+
+        const data = new Uint8Array(e.target.result);
+
+        const workbook = XLSX.read(data, {
+            type: "array"
+        });
+
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+
+        const events = XLSX.utils.sheet_to_json(sheet);
+
+        try {
+
+            const response = await fetch("../api/importEvents.php", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    events
+                })
+
+            });
+
+            const result = await response.json();
+
+           if (result.success) {
+
+    let report =
+        "Imported : " + result.imported + "\n\n";
+
+    if (result.skipped.length > 0) {
+
+        report += "Skipped:\n\n";
+
+        result.skipped.forEach(item => {
+            report += "• " + item + "\n";
+        });
+
+    } else {
+
+        report += "No skipped rows.";
+
+    }
+
+    alert(report);
+
+    closeModal("importModal");
+
+    await renderEventsTable();
+
+} else {
+
+    toast(result.message, "err");
+
+}
+        }catch(err){
+
+            console.error(err);
+
+            toast("Import failed.","err");
+
+        }
+
+    };
+
+    reader.readAsArrayBuffer(file);
+
+}
 </script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 </body>
 </html>
