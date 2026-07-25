@@ -881,11 +881,11 @@ async function openEventModal(id = null) {
     document.getElementById('ev-date').value = ev?.date || '';
     document.getElementById('ev-time').value = ev?.time || '';
     document.getElementById('ev-location').value = ev?.location || '';
-    document.getElementById('ev-event-link').value = ev?.event_link || '';
+    document.getElementById('ev-registration-link').value = ev?.registration_link || '';
     document.getElementById('ev-category').value = ev?.category || 'Community Service';
     document.getElementById('ev-status').value = ev?.status || 'upcoming';
     document.getElementById('ev-desc').value = ev?.desc || '';
-    document.getElementById('ev-registration-link').value = ev?.link || '';
+    //document.getElementById('ev-registration-link').value = ev?.link || '';
 
     document.getElementById('ev-poster').value = ev?.poster || '';
 
