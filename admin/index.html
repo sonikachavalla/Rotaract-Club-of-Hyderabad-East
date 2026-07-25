@@ -939,6 +939,17 @@ async function saveEvent() {
         const currentYear =
     document.getElementById('yearSelect')?.value || '2025-2026';
 
+    console.log("ev-title", document.getElementById("ev-title"));
+    console.log("ev-date", document.getElementById("ev-date"));
+    console.log("ev-time", document.getElementById("ev-time"));
+    console.log("ev-location", document.getElementById("ev-location"));
+    console.log("ev-category", document.getElementById("ev-category"));
+    console.log("ev-status", document.getElementById("ev-status"));
+    console.log("ev-desc", document.getElementById("ev-desc"));
+    console.log("ev-registration-link", document.getElementById("ev-registration-link"));
+    console.log("ev-poster", document.getElementById("ev-poster"));
+    console.log("yearSelect", document.getElementById("yearSelect"));
+
 const payload = {
     id: editEventId,
     title: title,
