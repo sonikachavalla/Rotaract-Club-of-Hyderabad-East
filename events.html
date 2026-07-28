@@ -172,7 +172,7 @@
 
 <main>
   <section class="page-hero">
-    <span class="section-label">RI Year 2026-27 &amp; Archives</span>
+    <span class="section-label">RI Year 2026-2027 &amp; Archives</span>
     <h1>Events &amp; <span class="grad">Projects</span></h1>
     <p class="lead">Explore this year's initiatives and browse archives by month</p>
   </section>
@@ -182,7 +182,7 @@
     <div class="year-selector">
       <label for="yearSelect">Select Year:</label>
       <select id="yearSelect" class="year-select">
-        <option value="2025-2026">2026-27 (Current)</option>
+        <option value="2026-2027">2026-2027 (Current)</option>
         <!-- Past years populated dynamically from admin — see buildYearDropdown() -->
       </select>
     </div>
@@ -401,14 +401,18 @@ async function loadAllData() {
 
     try {
 
-        const response = await fetch("api/getEvents.php");
+        const selectedYear = document.getElementById("yearSelect").value;
+
+const response = await fetch(
+    `api/getEvents.php?year_name=${encodeURIComponent(selectedYear)}`
+);
         const result = await response.json();
 
         _events = result.events || [];
 
         _settings = {};
         _pdfs = {};
-        _pdfYears = ['2025-2026','2024-2025','2023-2024'];
+        _pdfYears = ['2026-2027','2025-2026','2024-2025','2023-2024'];
 
     } catch (e) {
 
@@ -748,11 +752,21 @@ document.getElementById('pdfModalBg').addEventListener('click', e => { if(e.targ
 document.addEventListener('keydown', e => { if(e.key==='Escape') { closePdfModal(); closeEventDetail(); closePhotoLb(); } });
 
 // ── Year switcher ──────────────────────────────────────────────
-document.getElementById('yearSelect').addEventListener('change', function() {
-  const cur = this.value === '2025-2026';
-  document.getElementById('currentYearView').style.display = cur ? '' : 'none';
-  document.getElementById('pastYearView').style.display    = cur ? 'none' : '';
-  if (!cur) renderPastYear(this.value);
+document.getElementById('yearSelect').addEventListener('change', async function () {
+
+    await loadAllData();
+
+    renderEvents();
+
+    const cur = this.value === '2026-2027';
+
+    document.getElementById('currentYearView').style.display = cur ? '' : 'none';
+    document.getElementById('pastYearView').style.display = cur ? 'none' : '';
+
+    if (!cur) {
+        renderPastYear(this.value);
+    }
+
 });
 
 // ── Navbar ─────────────────────────────────────────────────────
