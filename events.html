@@ -17,7 +17,21 @@
     .event-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-bottom:56px}
     .ev-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid rgba(159,122,234,0.1);transition:all 0.25s}
     .ev-card:hover{transform:translateY(-8px);box-shadow:0 12px 40px rgba(159,122,234,0.15)}
-    .ev-banner{height:180px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:3rem;font-weight:800;color:#fff;position:relative;overflow:hidden}
+    .ev-banner{
+    height:220px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+    padding:16px;
+    background:#f7f4ff;
+    box-sizing:border-box;
+}
+    .ev-banner-img{width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;}
     .ev-banner.c1{background:linear-gradient(135deg,#9F7AEA,#B794F6)}
     .ev-banner.c2{background:linear-gradient(135deg,#ED64A6,#F687B3)}
     .ev-banner.c3{background:linear-gradient(135deg,#4299E1,#63B3ED)}
@@ -167,8 +181,10 @@
 
     <!-- Current Year View -->
     <div id="currentYearView">
-      <div class="events-section-head">🗓️ Upcoming Events</div>
-      <div class="event-cards-grid" id="upcomingGrid"></div>
+      <div id="upcomingSection">
+        <div class="events-section-head">🗓️ Upcoming Events</div>
+        <div class="event-cards-grid" id="upcomingGrid"></div>
+      </div>
       <div class="events-section-head">✅ Past Events </div>
       <div class="event-cards-grid" id="pastGrid"></div>
     </div>
@@ -201,7 +217,8 @@
      style="
         width:100%;
         max-height:420px;
-        object-fit:cover;
+        object-fit:contain;
+        background:#f8f7fc;
         display:block;
      ">
 
@@ -399,7 +416,7 @@ function evCardHtml(ev, idx) {
   const init = (ev.title||'E').split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();
   const color = COLORS[idx % COLORS.length];
   const bannerHtml = ev.poster
-    ? `<img src="${ev.poster}" alt="${ev.title}" style="width:100%;height:100%;object-fit:cover;display:block">`
+    ? `<img class="ev-banner-img" src="${ev.poster}" alt="${ev.title}" >`
     : `<span>${init}</span>`;
   const btn = `
     <button class="ev-btn outline" onclick="openEventDetail('${ev.id}')">
@@ -426,7 +443,10 @@ function evCardHtml(ev, idx) {
 // ── Render current year ────────────────────────────────────────
 function renderCurrentYear() {
 
-    const selectedYear = document.getElementById("yearSelect").value;
+    const yearSelect = document.getElementById("yearSelect");
+
+    const selectedYear = yearSelect.value;
+    const currentYear = yearSelect.options[0].value;
 
     const filteredEvents = _events.filter(
         e => e.year_name === selectedYear
@@ -434,6 +454,15 @@ function renderCurrentYear() {
 
     const up = filteredEvents.filter(e => e.status === "upcoming");
     const pa = filteredEvents.filter(e => e.status === "past");
+
+    // Show Upcoming section only for current RI Year
+    const upcomingSection = document.getElementById("upcomingSection");
+
+    if (selectedYear === currentYear) {
+        upcomingSection.style.display = "block";
+    } else {
+        upcomingSection.style.display = "none";
+    }
 
     document.getElementById("upcomingGrid").innerHTML = up.length
         ? up.map(evCardHtml).join("")
@@ -447,7 +476,6 @@ function renderCurrentYear() {
             No past events for this RI Year.
           </p>`;
 }
-
 
 // ── Event detail popup ─────────────────────────────────────────
 const BANNER_COLORS_DETAIL = [
