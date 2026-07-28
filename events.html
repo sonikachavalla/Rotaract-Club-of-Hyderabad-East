@@ -41,18 +41,17 @@
 }
 
 .ev-banner-img{
-
-   .ev-banner-img{
     width:100%;
     height:100%;
     display:block;
-}
+    object-fit:cover;
 }
 
 .ev-banner-img.landscape{
     object-fit:cover;
 }
 
+/* Portrait posters */
 .ev-banner-img.portrait{
     object-fit:contain;
     background:#f8f7fc;
@@ -439,7 +438,7 @@ function evCardHtml(ev, idx) {
   const init = (ev.title||'E').split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();
   const color = COLORS[idx % COLORS.length];
   const bannerHtml = ev.poster
-    ? `<img class="ev-banner-img" src="${ev.poster}" alt="${ev.title}">`
+    ? `<img class="ev-banner-img portrait" src="${ev.poster}" alt="${ev.title}">`
     : `<span>${init}</span>`;
   const btn = `
     <button class="ev-btn outline" onclick="openEventDetail('${ev.id}')">
