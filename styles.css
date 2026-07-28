@@ -941,8 +941,6 @@ textarea.form-control { resize: vertical; min-height: 130px; }
   /* CTA banner */
   .cta-banner { padding: 56px 36px; }
 
-  /* PDF modal shorter on tablet */
-  .pdf-modal { height: min(82vh, 760px); }
 }
 
 /* ── Large mobile (640px) ── */
@@ -989,11 +987,6 @@ textarea.form-control { resize: vertical; min-height: 130px; }
   .event-cards-grid { grid-template-columns: 1fr !important; }
   .events-section-head { font-size: 1.1rem; }
 
-  /* PDF modal */
-  .pdf-modal { width: 98vw; height: 90vh; border-radius: 16px; }
-  .pdf-modal-header { padding: 12px 16px; }
-  .pdf-modal-title { font-size: 0.88rem; }
-  #pdfJsContainer { padding: 10px; }
 }
 
 /* ── Mobile (480px) ── */
@@ -1067,10 +1060,6 @@ textarea.form-control { resize: vertical; min-height: 130px; }
   .footer-grid { grid-template-columns: 1fr; gap: 28px; }
   .footer-brand p { max-width: 100%; }
   .footer-bottom-bar { flex-direction: column; gap: 6px; font-size: 0.74rem; }
-
-  /* PDF modal */
-  .pdf-modal { width: 100vw; height: 95vh; border-radius: 12px 12px 0 0; align-self: flex-end; }
-  .pdf-modal-bg { padding: 0; align-items: flex-end; }
 
   /* Contact */
   .c-card { padding: 22px 18px; }

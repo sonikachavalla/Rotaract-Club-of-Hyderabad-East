@@ -59,19 +59,6 @@
     .month-view-btn{display:inline-block;padding:9px 24px;background:var(--purple);color:#fff;border:none;border-radius:50px;font-family:'Poppins',sans-serif;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s}
     .month-view-btn:hover:not([disabled]){background:var(--purple-dark);transform:translateY(-2px)}
     .month-view-btn[disabled]{background:#E2E8F0;color:#718096;cursor:default}
-    /* PDF Popup */
-    .pdf-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
-    .pdf-modal-bg.open{display:flex}
-    .pdf-modal{background:#fff;border-radius:24px;width:min(860px,96vw);height:min(88vh,840px);display:flex;flex-direction:column;box-shadow:0 32px 80px rgba(0,0,0,0.35);animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1)}
-    @keyframes popIn{from{opacity:0;transform:scale(0.88) translateY(20px)}to{opacity:1;transform:none}}
-    .pdf-modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;border-bottom:1px solid #F0F0F0;flex-shrink:0}
-    .pdf-modal-title{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:#1A202C}
-    .pdf-modal-close{width:34px;height:34px;border-radius:50%;border:none;background:#F7F7F7;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.18s;flex-shrink:0}
-    .pdf-modal-close:hover{background:#E2E8F0}
-    #pdfJsContainer{flex:1;overflow-y:auto;background:#525659;padding:16px;border-radius:0 0 24px 24px}
-    .ev-banner.has-poster{cursor:pointer}
-    .ev-banner-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;color:#fff}
-    .ev-banner:hover .ev-banner-overlay{opacity:1}
     /* Event detail popup */
     .ev-detail-bg{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
     .ev-detail-bg.open{display:flex}
@@ -105,7 +92,6 @@
     .ev-detail-img-item:hover img{transform:scale(1.06)}
     @keyframes popIn{from{opacity:0;transform:scale(0.88) translateY(20px)}to{opacity:1;transform:none}}
       .event-cards-grid{grid-template-columns:repeat(2,1fr)}
-      .pdf-modal{height:min(84vh,760px)}
     
     @media(max-width:640px){
       .month-cards-grid{grid-template-columns:repeat(2,1fr);gap:14px}
@@ -114,8 +100,6 @@
       .year-selector{margin-bottom:36px}
       .events-section-head{font-size:1.05rem}
       .ev-banner{height:150px;font-size:2.4rem}
-      .pdf-modal{width:98vw;height:88vh;border-radius:14px}
-      #pdfJsContainer{padding:10px}
     }
     @media(max-width:480px){
       .month-cards-grid{grid-template-columns:repeat(2,1fr);gap:10px}
@@ -127,10 +111,6 @@
       .ev-body{padding:18px}
       .ev-banner{height:140px;font-size:2rem}
       .year-select{font-size:0.9rem;padding:9px 32px 9px 14px}
-      .pdf-modal{width:100vw;height:95vh;border-radius:14px 14px 0 0}
-      .pdf-modal-bg{padding:0;align-items:flex-end}
-      .pdf-modal-header{padding:12px 14px}
-      .pdf-modal-title{font-size:0.82rem}
     }
     @media(max-width:360px){
       .month-cards-grid{grid-template-columns:repeat(2,1fr);gap:8px}
@@ -197,66 +177,10 @@
       <div class="event-cards-grid" id="pastGrid"></div>
     </div>
 
-    <!-- Past Year View (month cards) -->
-    <div id="pastYearView" style="display:none">
-      <h2 style="text-align:center;font-family:'Poppins',sans-serif;font-size:2.2rem;font-weight:800;margin-bottom:40px" id="pastYearTitle">Select a Month</h2>
-      <div class="month-cards-grid" id="monthCardsGrid"></div>
-    </div>
-
   </div>
 </main>
 
-<!-- PDF Popup — Google Docs Viewer (no sign-in needed) with direct link fallback -->
-<div class="pdf-modal-bg" id="pdfModalBg">
-  <div class="pdf-modal">
 
-    <!-- Header -->
-    <div class="pdf-modal-header">
-      <span class="pdf-modal-title" id="pdfModalTitle">Events Report</span>
-      <div style="display:flex;gap:12px;align-items:center">
-        <a id="pdfOpenLink" href="#" target="_blank" rel="noopener"
-           style="font-size:0.82rem;color:#9F7AEA;font-weight:600;white-space:nowrap;text-decoration:none">
-          Open in new tab ↗
-        </a>
-        <button class="pdf-modal-close" onclick="closePdfModal()">✕</button>
-      </div>
-    </div>
-
-    <!-- Loading spinner (shown while iframe loads) -->
-    <div id="pdfLoading" style="position:absolute;inset:0;top:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#fff;z-index:5;border-radius:0 0 24px 24px;pointer-events:none">
-      <div style="width:44px;height:44px;border:4px solid #EDE9FE;border-top-color:#9F7AEA;border-radius:50%;animation:spin 0.8s linear infinite"></div>
-      <p style="color:#718096;font-size:0.9rem;font-family:'Inter',sans-serif">Loading PDF…</p>
-    </div>
-
-    <!-- Google Docs Viewer iframe -->
-    <div style="flex:1;position:relative;overflow:hidden;border-radius:0 0 24px 24px">
-      <iframe
-        id="pdfFrame"
-        style="width:100%;height:100%;border:none;display:block"
-        title="Monthly Report PDF"
-        sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-        onload="hidePdfLoader()"
-        onerror="showPdfFallback()"
-      ></iframe>
-
-      <!-- Fallback shown if iframe errors -->
-      <div id="pdfFallback" style="display:none;position:absolute;inset:0;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:40px;text-align:center;background:#fff">
-        <div style="font-size:4rem">📄</div>
-        <h3 id="pdfFallbackTitle" style="font-family:'Poppins',sans-serif;color:#1A202C;font-size:1.2rem;margin:0"></h3>
-        <p style="color:#718096;max-width:380px;font-size:0.9rem;line-height:1.7;margin:0">
-          The preview could not load.<br>
-          Click below to open the PDF directly in a new tab — no sign-in required.
-        </p>
-        <a id="pdfFallbackLink" href="#" target="_blank" rel="noopener"
-           style="display:inline-block;padding:13px 36px;background:linear-gradient(135deg,#9F7AEA,#ED64A6);color:#fff;border-radius:50px;font-family:'Poppins',sans-serif;font-weight:700;font-size:0.95rem;text-decoration:none;box-shadow:0 4px 16px rgba(159,122,234,0.4)">
-          Open PDF in New Tab →
-        </a>
-        <p style="color:#a0aec0;font-size:0.75rem;margin:0">Opens as PDF in your browser — no download needed</p>
-      </div>
-    </div>
-
-  </div>
-</div>
 <style>
 @keyframes spin { to { transform: rotate(360deg); } }
 </style>
@@ -392,12 +316,6 @@ import { collection, getDocs, doc, getDoc }
   from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const DEFAULT_JOIN = 'https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform';
-const MONTHS = ['July','August','September','October','November','December','January','February','March','April','May','June'];
-const MONTH_EMOJI = {July:'☀️',August:'🌻',September:'🍂',October:'🎃',November:'🍁',December:'🎄',January:'🎉',February:'💙',March:'🌸',April:'🌼',May:'🌺',June:'🌞'};
-const COLORS = ['c1','c2','c3','c4','c5'];
-
-// ── State ──────────────────────────────────────────────────────
-let _events = [], _pdfs = {}, _settings = {}, _pdfYears = [];
 
 async function loadAllData() {
 
@@ -406,22 +324,22 @@ async function loadAllData() {
         const response = await fetch("api/getEvents.php");
         const result = await response.json();
 
-       _events = result.events || [];
-
-const years = [...new Set(_events.map(e => e.year_name))]
-    .filter(Boolean)
-    .sort()
-    .reverse();
-
-buildYearDropdown(years);
+        _events = result.events || [];
         _settings = {};
-        _pdfs = {};
-        _pdfYears = ['2026-2027','2025-2026','2024-2025','2023-2024'];
+
+        const years = [...new Set(_events.map(e => e.year_name))]
+            .filter(Boolean)
+            .sort()
+            .reverse();
+
+        buildYearDropdown(years);
 
     } catch (e) {
 
         console.error(e);
+
         _events = [];
+        buildYearDropdown([]);
 
     }
 
@@ -443,7 +361,6 @@ function applySettings() {
 function buildYearDropdown(years) {
 
     const sel = document.getElementById("yearSelect");
-
     sel.innerHTML = "";
 
     years.forEach((year, index) => {
@@ -458,6 +375,14 @@ function buildYearDropdown(years) {
 
     });
 
+    // Automatically render the latest year
+    if (years.length > 0) {
+        sel.value = years[0];
+        renderCurrentYear();
+    }
+
+    // Change year when dropdown changes
+    sel.onchange = renderCurrentYear;
 }
 
 // ── Event card HTML ────────────────────────────────────────────
@@ -494,33 +419,29 @@ function evCardHtml(ev, idx) {
 
 // ── Render current year ────────────────────────────────────────
 function renderCurrentYear() {
-  const up = _events.filter(e => e.status === 'upcoming');
-  const pa = _events.filter(e => e.status === 'past');
-  document.getElementById('upcomingGrid').innerHTML = up.length
-    ? up.map(evCardHtml).join('')
-    : `<p style="color:#a0aec0;grid-column:1/-1;text-align:center;padding:32px">No upcoming events yet. Check back soon!</p>`;
-  document.getElementById('pastGrid').innerHTML = pa.length
-    ? pa.map(evCardHtml).join('')
-    : `<p style="color:#a0aec0;grid-column:1/-1;text-align:center;padding:32px">No past events this year yet.</p>`;
+
+    const selectedYear = document.getElementById("yearSelect").value;
+
+    const filteredEvents = _events.filter(
+        e => e.year_name === selectedYear
+    );
+
+    const up = filteredEvents.filter(e => e.status === "upcoming");
+    const pa = filteredEvents.filter(e => e.status === "past");
+
+    document.getElementById("upcomingGrid").innerHTML = up.length
+        ? up.map(evCardHtml).join("")
+        : `<p style="color:#a0aec0;grid-column:1/-1;text-align:center;padding:32px">
+            No upcoming events for this RI Year.
+          </p>`;
+
+    document.getElementById("pastGrid").innerHTML = pa.length
+        ? pa.map(evCardHtml).join("")
+        : `<p style="color:#a0aec0;grid-column:1/-1;text-align:center;padding:32px">
+            No past events for this RI Year.
+          </p>`;
 }
 
-// ── Render past year month cards ───────────────────────────────
-function renderPastYear(year) {
-  document.getElementById('pastYearTitle').textContent = 'Select a Month — ' + year;
-  document.getElementById('monthCardsGrid').innerHTML = MONTHS.map(m => {
-    const key = year + '_' + m;
-    const url = _pdfs[key] || '';
-    return `<div class="month-card">
-      <div class="month-img">${MONTH_EMOJI[m]||'📅'}</div>
-      <div class="month-body">
-        <h3>${m}</h3>
-        <button class="month-view-btn" ${url ? `onclick="openPdfModal('${year} – ${m}','${url.replace(/'/g,"\'")}')"` : 'disabled title="No PDF for this month yet"'}>
-          ${url ? 'View Events' : 'Coming Soon'}
-        </button>
-      </div>
-    </div>`;
-  }).join('');
-}
 
 // ── Event detail popup ─────────────────────────────────────────
 const BANNER_COLORS_DETAIL = [
@@ -698,72 +619,6 @@ window.closePhotoLb = function() {
   document.body.style.overflow = '';
 };
 document.getElementById('photoLbBg').addEventListener('click', e => { if(e.target.id==='photoLbBg') closePhotoLb(); });
-
-// ── PDF viewer (unchanged logic, no Firebase needed) ──────────
-function extractDriveId(url) {
-  const m1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (m1) return m1[1];
-  const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-  if (m2) return m2[1];
-  return null;
-}
-function buildViewerUrl(rawUrl) {
-  const driveId = extractDriveId(rawUrl);
-  if (driveId) return `https://drive.google.com/file/d/${driveId}/preview`;
-  if (rawUrl.includes('dropbox.com')) {
-    const direct = rawUrl.replace('?dl=0','?dl=1').replace('www.dropbox','dl.dropboxusercontent');
-    return `https://docs.google.com/viewer?url=${encodeURIComponent(direct)}&embedded=true`;
-  }
-  return `https://docs.google.com/viewer?url=${encodeURIComponent(rawUrl)}&embedded=true`;
-}
-function buildOpenUrl(rawUrl) {
-  const driveId = extractDriveId(rawUrl);
-  if (driveId) return `https://drive.google.com/file/d/${driveId}/view?usp=sharing`;
-  return rawUrl;
-}
-let pdfFallbackTimer = null;
-window.hidePdfLoader = function() {
-  const loader = document.getElementById('pdfLoading');
-  if (loader) { loader.style.transition='opacity 0.3s'; loader.style.opacity='0'; setTimeout(()=>loader.style.display='none',300); }
-  clearTimeout(pdfFallbackTimer);
-};
-window.showPdfFallback = function() {
-  document.getElementById('pdfLoading').style.display = 'none';
-  document.getElementById('pdfFallback').style.display = 'flex';
-  clearTimeout(pdfFallbackTimer);
-};
-window.openPdfModal = function(label, rawUrl) {
-  const frame   = document.getElementById('pdfFrame');
-  const loading = document.getElementById('pdfLoading');
-  const fallback= document.getElementById('pdfFallback');
-  const openLink= document.getElementById('pdfOpenLink');
-  const fbLink  = document.getElementById('pdfFallbackLink');
-  document.getElementById('pdfModalTitle').textContent = label + ' — Events';
-  document.getElementById('pdfFallbackTitle').textContent = label;
-  const openUrl = buildOpenUrl(rawUrl);
-  openLink.href = openUrl; fbLink.href = openUrl;
-  loading.style.display='flex'; loading.style.opacity='1';
-  fallback.style.display='none'; frame.src='';
-  document.getElementById('pdfModalBg').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  setTimeout(() => {
-    frame.src = buildViewerUrl(rawUrl);
-    pdfFallbackTimer = setTimeout(() => {
-      if (loading.style.display !== 'none') showPdfFallback();
-    }, 12000);
-  }, 200);
-};
-window.closePdfModal = function() {
-  document.getElementById('pdfModalBg').classList.remove('open');
-  document.getElementById('pdfFrame').src = '';
-  document.getElementById('pdfLoading').style.display = 'flex';
-  document.getElementById('pdfLoading').style.opacity = '1';
-  document.getElementById('pdfFallback').style.display = 'none';
-  clearTimeout(pdfFallbackTimer);
-  document.body.style.overflow = '';
-};
-document.getElementById('pdfModalBg').addEventListener('click', e => { if(e.target.id==='pdfModalBg') closePdfModal(); });
-document.addEventListener('keydown', e => { if(e.key==='Escape') { closePdfModal(); closeEventDetail(); closePhotoLb(); } });
 
 // ── Year switcher ──────────────────────────────────────────────
 document.getElementById('yearSelect').addEventListener('change', async function () {
