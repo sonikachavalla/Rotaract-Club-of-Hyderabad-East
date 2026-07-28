@@ -33,6 +33,12 @@ $events = [];
 
 while ($row = $result->fetch_assoc()) {
 
+    $today = date("Y-m-d");
+
+    $status = (strtotime($row["event_date"]) < strtotime($today))
+                ? "past"
+                : "upcoming";
+
     $events[] = [
 
         "id" => (int)$row["id"],
@@ -49,9 +55,7 @@ while ($row = $result->fetch_assoc()) {
 
         "category" => $row["category"],
 
-        "status" => ($row["status"] === "Completed")
-            ? "past"
-            : "upcoming",
+        "status" => $status,
 
         "poster" => $row["poster"],
 
