@@ -452,8 +452,17 @@ function renderCurrentYear() {
         e => e.year_name === selectedYear
     );
 
-    const up = filteredEvents.filter(e => e.status === "upcoming");
-    const pa = filteredEvents.filter(e => e.status === "past");
+    let up = [];
+let pa = [];
+
+if (selectedYear === currentYear) {
+    // Current RI Year
+    up = filteredEvents.filter(e => e.status === "upcoming");
+    pa = filteredEvents.filter(e => e.status === "past");
+} else {
+    // Archived RI Years
+    pa = filteredEvents;
+}
 
     // Show Upcoming section only for current RI Year
     const upcomingSection = document.getElementById("upcomingSection");
