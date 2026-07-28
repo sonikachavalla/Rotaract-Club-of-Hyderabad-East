@@ -384,6 +384,13 @@ function buildYearDropdown(years) {
     sel.onchange = renderCurrentYear;
 }
 
+const COLORS = [
+    "c1",
+    "c2",
+    "c3",
+    "c4",
+    "c5"
+];
 // ── Event card HTML ────────────────────────────────────────────
 function evCardHtml(ev, idx) {
   const d   = ev.date ? new Date(ev.date) : null;
