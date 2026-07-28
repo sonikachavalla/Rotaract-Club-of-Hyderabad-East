@@ -162,10 +162,6 @@
     <div class="year-selector">
       <label for="yearSelect">Select Year:</label>
       <select id="yearSelect" class="year-select">
-        <option value="2026-2027">2026-2027 (Current)</option>
-        <option value="2025-2026">2025-2026</option>
-        <option value="2024-2025">2024-2025</option>
-        <!-- Past years populated dynamically from admin — see buildYearDropdown() -->
       </select>
     </div>
 
@@ -623,24 +619,6 @@ window.closePhotoLb = function() {
 };
 document.getElementById('photoLbBg').addEventListener('click', e => { if(e.target.id==='photoLbBg') closePhotoLb(); });
 
-// ── Year switcher ──────────────────────────────────────────────
-document.getElementById('yearSelect').addEventListener('change', async function () {
-
-    await loadAllData();
-
-    renderEvents();
-
-    const cur = this.value === '2026-2027';
-
-    document.getElementById('currentYearView').style.display = cur ? '' : 'none';
-    document.getElementById('pastYearView').style.display = cur ? 'none' : '';
-
-    if (!cur) {
-        renderPastYear(this.value);
-    }
-
-});
-
 // ── Navbar ─────────────────────────────────────────────────────
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20), {passive:true});
@@ -661,11 +639,9 @@ document.addEventListener('click', e => {
 document.body.style.opacity = '0';
 document.body.style.transition = 'opacity 0.35s ease';
 window.addEventListener('load', async () => {
-  document.body.style.opacity = '1';
-  await loadAllData();
-  applySettings();
-  buildYearDropdown();
-  renderCurrentYear();
+    document.body.style.opacity = '1';
+    await loadAllData();
+    applySettings();
 });
 </script>
 </body>
