@@ -258,13 +258,11 @@
              style="display:flex;flex-direction:column;gap:8px;margin:18px 0;">
         </div>
 
-        <div style="margin-bottom:20px;">
-            <a id="evRegisterBtn"
-               class="ev-btn"
-               target="_blank">
-               Register Now
-            </a>
-        </div>
+        <div id="registerContainer" style="margin-bottom:20px;">
+    <a id="evRegisterBtn" class="ev-btn" target="_blank">
+        Register Now
+    </a>
+</div>
 
         <h3 style="margin-bottom:12px;">Description</h3>
 
@@ -605,26 +603,24 @@ window.openEventDetail = function(eventId){
         ${ev.location ? `<div>📍 ${ev.location}</div>` : ""}
     `;
 
-    const btn=document.getElementById("evRegisterBtn");
+const registerContainer = document.getElementById("registerContainer");
+const btn = document.getElementById("evRegisterBtn");
 
-    if(ev.registration_link){
+if (ev.status === "upcoming" && ev.registration_link) {
 
-        btn.href=ev.registration_link;
+    btn.href = ev.registration_link;
+    registerContainer.style.display = "block";
 
-        btn.style.display="inline-flex";
+} else {
 
-    }else{
-
-        btn.style.display="none";
-
-    }
-
-    document.getElementById("evDetailBg").classList.add("open");
-
-    document.body.style.overflow="hidden";
+    registerContainer.style.display = "none";
 
 }
 
+document.getElementById("evDetailBg").classList.add("open");
+
+document.body.style.overflow="hidden";
+}
 window.closeEventDetail = function() {
   document.getElementById('evDetailBg').classList.remove('open');
   document.body.style.overflow = '';
