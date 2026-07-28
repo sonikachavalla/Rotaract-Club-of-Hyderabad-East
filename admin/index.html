@@ -467,6 +467,14 @@ textarea.form-input{resize:vertical;min-height:90px}
           </select>
         </div>
       </div>
+      <div class="form-group">
+    <label class="form-label">RI Year</label>
+    <input
+        type="text"
+        id="ev-year"
+        class="form-input"
+        placeholder="ex: 2026-2027">
+</div>
       <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" id="ev-desc" placeholder="Brief description…"></textarea></div>
       <div class="form-group"><label class="form-label">Registration Link (for upcoming)</label><input class="form-input" id="ev-registration-link" placeholder="https://forms.google.com/..."></div>
       <div class="form-group">
@@ -950,6 +958,7 @@ async function openEventModal(id = null) {
     document.getElementById('ev-location').value = ev?.location || '';
     document.getElementById('ev-registration-link').value = ev?.registration_link || '';
     document.getElementById('ev-category').value = ev?.category || 'Community Service';
+    document.getElementById('ev-year').value = ev?.year_name || ev?.ri_year || '';
     document.getElementById('ev-status').value = ev?.status || 'upcoming';
     document.getElementById('ev-desc').value = ev?.desc || '';
     //document.getElementById('ev-registration-link').value = ev?.link || '';
@@ -1017,7 +1026,16 @@ async function saveEvent() {
         }
 
         const currentYear =
-    document.getElementById('yearSelect')?.value || '2025-2026';
+    document.getElementById('ev-year').value.trim();
+
+const pattern = /^\d{4}-\d{4}$/;
+
+if (!pattern.test(currentYear)) {
+    toast("Please enter the RI Year like 2026-2027", "err");
+    btn.disabled = false;
+    btn.textContent = "Save Event";
+    return;
+}
 
     console.log("ev-title", document.getElementById("ev-title"));
     console.log("ev-date", document.getElementById("ev-date"));
@@ -1028,7 +1046,7 @@ async function saveEvent() {
     console.log("ev-desc", document.getElementById("ev-desc"));
     console.log("ev-registration-link", document.getElementById("ev-registration-link"));
     console.log("ev-poster", document.getElementById("ev-poster"));
-    console.log("yearSelect", document.getElementById("yearSelect"));
+    console.log("ev-year", document.getElementById("ev-year"));
 
 const payload = {
     id: editEventId,

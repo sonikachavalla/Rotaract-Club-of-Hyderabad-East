@@ -51,7 +51,7 @@ if (is_numeric($date)) {
     $status = trim($row["Status"] ?? "Upcoming");
     $registration_link = trim($row["Registration Link"] ?? "");
     $poster = trim($row["Poster Filename"] ?? "");
-
+    $year_name = trim($row["Year"] ?? "");
     if ($title == "" || $date == "") {
         $skipped[] = "Row " . ($index + 2) . " : Missing Title or Date";
         continue;
