@@ -606,7 +606,14 @@ window.openEventDetail = function(eventId){
 const registerContainer = document.getElementById("registerContainer");
 const btn = document.getElementById("evRegisterBtn");
 
-if (ev.status === "upcoming" && ev.registration_link) {
+// Current RI Year (first option in the dropdown)
+const currentYear = document.getElementById("yearSelect").options[0].value;
+
+if (
+    ev.year_name === currentYear &&
+    ev.status === "upcoming" &&
+    ev.registration_link
+) {
 
     btn.href = ev.registration_link;
     registerContainer.style.display = "block";
