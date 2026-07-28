@@ -403,15 +403,17 @@ async function loadAllData() {
 
     try {
 
-        const selectedYear = document.getElementById("yearSelect").value;
-
-const response = await fetch(
-    `api/getEvents.php?year_name=${encodeURIComponent(selectedYear)}`
-);
+        const response = await fetch("api/getEvents.php");
         const result = await response.json();
 
-        _events = result.events || [];
+       _events = result.events || [];
 
+const years = [...new Set(_events.map(e => e.year_name))]
+    .filter(Boolean)
+    .sort()
+    .reverse();
+
+buildYearDropdown(years);
         _settings = {};
         _pdfs = {};
         _pdfYears = ['2026-2027','2025-2026','2024-2025','2023-2024'];
@@ -438,14 +440,24 @@ function applySettings() {
 }
 
 // ── Build year dropdown ────────────────────────────────────────
-function buildYearDropdown() {
-  const sel = document.getElementById('yearSelect');
-  while (sel.options.length > 1) sel.remove(1);
-  _pdfYears.forEach(yr => {
-    const opt = document.createElement('option');
-    opt.value = yr; opt.textContent = yr;
-    sel.appendChild(opt);
-  });
+function buildYearDropdown(years) {
+
+    const sel = document.getElementById("yearSelect");
+
+    sel.innerHTML = "";
+
+    years.forEach((year, index) => {
+
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = index === 0
+            ? `${year} (Current)`
+            : year;
+
+        sel.appendChild(option);
+
+    });
+
 }
 
 // ── Event card HTML ────────────────────────────────────────────
