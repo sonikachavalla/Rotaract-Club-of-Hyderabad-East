@@ -75,7 +75,17 @@
     /* Event detail popup */
     .ev-detail-bg{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}
     .ev-detail-bg.open{display:flex}
-    .ev-detail-modal{background:#fff;border-radius:24px;width:min(700px,96vw);max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,0.3);animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1)}
+      .ev-detail-modal{background:#fff;border-radius:24px;width:min(700px,96vw);max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,0.3);animation:popIn 0.3s cubic-bezier(0.34,1.56,0.64,1)}.ev-detail-modal{
+    background:#fff;
+    border-radius:24px;
+    width:min(950px,96vw);
+    max-height:92vh;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 32px 80px rgba(0,0,0,.3);
+    animation:popIn .3s cubic-bezier(.34,1.56,.64,1);
+}
     .ev-detail-poster{width:100%;max-height:360px;object-fit:cover;border-radius:24px 24px 0 0;display:block}
     .ev-detail-poster-placeholder{height:200px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-size:4rem;font-weight:800;color:#fff;border-radius:24px 24px 0 0}
     .ev-detail-body{padding:28px 32px 32px}
@@ -245,20 +255,62 @@
 
 <!-- Event Detail Popup (for past events — shows poster + images) -->
 <div class="ev-detail-bg" id="evDetailBg">
-  <div class="ev-detail-modal" style="position:relative">
+  <div class="ev-detail-modal" style="position:relative;">
+
     <button class="ev-detail-close" onclick="closeEventDetail()">✕</button>
-    <div id="evDetailPosterWrap"></div>
-    <div class="ev-detail-body">
-      <span id="evDetailBadge" class="ev-badge" style="margin-bottom:12px;display:inline-block"></span>
-      <h2 id="evDetailTitle"></h2>
-      <p id="evDetailDesc"></p>
-      <div id="evDetailMeta" style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px;font-size:0.875rem;color:#718096"></div>
-      <div id="evDetailImagesSection" style="display:none">
-        <h4 style="font-family:'Poppins',sans-serif;font-size:0.9rem;font-weight:700;margin-bottom:12px;color:#1A202C">📸 Event Photos</h4>
-        <div class="ev-detail-images" id="evDetailImages"></div>
-      </div>
+
+    <div id="eventSlider" style="position:relative;height:420px;background:#f5f5f5;overflow:hidden;">
+
+        <button id="prevImage"
+                onclick="changeImage(-1)"
+                style="position:absolute;left:15px;top:50%;transform:translateY(-50%);
+                z-index:10;width:45px;height:45px;border:none;border-radius:50%;
+                background:rgba(0,0,0,.45);color:#fff;font-size:24px;cursor:pointer;">
+            ❮
+        </button>
+
+        <img id="sliderImage"
+             style="width:100%;height:100%;object-fit:cover;display:block;">
+
+        <button id="nextImage"
+                onclick="changeImage(1)"
+                style="position:absolute;right:15px;top:50%;transform:translateY(-50%);
+                z-index:10;width:45px;height:45px;border:none;border-radius:50%;
+                background:rgba(0,0,0,.45);color:#fff;font-size:24px;cursor:pointer;">
+            ❯
+        </button>
+
     </div>
-  </div>
+
+    <div id="sliderDots"
+         style="display:flex;justify-content:center;gap:8px;margin:18px 0;">
+    </div>
+
+    <div class="ev-detail-body">
+
+        <span id="evDetailBadge" class="ev-badge"></span>
+
+        <h2 id="evDetailTitle"></h2>
+
+        <div id="evDetailMeta"
+             style="display:flex;flex-direction:column;gap:8px;margin:18px 0;">
+        </div>
+
+        <div style="margin-bottom:20px;">
+            <a id="evRegisterBtn"
+               class="ev-btn"
+               target="_blank">
+               Register Now
+            </a>
+        </div>
+
+        <h3 style="margin-bottom:12px;">Description</h3>
+
+        <p id="evDetailDesc"></p>
+
+    </div>
+
+</div>
 </div>
 
 <!-- Standalone Photo Lightbox — clean fullscreen, no PDF modal reuse -->
@@ -438,39 +490,130 @@ const BANNER_COLORS_DETAIL = [
   'linear-gradient(135deg,#ECC94B,#F6E05E)'
 ];
 
-window.openEventDetail = function(eventId) {
-  const idx = _events.findIndex(e => e.id === eventId);
-  const ev  = _events[idx];
-  if (!ev) return;
-  const posterWrap = document.getElementById('evDetailPosterWrap');
-  if (ev.poster) {
-    posterWrap.innerHTML = `<img src="${ev.poster}" alt="${ev.title}" class="ev-detail-poster">`;
-  } else {
-    const init = (ev.title||'E').split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();
-    const bg   = BANNER_COLORS_DETAIL[idx % BANNER_COLORS_DETAIL.length];
-    posterWrap.innerHTML = `<div class="ev-detail-poster-placeholder" style="background:${bg}">${init}</div>`;
-  }
-  document.getElementById('evDetailBadge').textContent = ev.category || 'Event';
-  document.getElementById('evDetailTitle').textContent = ev.title    || '';
-  document.getElementById('evDetailDesc').textContent  = ev.desc     || '';
-  let metaHtml = '';
-  if (ev.date || ev.time) metaHtml += `<span>📅 ${[ev.date,ev.time].filter(Boolean).join(' · ')}</span>`;
-  if (ev.location)        metaHtml += `<span>📍 ${ev.location}</span>`;
-  document.getElementById('evDetailMeta').innerHTML = metaHtml;
-  const photos = ev.photos || ev.images || [];
-  const imagesSection = document.getElementById('evDetailImagesSection');
-  const imagesGrid    = document.getElementById('evDetailImages');
-  if (photos.length) {
-    imagesSection.style.display = '';
-    imagesGrid.innerHTML = photos.map((src,i) =>
-      `<div class="ev-detail-img-item" onclick="openEventImage('${eventId}',${i})">
-         <img src="${src}" alt="Event photo ${i+1}" loading="lazy">
-       </div>`
-    ).join('');
-  } else { imagesSection.style.display = 'none'; }
-  document.getElementById('evDetailBg').classList.add('open');
-  document.body.style.overflow = 'hidden';
-};
+let currentImages = [];
+let currentImageIndex = 0;
+
+function updateSlider() {
+
+    if (!currentImages.length) return;
+
+    document.getElementById("sliderImage").src =
+        currentImages[currentImageIndex];
+
+    const showArrows = currentImages.length > 1;
+
+    document.getElementById("prevImage").style.display =
+        showArrows ? "block" : "none";
+
+    document.getElementById("nextImage").style.display =
+        showArrows ? "block" : "none";
+
+    const dots = document.getElementById("sliderDots");
+
+    dots.innerHTML = "";
+
+    currentImages.forEach((img,index)=>{
+
+        dots.innerHTML += `
+            <div
+                onclick="goToImage(${index})"
+                style="
+                    width:10px;
+                    height:10px;
+                    border-radius:50%;
+                    background:${index===currentImageIndex ? "#7C3AED" : "#D1D5DB"};
+                    cursor:pointer;
+                ">
+            </div>
+        `;
+
+    });
+
+}
+
+window.changeImage = function(dir){
+
+    currentImageIndex += dir;
+
+    if(currentImageIndex<0)
+        currentImageIndex=currentImages.length-1;
+
+    if(currentImageIndex>=currentImages.length)
+        currentImageIndex=0;
+
+    updateSlider();
+
+}
+
+window.goToImage = function(index){
+
+    currentImageIndex=index;
+
+    updateSlider();
+
+}
+
+window.openEventDetail = function(eventId){
+
+    const ev = _events.find(e=>e.id===eventId);
+
+    if(!ev) return;
+
+    currentImages=[];
+
+    if(ev.poster)
+        currentImages.push(ev.poster);
+
+    if(ev.photos)
+        currentImages.push(...ev.photos);
+
+    if(ev.images)
+        currentImages.push(...ev.images);
+
+    if(currentImages.length===0){
+
+        currentImages.push("https://placehold.co/1200x700?text=No+Image");
+
+    }
+
+    currentImageIndex=0;
+
+    updateSlider();
+
+    document.getElementById("evDetailBadge").textContent =
+        ev.category || "Event";
+
+    document.getElementById("evDetailTitle").textContent =
+        ev.title || "";
+
+    document.getElementById("evDetailDesc").textContent =
+        ev.desc || "";
+
+    document.getElementById("evDetailMeta").innerHTML = `
+        ${ev.date ? `<div>📅 ${ev.date}</div>` : ""}
+        ${ev.time ? `<div>🕒 ${ev.time}</div>` : ""}
+        ${ev.location ? `<div>📍 ${ev.location}</div>` : ""}
+    `;
+
+    const btn=document.getElementById("evRegisterBtn");
+
+    if(ev.registration_link){
+
+        btn.href=ev.registration_link;
+
+        btn.style.display="inline-flex";
+
+    }else{
+
+        btn.style.display="none";
+
+    }
+
+    document.getElementById("evDetailBg").classList.add("open");
+
+    document.body.style.overflow="hidden";
+
+}
 
 window.closeEventDetail = function() {
   document.getElementById('evDetailBg').classList.remove('open');
