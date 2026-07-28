@@ -25,6 +25,27 @@ foreach ($events as $index => $row) {
     $description = trim($row["Description"] ?? "");
     $category = trim($row["Category"] ?? "");
     $date = trim($row["Date"] ?? "");
+
+/*
+|--------------------------------------------------------------------------
+| Convert Excel date to YYYY-MM-DD
+|--------------------------------------------------------------------------
+*/
+
+if (is_numeric($date)) {
+
+    // Excel serial number
+    $date = gmdate("Y-m-d", ($date - 25569) * 86400);
+
+} else {
+
+    $timestamp = strtotime($date);
+
+    if ($timestamp !== false) {
+        $date = date("Y-m-d", $timestamp);
+    }
+
+}
     $time = trim($row["Time"] ?? "");
     $location = trim($row["Location"] ?? "");
     $status = trim($row["Status"] ?? "Upcoming");

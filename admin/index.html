@@ -1686,7 +1686,10 @@ async function importEvents() {
 
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-        const events = XLSX.utils.sheet_to_json(sheet);
+        const events = XLSX.utils.sheet_to_json(sheet, {
+    raw: false,
+    dateNF: "yyyy-mm-dd"
+});
 
         try {
 
