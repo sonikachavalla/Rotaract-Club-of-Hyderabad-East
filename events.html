@@ -317,6 +317,9 @@ import { collection, getDocs, doc, getDoc }
 
 const DEFAULT_JOIN = 'https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform';
 
+let _events = [];
+let _settings = {};
+
 async function loadAllData() {
 
     try {
