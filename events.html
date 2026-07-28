@@ -555,7 +555,12 @@ window.goToImage = function(index){
 
 window.openEventDetail = function(eventId){
 
-    const ev = _events.find(e=>e.id===eventId);
+    console.log("Clicked:", eventId);
+    console.log(_events);
+
+    const ev = _events.find(e => String(e.id) === String(eventId));
+
+    console.log("Found event:", ev);
 
     if(!ev) return;
 
