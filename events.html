@@ -40,50 +40,22 @@
     background:#f7f4ff;
 }
 
-.ev-banner-bg{
-    position:absolute;
-    inset:0;
-
-    width:100%;
-    height:100%;
-
-    object-fit:cover;
-
-    filter:blur(10px);
-
-    transform:scale(1.15);
-
-    opacity:.9;
-
-    z-index:0;
-}
-
-.ev-banner.has-poster::before{
-
-    content:"";
-
-    position:absolute;
-    inset:0;
-
-    background:rgba(255,255,255,.08);
-
-    z-index:1;
-
-}
-
 .ev-banner-img{
 
-    position:relative;
-    z-index:2;
-
+   .ev-banner-img{
     width:100%;
     height:100%;
+    display:block;
+}
+}
 
+.ev-banner-img.landscape{
+    object-fit:cover;
+}
+
+.ev-banner-img.portrait{
     object-fit:contain;
-
-    padding:4px;
-
-    box-sizing:border-box;
+    background:#f8f7fc;
 }
     .ev-banner.c1{background:linear-gradient(135deg,#9F7AEA,#B794F6)}
     .ev-banner.c2{background:linear-gradient(135deg,#ED64A6,#F687B3)}
@@ -467,10 +439,7 @@ function evCardHtml(ev, idx) {
   const init = (ev.title||'E').split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();
   const color = COLORS[idx % COLORS.length];
   const bannerHtml = ev.poster
-    ? `
-        <img class="ev-banner-bg" src="${ev.poster}" alt="">
-        <img class="ev-banner-img" src="${ev.poster}" alt="${ev.title}">
-      `
+    ? `<img class="ev-banner-img" src="${ev.poster}" alt="${ev.title}">`
     : `<span>${init}</span>`;
   const btn = `
     <button class="ev-btn outline" onclick="openEventDetail('${ev.id}')">
@@ -538,6 +507,28 @@ if (selectedYear === currentYear) {
         : `<p style="color:#a0aec0;grid-column:1/-1;text-align:center;padding:32px">
             No past events for this RI Year.
           </p>`;
+
+          document.querySelectorAll(".ev-banner-img").forEach(img => {
+
+    const temp = new Image();
+
+    temp.onload = function () {
+
+        if (temp.naturalHeight > temp.naturalWidth) {
+
+            img.classList.add("portrait");
+
+        } else {
+
+            img.classList.add("landscape");
+
+        }
+
+    };
+
+    temp.src = img.src;
+
+});
 }
 
 // ── Event detail popup ─────────────────────────────────────────
