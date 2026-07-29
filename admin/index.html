@@ -458,11 +458,11 @@ textarea.form-input{resize:vertical;min-height:90px}
         <div class="form-group"><label class="form-label">Category</label>
           <select class="form-input" id="ev-category">
             <option>Service</option><option>Professional Development</option>
-            <option>Club Admin</option><option>Public Image</option>
+            <option>Club Administration</option><option>Public Image</option>
             <option>Finance</option><option>Membership</option><option>International Relations</option>
             <option>Foundation</option><option>Sports</option>
             <option>Young Leader</option><option>Fundraising</option>
-            <option>District</option><option>Rotary</option>
+            <option>District Event</option><option>Rotary Event</option>
             <option>Other Club</option>
           </select>
         </div>
@@ -727,8 +727,12 @@ document.getElementById('loginPass').addEventListener('keydown', e => e.key === 
 // ══════════════════════════════════════════════════════════════
 //  INIT — called once after auth succeeds
 // ══════════════════════════════════════════════════════════════
-function initAdmin() {
-  renderDashboard();
+async function initAdmin() {
+
+    renderDashboard();
+
+    await loadTeam();
+
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -907,23 +911,6 @@ function clearPoster() {
   document.getElementById('ev-poster-preview').style.display = 'none';
   document.getElementById('ev-poster-clear').style.display = 'none';
 }
-
-// async function openEventModal(id = null) {
-
-//     editEventId = id;
-//     _posterFile = null;
-
-//     let ev = null;
-
-//     if (id) {
-
-//         const response = await fetch('../api/getEvents.php');
-//         const result = await response.json();
-
-//         ev = result.events.find(e => Number(e.id) === Number(id));
-//         console.log("Editing ID:", id);
-//         console.log("Found event:", ev);
-//     }
 
 async function openEventModal(id = null) {
 
@@ -1181,6 +1168,8 @@ async function renderEventsTable() {
 // ══════════════════════════════════════════════════════════════
 let editTeamId = null;
 let _memberPhotoFile = null;
+let teamMembers = [];
+let editingMember = null;
 
 function _getInitials(name) {
   return (name || '?').replace(/^Rtn\.\s*/i, '').split(' ').map(w => w[0] || '').join('').toUpperCase().slice(0, 2) || '?';
@@ -1643,16 +1632,18 @@ async function loadTeam() {
         const response = await fetch("api/getTeam.php");
         const result = await response.json();
 
-        if (result.success) {
-
-            teamMembers = result.members || [];
-            renderTeamTable();
-
+        if (!result.success) {
+            toast(result.message || "Failed to load team.", "error");
+            return;
         }
 
-    } catch (error) {
+        teamMembers = result.members;
 
-        console.error(error);
+        renderTeamTable();
+
+    } catch (err) {
+
+        console.error(err);
         toast("Failed to load team.", "error");
 
     }
