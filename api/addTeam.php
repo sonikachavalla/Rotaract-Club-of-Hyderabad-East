@@ -1,18 +1,10 @@
 <?php
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 require "db.php";
 
 header("Content-Type: application/json");
 
-$raw = file_get_contents("php://input");
-
-echo "<pre>";
-var_dump($raw);
-echo "</pre>";
-exit;
+$data = json_decode(file_get_contents("php://input"), true);
 
 if (!$data) {
     echo json_encode([
@@ -38,29 +30,6 @@ if ($name === "" || $role === "") {
     exit;
 }
 
-/* Check if this member already exists */
-$check = $conn->prepare("SELECT id FROM team WHERE name = ? AND role = ? LIMIT 1");
-$check->bind_param("ss", $name, $role);
-$check->execute();
-$result = $check->get_result();
-
-if ($result->num_rows > 0) {
-    $existing = $result->fetch_assoc();
-
-    echo json_encode([
-        "success" => true,
-        "id" => $existing["id"],
-        "message" => "Already exists"
-    ]);
-
-    $check->close();
-    $conn->close();
-    exit;
-}
-
-$check->close();
-
-/* Insert new member */
 $sql = "INSERT INTO team
 (name, role, member_type, linkedin, email, photo, display_order)
 VALUES (?, ?, ?, ?, ?, ?, ?)";
