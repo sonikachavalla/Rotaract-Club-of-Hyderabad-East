@@ -1213,10 +1213,10 @@ function openTeamModal(id = null) {
 
         document.getElementById("memberName").value = editingMember.name;
         document.getElementById("memberRole").value = editingMember.role;
-        document.getElementById("memberType").value = editingMember.member_type;
+        document.getElementById("memberType").value = editingMember.type;
         document.getElementById("memberLinkedin").value = editingMember.linkedin || "";
         document.getElementById("memberEmail").value = editingMember.email || "";
-        document.getElementById("memberOrder").value = editingMember.display_order || 0;
+        document.getElementById("memberOrder").value = editingMember.order || 0;
 
         document.getElementById("memberModalTitle").textContent = "Edit Team Member";
 
@@ -1246,74 +1246,76 @@ async function saveMember() {
 
     let photo = editingMember?.photo || "";
 
+    // Upload image to Firebase Storage
     const imageFile = document.getElementById("memberImage").files[0];
 
     if (imageFile) {
 
-        const formData = new FormData();
-        formData.append("image", imageFile);
+        const fileName = `team/${Date.now()}-${Math.random().toString(36).substring(2)}-${imageFile.name}`;
 
-        const upload = await fetch("api/uploadTeamImage.php", {
-            method: "POST",
-            body: formData
-        });
+        const storageRef = window._fb.sRef(
+            window._fb.stor,
+            fileName
+        );
 
-        const uploadResult = await upload.json();
+        await window._fb.uploadBytes(storageRef, imageFile);
 
-        if (!uploadResult.success) {
-            toast(uploadResult.message, "error");
-            return;
-        }
-
-        photo = uploadResult.url;
+        photo = await window._fb.getDownloadURL(storageRef);
     }
 
     const memberData = {
         name,
         role,
-        member_type: type,
+        type: type,
         linkedin,
         email,
         photo,
-        display_order: order
+        order: order,
+        updatedAt: new Date()
     };
 
-    let url = "api/addTeam.php";
+    try {
 
-    if (editingMember) {
-        memberData.id = editingMember.id;
-        url = "api/updateTeam.php";
-    }
+        if (editingMember) {
 
-    const response = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(memberData)
-    });
+            await window._fb.updateDoc(
+                window._fb.doc(
+                    window._fb.db,
+                    "team",
+                    editingMember.id
+                ),
+                memberData
+            );
 
-    const result = await response.json();
+            toast("Member updated!", "success");
 
-    if (result.success) {
+        } else {
+
+            await window._fb.addDoc(
+                window._fb.collection(
+                    window._fb.db,
+                    "team"
+                ),
+                memberData
+            );
+
+            toast("Member added!", "success");
+
+        }
 
         closeModal("memberModal");
         editingMember = null;
 
         await loadTeam();
 
-        toast(
-            editingMember ? "Member updated!" : "Member added!",
-            "success"
-        );
+    } catch (err) {
 
-    } else {
-
-        toast(result.message, "error");
+        console.error(err);
+        toast("Failed to save member.", "error");
 
     }
-}
 
+}
 async function moveTeamMember(id, direction) {
   const { db, collection, getDocs, doc, updateDoc, serverTimestamp } = fb();
   const snap = await getDocs(collection(db, 'team'));
@@ -1370,14 +1372,13 @@ function renderTeamTable() {
 
                 <td>${member.role}</td>
 
-                <td>${member.member_type}</td>
-
-                <td>${member.display_order}</td>
+               <td>${member.type}</td>
+               <td>${member.order}</td>
 
                 <td>
 
                     <button class="btn btn-sm btn-primary"
-                        onclick="openTeamModal(${member.id})">
+                        onclick="openTeamModal('${member.id}')"
                         Edit
                     </button>
 
@@ -1629,27 +1630,31 @@ async function loadTeam() {
 
     try {
 
-        const response = await fetch("api/getTeam.php");
-        const result = await response.json();
+        const snapshot = await window._fb.getDocs(
+            window._fb.collection(window._fb.db, "team")
+        );
 
-        if (!result.success) {
-            toast(result.message || "Failed to load team.", "error");
-            return;
-        }
+        teamMembers = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
 
-        teamMembers = result.members;
+        teamMembers.sort((a, b) => {
+            const oa = a.order || 0;
+            const ob = b.order || 0;
+            return oa - ob;
+        });
 
         renderTeamTable();
 
     } catch (err) {
 
         console.error(err);
-        toast("Failed to load team.", "error");
+        toast("Failed to load team.", "err");
 
     }
 
 }
-
 // ══════════════════════════════════════════════════════════════
 //  EXPORT
 // ══════════════════════════════════════════════════════════════
