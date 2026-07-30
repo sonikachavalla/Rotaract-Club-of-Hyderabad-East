@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Migration</title>
+</head>
+<body>
+
+<h2>Migrating Team Members...</h2>
+
+<pre id="log"></pre>
+
+<script type="module">
+
+import { db } from "./firebase-config.js";
+import {
+    collection,
+    getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const log = (msg) => {
+    document.getElementById("log").textContent += msg + "\n";
+};
+
+const snapshot = await getDocs(collection(db, "team"));
+
+const members = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+}));
+
+log("Found " + members.length + " members");
+log("--------------------------------");
+
+for (const m of members) {
+
+    const payload = {
+        name: m.name || "",
+        role: m.role || "",
+        member_type: m.type || "member",
+        linkedin: m.linkedin || "",
+        email: m.email || "",
+        photo: m.photo || "",
+        display_order: m.order || 0
+    };
+
+    try {
+
+        const res = await fetch("api/addTeam.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
+
+        const json = await res.json();
+
+        if(json.success){
+            log("✅ " + payload.name);
+        }else{
+            log("❌ " + payload.name + " -> " + json.message);
+        }
+
+    } catch(e){
+
+        log("❌ " + payload.name + " -> " + e);
+
+    }
+
+}
+
+log("--------------------------------");
+log("Migration Complete!");
+
+</script>
+
+</body>
+</html>
