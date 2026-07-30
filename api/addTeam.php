@@ -30,6 +30,29 @@ if ($name === "" || $role === "") {
     exit;
 }
 
+/* Check if this member already exists */
+$check = $conn->prepare("SELECT id FROM team WHERE name = ? AND role = ? LIMIT 1");
+$check->bind_param("ss", $name, $role);
+$check->execute();
+$result = $check->get_result();
+
+if ($result->num_rows > 0) {
+    $existing = $result->fetch_assoc();
+
+    echo json_encode([
+        "success" => true,
+        "id" => $existing["id"],
+        "message" => "Already exists"
+    ]);
+
+    $check->close();
+    $conn->close();
+    exit;
+}
+
+$check->close();
+
+/* Insert new member */
 $sql = "INSERT INTO team
 (name, role, member_type, linkedin, email, photo, display_order)
 VALUES (?, ?, ?, ?, ?, ?, ?)";
