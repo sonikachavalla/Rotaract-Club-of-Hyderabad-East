@@ -8,67 +8,47 @@ if (!file_exists($targetDir)) {
     mkdir($targetDir, 0755, true);
 }
 
-if (!isset($_FILES["images"])) {
+if (!isset($_FILES["image"])) {
     echo json_encode([
         "success" => false,
-        "message" => "No images received."
+        "message" => "No image received."
     ]);
     exit;
 }
+
+$file = $_FILES["image"];
 
 $allowed = [
     "image/jpeg",
     "image/png",
-    "image/webp",
-    "image/jpg"
+    "image/webp"
 ];
 
-$uploadedImages = [];
-
-foreach ($_FILES["images"]["tmp_name"] as $index => $tmpName) {
-
-    if ($_FILES["images"]["error"][$index] !== UPLOAD_ERR_OK) {
-        continue;
-    }
-
-    $type = $_FILES["images"]["type"][$index];
-
-    if (!in_array($type, $allowed)) {
-        continue;
-    }
-
-    $extension = strtolower(
-        pathinfo($_FILES["images"]["name"][$index], PATHINFO_EXTENSION)
-    );
-
-    $filename = uniqid("event_") . "." . $extension;
-
-    $destination = $targetDir . $filename;
-
-    if (move_uploaded_file($tmpName, $destination)) {
-
-        $uploadedImages[] = [
-            "path" => "uploads/events/" . $filename,
-            "original_name" => $_FILES["images"]["name"][$index]
-        ];
-
-    }
-
-}
-
-if (empty($uploadedImages)) {
-
+if (!in_array($file["type"], $allowed)) {
     echo json_encode([
         "success" => false,
-        "message" => "No valid images were uploaded."
+        "message" => "Only JPG, PNG and WEBP allowed."
     ]);
     exit;
+}
 
+$extension = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
+
+$filename = uniqid("event_") . "." . $extension;
+
+$destination = $targetDir . $filename;
+
+if (!move_uploaded_file($file["tmp_name"], $destination)) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Upload failed."
+    ]);
+    exit;
 }
 
 echo json_encode([
     "success" => true,
-    "images" => $uploadedImages
+    "url" => "uploads/events/" . $filename
 ]);
 
 ?>
