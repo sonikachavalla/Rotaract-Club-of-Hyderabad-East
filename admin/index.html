@@ -1203,138 +1203,257 @@ function openTeamModal(id = null) {
 
     editingMember = null;
 
-    document.getElementById("memberForm").reset();
+    document.getElementById("tm-id").value = "";
+    document.getElementById("tm-name").value = "";
+    document.getElementById("tm-role").value = "";
+    document.getElementById("tm-type").value = "executive";
+    document.getElementById("tm-email").value = "";
+    document.getElementById("tm-linkedin").value = "";
+    document.getElementById("tm-photo").value = "";
 
-    if (id !== null) {
+    clearMemberPhoto();
 
-        editingMember = teamMembers.find(member => member.id === id);
+    if (id) {
+
+        editingMember = teamMembers.find(m => m.id === id);
 
         if (!editingMember) return;
 
-        document.getElementById("memberName").value = editingMember.name;
-        document.getElementById("memberRole").value = editingMember.role;
-        document.getElementById("memberType").value = editingMember.type;
-        document.getElementById("memberLinkedin").value = editingMember.linkedin || "";
-        document.getElementById("memberEmail").value = editingMember.email || "";
-        document.getElementById("memberOrder").value = editingMember.order || 0;
+        document.getElementById("teamModalTitle").textContent =
+            "Edit Team Member";
 
-        document.getElementById("memberModalTitle").textContent = "Edit Team Member";
+        document.getElementById("tm-id").value = editingMember.id;
+        document.getElementById("tm-name").value = editingMember.name || "";
+        document.getElementById("tm-role").value = editingMember.role || "";
+        document.getElementById("tm-type").value = editingMember.type || "executive";
+        document.getElementById("tm-email").value = editingMember.email || "";
+        document.getElementById("tm-linkedin").value = editingMember.linkedin || "";
+        document.getElementById("tm-photo").value = editingMember.photo || "";
+
+        if (editingMember.photo) {
+
+            document.getElementById("tm-photo-img").src =
+                editingMember.photo;
+
+            document.getElementById("tm-photo-img").style.display =
+                "block";
+
+            document.getElementById("tm-photo-initials").style.display =
+                "none";
+
+            document.getElementById("tm-photo-clear").style.display =
+                "inline-block";
+
+        } else {
+
+            const initials =
+                (editingMember.name || "?")
+                    .trim()
+                    .charAt(0)
+                    .toUpperCase();
+
+            document.getElementById("tm-photo-initials").textContent =
+                initials;
+
+        }
 
     } else {
 
-        document.getElementById("memberModalTitle").textContent = "Add Team Member";
+        document.getElementById("teamModalTitle").textContent =
+            "Add Team Member";
 
     }
 
-    openModal("memberModal");
+    openModal("teamModal");
 
 }
 
 async function saveMember() {
 
-    const name = document.getElementById("memberName").value.trim();
-    const role = document.getElementById("memberRole").value.trim();
-    const type = document.getElementById("memberType").value;
-    const linkedin = document.getElementById("memberLinkedin").value.trim();
-    const email = document.getElementById("memberEmail").value.trim();
-    const order = parseInt(document.getElementById("memberOrder").value) || 0;
+    const {
+        db,
+        stor,
+        collection,
+        addDoc,
+        updateDoc,
+        doc,
+        sRef,
+        uploadBytes,
+        getDownloadURL,
+        serverTimestamp
+    } = fb();
+
+    const name = document.getElementById("tm-name").value.trim();
+    const role = document.getElementById("tm-role").value.trim();
+    const type = document.getElementById("tm-type").value;
+    const email = document.getElementById("tm-email").value.trim();
+    const linkedin = document.getElementById("tm-linkedin").value.trim();
 
     if (!name || !role) {
-        toast("Please fill all required fields.", "error");
+        toast("Please fill all required fields.", "err");
         return;
     }
 
-    let photo = editingMember?.photo || "";
+    let photo = editingMember?.photo || document.getElementById("tm-photo").value || "";
 
-    // Upload image to Firebase Storage
-    const imageFile = document.getElementById("memberImage").files[0];
+    // Upload newly selected image
+    if (_memberPhotoFile) {
 
-    if (imageFile) {
+        const fileName =
+            `team/${Date.now()}_${_memberPhotoFile.name}`;
 
-        const fileName = `team/${Date.now()}-${Math.random().toString(36).substring(2)}-${imageFile.name}`;
+        const storageRef = sRef(stor, fileName);
 
-        const storageRef = window._fb.sRef(
-            window._fb.stor,
-            fileName
-        );
+        await uploadBytes(storageRef, _memberPhotoFile);
 
-        await window._fb.uploadBytes(storageRef, imageFile);
+        photo = await getDownloadURL(storageRef);
 
-        photo = await window._fb.getDownloadURL(storageRef);
+    }
+
+    let order;
+
+    if (editingMember) {
+
+        order = editingMember.order;
+
+    } else {
+
+        const sameType = teamMembers.filter(m => m.type === type);
+
+        if (sameType.length === 0) {
+
+            order = 1;
+
+        } else {
+
+            order =
+                Math.max(...sameType.map(m => m.order || 0)) + 1;
+
+        }
+
     }
 
     const memberData = {
         name,
         role,
-        type: type,
-        linkedin,
+        type,
         email,
+        linkedin,
         photo,
-        order: order,
-        updatedAt: new Date()
+        order,
+        updatedAt: serverTimestamp()
     };
 
     try {
 
         if (editingMember) {
 
-            await window._fb.updateDoc(
-                window._fb.doc(
-                    window._fb.db,
-                    "team",
-                    editingMember.id
-                ),
+            await updateDoc(
+                doc(db, "team", editingMember.id),
                 memberData
             );
 
-            toast("Member updated!", "success");
+            toast("Member updated!", "ok");
 
         } else {
 
-            await window._fb.addDoc(
-                window._fb.collection(
-                    window._fb.db,
-                    "team"
-                ),
+            await addDoc(
+                collection(db, "team"),
                 memberData
             );
 
-            toast("Member added!", "success");
+            toast("Member added!", "ok");
 
         }
 
-        closeModal("memberModal");
+        _memberPhotoFile = null;
         editingMember = null;
+
+        closeModal("teamModal");
 
         await loadTeam();
 
-    } catch (err) {
+    }
+    catch (err) {
 
         console.error(err);
-        toast("Failed to save member.", "error");
+
+        toast("Failed to save member.", "err");
 
     }
 
 }
 async function moveTeamMember(id, direction) {
-  const { db, collection, getDocs, doc, updateDoc, serverTimestamp } = fb();
-  const snap = await getDocs(collection(db, 'team'));
-  const typeOrder = { executive: 0, director: 1, member: 2 };
-  const sorted = snap.docs.map(d => ({ _docId: d.id, ...d.data() })).sort((a, b) => {
-    const td = (typeOrder[a.type] || 9) - (typeOrder[b.type] || 9);
-    return td !== 0 ? td : (a.order || 0) - (b.order || 0);
-  });
-  const idx     = sorted.findIndex(m => m._docId === id);
-  const swapIdx = idx + direction;
-  if (idx < 0 || swapIdx < 0 || swapIdx >= sorted.length) return;
-  if (sorted[idx].type !== sorted[swapIdx].type) return;
-  const aO = sorted[idx].order || idx;
-  const bO = sorted[swapIdx].order || swapIdx;
-  await Promise.all([
-    updateDoc(doc(db, 'team', sorted[idx]._docId),     { order: bO, updatedAt: serverTimestamp() }),
-    updateDoc(doc(db, 'team', sorted[swapIdx]._docId), { order: aO, updatedAt: serverTimestamp() })
-  ]);
-  renderTeamTable();
+
+    const {
+        db,
+        collection,
+        getDocs,
+        doc,
+        updateDoc,
+        serverTimestamp
+    } = fb();
+
+    const snap = await getDocs(collection(db, "team"));
+
+    const typeOrder = {
+        executive: 0,
+        director: 1,
+        member: 2
+    };
+
+    const sorted = snap.docs
+        .map(d => ({
+            _docId: d.id,
+            ...d.data()
+        }))
+        .sort((a, b) => {
+
+            const td =
+                (typeOrder[a.type] ?? 9) -
+                (typeOrder[b.type] ?? 9);
+
+            if (td !== 0) return td;
+
+            return (a.order ?? 9999) - (b.order ?? 9999);
+
+        });
+
+    const index = sorted.findIndex(m => m._docId === id);
+
+    if (index === -1) return;
+
+    const swapIndex =
+        direction === "up"
+            ? index - 1
+            : index + 1;
+
+    if (swapIndex < 0 || swapIndex >= sorted.length)
+        return;
+
+    // Don't swap different member types
+    if (sorted[index].type !== sorted[swapIndex].type)
+        return;
+
+    const first = sorted[index];
+    const second = sorted[swapIndex];
+
+    await Promise.all([
+
+        updateDoc(doc(db, "team", first._docId), {
+            order: second.order,
+            updatedAt: serverTimestamp()
+        }),
+
+        updateDoc(doc(db, "team", second._docId), {
+            order: first.order,
+            updatedAt: serverTimestamp()
+        })
+
+    ]);
+
+    await loadTeam();
+
 }
 
 function renderTeamTable() {
@@ -1342,10 +1461,9 @@ function renderTeamTable() {
     const tbody = document.getElementById("teamTableBody");
 
     if (!teamMembers.length) {
-
         tbody.innerHTML = `
             <tr>
-                <td colspan="6" style="text-align:center;padding:30px;">
+                <td colspan="7" style="text-align:center;padding:30px;">
                     No team members found.
                 </td>
             </tr>
@@ -1353,43 +1471,122 @@ function renderTeamTable() {
         return;
     }
 
+    // Sort by order
+    teamMembers.sort((a, b) => (a.order || 9999) - (b.order || 9999));
+
     tbody.innerHTML = "";
 
-    teamMembers.forEach(member => {
+    teamMembers.forEach((member, index) => {
 
         tbody.innerHTML += `
-            <tr>
+        <tr>
 
-                <td>
-                    ${
-                        member.photo
-                            ? `<img src="${member.photo}" class="table-image">`
-                            : "-"
-                    }
-                </td>
+            <td style="text-align:center;width:70px">
 
-                <td>${member.name}</td>
+                <div style="display:flex;flex-direction:column;align-items:center;gap:2px">
 
-                <td>${member.role}</td>
+                    <button
+                        class="btn-icon"
+                        style="width:24px;height:24px"
+                        onclick="moveTeamMember('${member.id}','up')"
+                        ${index===0 ? "disabled" : ""}
+                    >
+                        ▲
+                    </button>
 
-               <td>${member.type}</td>
-               <td>${member.order}</td>
+                    <strong>${member.order ?? index + 1}</strong>
 
-                <td>
+                    <button
+                        class="btn-icon"
+                        style="width:24px;height:24px"
+                        onclick="moveTeamMember('${member.id}','down')"
+                        ${index===teamMembers.length-1 ? "disabled" : ""}
+                    >
+                        ▼
+                    </button>
 
-                    <button class="btn btn-sm btn-primary"
+                </div>
+
+            </td>
+
+            <td>
+
+                ${
+                    member.photo
+                    ?
+                    `<img src="${member.photo}"
+                        style="
+                            width:42px;
+                            height:42px;
+                            border-radius:50%;
+                            object-fit:cover;
+                            border:2px solid #E5E7EB;
+                        ">`
+                    :
+                    `<div style="
+                        width:42px;
+                        height:42px;
+                        border-radius:50%;
+                        background:#F3F4F6;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-weight:bold;
+                    ">
+                        ${member.name.charAt(0).toUpperCase()}
+                    </div>`
+                }
+
+            </td>
+
+            <td>${member.name}</td>
+
+            <td>${member.role}</td>
+
+            <td>${member.type || "-"}</td>
+
+            <td>
+
+                ${
+                    member.linkedin
+                    ?
+                    `<a href="${member.linkedin}"
+                        target="_blank">
+                        🔗 View
+                    </a>`
+                    :
+                    "-"
+                }
+
+            </td>
+
+            <td>
+
+                <div class="btn-group">
+
+                    <button
+                        class="btn-icon"
                         onclick="openTeamModal('${member.id}')"
-                        Edit
+                        title="Edit">
+
+                        ✏️
+
                     </button>
 
-                    <button class="btn btn-sm btn-danger"
-                        onclick="confirmAction('deleteTeam', ${member.id})">
-                        Delete
+                    <button
+                        class="btn-icon del"
+                        onclick="confirmAction('deleteTeam','${member.id}')"
+                        title="Delete">
+
+                        🗑️
+
                     </button>
 
-                </td>
+                </div>
 
-            </tr>
+            </td>
+
+        </tr>
         `;
 
     });
@@ -1586,30 +1783,35 @@ async function confirmAction() {
                 break;
             }
 
-            case "deleteTeam": {
+           case "deleteTeam": {
 
-                const response = await fetch("api/deleteTeam.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        id: pendingDelete.id
-                    })
-                });
+    try {
 
-                const result = await response.json();
+        const {
+            db,
+            doc,
+            deleteDoc
+        } = fb();
 
-                if (result.success) {
-                    toast("Team member deleted successfully!");
-                    await renderTeamTable();
-                } else {
-                    toast(result.message || "Failed to delete member.", "err");
-                }
+        await deleteDoc(
+            doc(db, "team", pendingDelete.id)
+        );
 
-                break;
-            }
+        toast("Team member deleted successfully!", "ok");
 
+        await loadTeam();
+
+    }
+    catch (err) {
+
+        console.error(err);
+
+        toast("Failed to delete member.", "err");
+
+    }
+
+    break;
+}
             default:
                 console.warn("Unknown delete type:", pendingDelete.type);
                 break;
@@ -1630,8 +1832,10 @@ async function loadTeam() {
 
     try {
 
-        const snapshot = await window._fb.getDocs(
-            window._fb.collection(window._fb.db, "team")
+        const { db, collection, getDocs } = fb();
+
+        const snapshot = await getDocs(
+            collection(db, "team")
         );
 
         teamMembers = snapshot.docs.map(doc => ({
@@ -1639,15 +1843,29 @@ async function loadTeam() {
             ...doc.data()
         }));
 
+        const typeOrder = {
+            executive: 0,
+            director: 1,
+            member: 2
+        };
+
         teamMembers.sort((a, b) => {
-            const oa = a.order || 0;
-            const ob = b.order || 0;
-            return oa - ob;
+
+            const typeDiff =
+                (typeOrder[a.type] ?? 9) -
+                (typeOrder[b.type] ?? 9);
+
+            if (typeDiff !== 0)
+                return typeDiff;
+
+            return (a.order ?? 9999) - (b.order ?? 9999);
+
         });
 
         renderTeamTable();
 
-    } catch (err) {
+    }
+    catch (err) {
 
         console.error(err);
         toast("Failed to load team.", "err");
