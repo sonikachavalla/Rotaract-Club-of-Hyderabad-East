@@ -482,20 +482,37 @@ textarea.form-input{resize:vertical;min-height:90px}
 </div>
       <div class="form-group"><label class="form-label">Description</label><textarea class="form-input" id="ev-desc" placeholder="Brief description…"></textarea></div>
       <div class="form-group"><label class="form-label">Registration Link (for upcoming)</label><input class="form-input" id="ev-registration-link" placeholder="https://forms.google.com/..."></div>
-      <div class="form-group">
-        <label class="form-label">Event Poster / Cover Image</label>
-        <div style="display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap">
-          <label style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:1.5px dashed #C4B5FD;border-radius:10px;cursor:pointer;font-size:0.85rem;color:#7C3AED;font-weight:600;background:#F5F3FF">
-            📷 Upload Poster
-            <input type="file" id="ev-poster-upload" accept="image/*" style="display:none" onchange="handlePosterUpload(event)">
-          </label>
-          <div id="ev-poster-preview" style="width:80px;height:60px;border-radius:8px;overflow:hidden;background:#F0F0F0;display:none">
-            <img id="ev-poster-img" src="" alt="Poster" style="width:100%;height:100%;object-fit:cover">
-          </div>
-          <button type="button" id="ev-poster-clear" style="display:none;padding:6px 12px;border:1.5px solid #FEB2B2;border-radius:8px;background:#FFF5F5;color:#C53030;font-size:0.8rem;font-weight:600" onclick="clearPoster()">Remove</button>
-        </div>
-        <input type="hidden" id="ev-poster">
-      </div>
+<div class="form-group">
+
+    <label class="form-label">Event Gallery</label>
+
+    <label style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:1.5px dashed #C4B5FD;border-radius:10px;cursor:pointer;font-size:0.85rem;color:#7C3AED;font-weight:600;background:#F5F3FF">
+
+        📷 Upload Photos
+
+        <input
+            type="file"
+            id="ev-images-upload"
+            accept="image/*"
+            multiple
+            style="display:none"
+            onchange="handleEventImagesUpload(event)">
+
+    </label>
+
+    <div
+        id="eventImagesPreview"
+        style="
+            display:flex;
+            gap:12px;
+            overflow-x:auto;
+            margin-top:15px;
+            padding-bottom:8px;
+        ">
+    </div>
+
+</div>
+
     </div>
     <div class="modal-footer">
       <button class="btn-outline-sm btn-sm" onclick="closeModal('eventModal')">Cancel</button>
@@ -894,22 +911,82 @@ async function renderGalleryAdmin() {
 let editEventId = null;
 let _posterFile = null;
 
-function handlePosterUpload(e) {
-  const file = e.target.files[0]; if (!file) return;
-  _posterFile = file;
-  const url = URL.createObjectURL(file);
-  document.getElementById('ev-poster').value = url;
-  document.getElementById('ev-poster-img').src = url;
-  document.getElementById('ev-poster-preview').style.display = 'block';
-  document.getElementById('ev-poster-clear').style.display = 'inline-flex';
-  e.target.value = '';
+let eventImages = [];
+let uploadedImages = [];
+
+function handleEventImagesUpload(e) {
+
+    const files = Array.from(e.target.files);
+
+    if (!files.length) return;
+
+    eventImages.push(...files);
+
+    renderEventImagePreview();
+
+    e.target.value = "";
+
 }
-function clearPoster() {
-  _posterFile = null;
-  document.getElementById('ev-poster').value = '';
-  document.getElementById('ev-poster-img').src = '';
-  document.getElementById('ev-poster-preview').style.display = 'none';
-  document.getElementById('ev-poster-clear').style.display = 'none';
+function removeEventImage(index) {
+
+    eventImages.splice(index, 1);
+
+    renderEventImagePreview();
+
+}
+
+function renderEventImagePreview() {
+
+    const preview = document.getElementById("eventImagesPreview");
+
+    preview.innerHTML = "";
+
+    eventImages.forEach((file, index) => {
+
+        const url = URL.createObjectURL(file);
+
+        preview.innerHTML += `
+            <div style="
+                position:relative;
+                width:90px;
+                height:70px;
+                flex:0 0 auto;
+            ">
+
+                <img
+                    src="${url}"
+                    style="
+                        width:100%;
+                        height:100%;
+                        object-fit:cover;
+                        border-radius:8px;
+                    ">
+
+                <button
+                    type="button"
+                    onclick="removeEventImage(${index})"
+                    style="
+                        position:absolute;
+                        top:-6px;
+                        right:-6px;
+                        width:22px;
+                        height:22px;
+                        border:none;
+                        border-radius:50%;
+                        background:#ef4444;
+                        color:white;
+                        cursor:pointer;
+                    ">
+
+                    ×
+
+                </button>
+
+            </div>
+        `;
+
+    });
+
 }
 
 async function openEventModal(id = null) {
