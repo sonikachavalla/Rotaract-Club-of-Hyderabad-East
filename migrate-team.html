@@ -46,14 +46,35 @@ for (const m of members) {
     try {
 
         const res = await fetch("api/addTeam.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+});
 
-        const json = await res.json();
+const text = await res.text();
+
+console.log(text);
+
+log("Response:");
+log(text);
+
+try {
+    const json = JSON.parse(text);
+
+    if(json.success){
+        log("✅ " + payload.name);
+    }else{
+        log("❌ " + payload.name + " -> " + json.message);
+    }
+
+} catch(e){
+
+    log("❌ Invalid JSON");
+    log(text);
+
+}
 
         if(json.success){
             log("✅ " + payload.name);
