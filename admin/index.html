@@ -533,7 +533,7 @@ textarea.form-input{resize:vertical;min-height:90px}
           <select class="form-input" id="tm-type">
             <option value="executive">Executive Board</option>
             <option value="director">Director</option>
-            <option value="member">General Member</option>
+            <option value="joint">Joint Director</option>
           </select>
         </div>
       </div>
@@ -1399,7 +1399,7 @@ async function moveTeamMember(id, direction) {
     const typeOrder = {
         executive: 0,
         director: 1,
-        member: 2
+        joint: 2
     };
 
     const sorted = snap.docs
@@ -1846,7 +1846,7 @@ async function loadTeam() {
         const typeOrder = {
             executive: 0,
             director: 1,
-            member: 2
+            joint: 2
         };
 
         teamMembers.sort((a, b) => {
