@@ -430,6 +430,33 @@ const COLORS = [
     "c4",
     "c5"
 ];
+
+function formatDate(dateStr) {
+    if (!dateStr) return "";
+
+    const d = new Date(dateStr);
+
+    return d.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+    });
+}
+
+function formatTime(timeStr) {
+    if (!timeStr) return "";
+
+    const [h, m] = timeStr.split(":");
+
+    const date = new Date();
+    date.setHours(h, m);
+
+    return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+    });
+}
 // ── Event card HTML ────────────────────────────────────────────
 function evCardHtml(ev, idx) {
   const d   = ev.date ? new Date(ev.date) : null;
@@ -456,7 +483,10 @@ function evCardHtml(ev, idx) {
       <h3>${ev.title}</h3>
       <p>${ev.desc||''}</p>
       <div class="ev-meta">
-        ${ev.date||ev.time?`<span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4l2.5 1.5"/></svg>${[ev.date,ev.time].filter(Boolean).join(' · ')}</span>`:''}
+        ${ev.date||ev.time?`<span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4l2.5 1.5"/></svg>${[
+    formatDate(ev.date),
+    formatTime(ev.time)
+].filter(Boolean).join(" · ")}</span>`:''}
         ${ev.location?`<span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 14s5-4.686 5-8A5 5 0 0 0 3 6c0 3.314 5 8 5 8z"/><circle cx="8" cy="6" r="2"/></svg>${ev.location}</span>`:''}
       </div>${btn}
     </div></div>`;
@@ -644,8 +674,8 @@ window.openEventDetail = function(eventId){
         ev.desc || "";
 
     document.getElementById("evDetailMeta").innerHTML = `
-        ${ev.date ? `<div>📅 ${ev.date}</div>` : ""}
-        ${ev.time ? `<div>🕒 ${ev.time}</div>` : ""}
+        ${ev.date ? `<div>📅 ${formatDate(ev.date)}</div>` : ""}
+${ev.time ? `<div>🕒 ${formatTime(ev.time)}</div>` : ""}
         ${ev.location ? `<div>📍 ${ev.location}</div>` : ""}
     `;
 
