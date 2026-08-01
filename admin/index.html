@@ -533,7 +533,7 @@ textarea.form-input{resize:vertical;min-height:90px}
           <select class="form-input" id="tm-type">
             <option value="executive">Executive Board</option>
             <option value="director">Director</option>
-            <option value="joint">Joint Director</option>
+            <option value="member">Member</option>
           </select>
         </div>
       </div>
@@ -1399,7 +1399,7 @@ async function moveTeamMember(id, direction) {
     const typeOrder = {
         executive: 0,
         director: 1,
-        joint: 2
+        member: 2
     };
 
     const sorted = snap.docs
@@ -1454,6 +1454,55 @@ async function moveTeamMember(id, direction) {
 
     await loadTeam();
 
+}
+
+async function normalizeTeamOrder() {
+
+    const {
+        db,
+        collection,
+        getDocs,
+        doc,
+        updateDoc,
+        serverTimestamp
+    } = fb();
+
+    const snapshot = await getDocs(
+        collection(db, "team")
+    );
+
+    const members = snapshot.docs.map(d => ({
+        id: d.id,
+        ...d.data()
+    }));
+
+    const groups = ["executive", "director", "member"];
+
+    for (const type of groups) {
+
+        const group = members
+            .filter(m => m.type === type)
+            .sort((a, b) => (a.order ?? 999999) - (b.order ?? 999999));
+
+        for (let i = 0; i < group.length; i++) {
+
+            await updateDoc(
+                doc(db, "team", group[i].id),
+                {
+                    order: i + 1,
+                    updatedAt: serverTimestamp()
+                }
+            );
+
+            console.log(
+                `${type}: ${group[i].name} → ${i + 1}`
+            );
+        }
+    }
+
+    await loadTeam();
+
+    alert("Team order normalized successfully.");
 }
 
 function renderTeamTable() {
@@ -1575,7 +1624,7 @@ function renderTeamTable() {
 
                     <button
                         class="btn-icon del"
-                        onclick="confirmAction('deleteTeam','${member.id}')"
+                        onclick="deleteItem('deleteTeam','${member.id}','${member.name}')"
                         title="Delete">
 
                         🗑️
@@ -1846,7 +1895,7 @@ async function loadTeam() {
         const typeOrder = {
             executive: 0,
             director: 1,
-            joint: 2
+            member: 2
         };
 
         teamMembers.sort((a, b) => {
