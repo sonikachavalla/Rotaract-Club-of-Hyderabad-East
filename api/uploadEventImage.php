@@ -24,20 +24,20 @@ $allowed = [
     "image/webp"
 ];
 
-// if (!in_array($file["type"], $allowed)) {
-//     echo json_encode([
-//         "success" => false,
-//         "message" => "Only JPG, PNG and WEBP allowed."
-//     ]);
-//     exit;
-// }
+ if (!in_array($file["type"], $allowed)) {
+    echo json_encode([
+        "success" => false,
+        "message" => "Only JPG, PNG and WEBP allowed."
+    ]);
+     exit;
+}
 
-echo json_encode([
-    "success" => false,
-    "mime" => $file["type"],
-    "name" => $file["name"]
-]);
-exit;
+// echo json_encode([
+//     "success" => false,
+//     "mime" => $file["type"],
+//     "name" => $file["name"]
+// ]);
+// exit;
 
 $extension = strtolower(pathinfo($file["name"], PATHINFO_EXTENSION));
 

@@ -1008,7 +1008,12 @@ async function saveEvent() {
                 body: formData
             });
 
-            const uploadResult = await upload.json();
+            //const uploadResult = await upload.json();
+            const uploadText = await upload.text();
+
+console.log(uploadText);
+
+const uploadResult = JSON.parse(uploadText);
 
             if (!uploadResult.success) {
                 throw new Error(uploadResult.message);
