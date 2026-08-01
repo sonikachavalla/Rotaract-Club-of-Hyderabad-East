@@ -1456,55 +1456,6 @@ async function moveTeamMember(id, direction) {
 
 }
 
-async function normalizeTeamOrder() {
-
-    const {
-        db,
-        collection,
-        getDocs,
-        doc,
-        updateDoc,
-        serverTimestamp
-    } = fb();
-
-    const snapshot = await getDocs(
-        collection(db, "team")
-    );
-
-    const members = snapshot.docs.map(d => ({
-        id: d.id,
-        ...d.data()
-    }));
-
-    const groups = ["executive", "director", "member"];
-
-    for (const type of groups) {
-
-        const group = members
-            .filter(m => m.type === type)
-            .sort((a, b) => (a.order ?? 999999) - (b.order ?? 999999));
-
-        for (let i = 0; i < group.length; i++) {
-
-            await updateDoc(
-                doc(db, "team", group[i].id),
-                {
-                    order: i + 1,
-                    updatedAt: serverTimestamp()
-                }
-            );
-
-            console.log(
-                `${type}: ${group[i].name} → ${i + 1}`
-            );
-        }
-    }
-
-    await loadTeam();
-
-    alert("Team order normalized successfully.");
-}
-
 function renderTeamTable() {
 
     const tbody = document.getElementById("teamTableBody");
