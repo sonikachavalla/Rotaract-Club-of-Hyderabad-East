@@ -33,9 +33,6 @@
     padding:0;
     background:#f7f4ff;
     box-sizing:border-box;
-}
-    .ev-banner-overlay{
-        z-index:3;
     }
 
     .ev-date-chip{
@@ -52,14 +49,6 @@
     object-fit:cover;
 }
 
-/* .ev-banner-img.landscape{
-    object-fit:cover;
-} */
-
-/* Portrait posters */
-/* .ev-banner-img.portrait{
-  object-fit:cover;
-} */
     .ev-banner.c1{background:linear-gradient(135deg,#9F7AEA,#B794F6)}
     .ev-banner.c2{background:linear-gradient(135deg,#ED64A6,#F687B3)}
     .ev-banner.c3{background:linear-gradient(135deg,#4299E1,#63B3ED)}
@@ -485,7 +474,6 @@ function evCardHtml(ev, idx) {
     <div class="ev-banner ${ev.poster ? 'has-poster' : color}" onclick="openEventDetail('${ev.id}')">
       ${bannerHtml}
       ${d?`<div class="ev-date-chip"><div class="day">${day}</div><div class="mon">${mon}</div></div>`:''}
-      ${ev.poster?`<div class="ev-banner-overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="28" height="28"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>`:''}
     </div>
     <div class="ev-body">
       <span class="ev-badge">${ev.category||'Event'}</span>
