@@ -23,31 +23,31 @@
     .ev-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid rgba(159,122,234,0.1);transition:all 0.25s}
     .ev-card:hover{transform:translateY(-8px);box-shadow:0 12px 40px rgba(159,122,234,0.15)}
     
-    .ev-banner{
+   .ev-banner{
     height:220px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     position:relative;
     overflow:hidden;
     padding:0;
     background:#f7f4ff;
     box-sizing:border-box;
-    }
+}
 
-    .ev-date-chip{
-        z-index:3;
-    }
-    .ev-banner.has-poster{
+.ev-banner.has-poster{
     background:#f7f4ff;
 }
 
 .ev-banner-img{
+    position:absolute;
+    inset:0;
     width:100%;
     height:100%;
     display:block;
     object-fit:cover;
+    object-position:center;
 }
+    .ev-date-chip{
+        z-index:3;
+    }
 
     .ev-banner.c1{background:linear-gradient(135deg,#9F7AEA,#B794F6)}
     .ev-banner.c2{background:linear-gradient(135deg,#ED64A6,#F687B3)}
@@ -457,35 +457,103 @@ function formatTime(timeStr) {
 }
 // ── Event card HTML ────────────────────────────────────────────
 function evCardHtml(ev, idx) {
-  const d   = ev.date ? new Date(ev.date) : null;
-  const day = d ? d.getDate() : '';
-  const mon = d ? d.toLocaleString('en', {month:'short'}).toUpperCase() : '';
-  const init = (ev.title||'E').split(' ').map(w=>w[0]).join('').slice(0,3).toUpperCase();
-  const color = COLORS[idx % COLORS.length];
-  const bannerHtml = ev.poster
-    ? `<img class="ev-banner-img" src="${ev.poster}" alt="${ev.title}">`
-    : `<span>${init}</span>`;
-  const btn = `
-    <button class="ev-btn outline" onclick="openEventDetail('${ev.id}')">
-        View Details →
-    </button>
-`;
-  return `<div class="ev-card">
-    <div class="ev-banner ${ev.poster ? 'has-poster' : color}" onclick="openEventDetail('${ev.id}')">
-      ${bannerHtml}
-      ${d?`<div class="ev-date-chip"><div class="day">${day}</div><div class="mon">${mon}</div></div>`:''}
-    </div>
-    <div class="ev-body">
-      <span class="ev-badge">${ev.category||'Event'}</span>
-      <h3>${ev.title}</h3>
-      <div class="ev-meta">
-        ${ev.date||ev.time?`<span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4l2.5 1.5"/></svg>${[
-    formatDate(ev.date),
-    formatTime(ev.time)
-].filter(Boolean).join(" · ")}</span>`:''}
-        ${ev.location?`<span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 14s5-4.686 5-8A5 5 0 0 0 3 6c0 3.314 5 8 5 8z"/><circle cx="8" cy="6" r="2"/></svg>${ev.location}</span>`:''}
-      </div>${btn}
-    </div></div>`;
+
+    const d = ev.date ? new Date(ev.date) : null;
+
+    const day = d ? d.getDate() : '';
+
+    const mon = d
+        ? d.toLocaleString('en', {month:'short'}).toUpperCase()
+        : '';
+
+    const init = (ev.title || 'E')
+        .split(' ')
+        .map(w => w[0])
+        .join('')
+        .slice(0,3)
+        .toUpperCase();
+
+    const color = COLORS[idx % COLORS.length];
+
+    const bannerHtml = ev.poster
+        ? `<img class="ev-banner-img"
+                src="${ev.poster}"
+                alt="${ev.title}">`
+        : `<span>${init}</span>`;
+
+    const btn = `
+        <button class="ev-btn outline"
+                onclick="openEventDetail('${ev.id}')">
+            View Details →
+        </button>
+    `;
+
+    return `
+        <div class="ev-card">
+
+            <div class="ev-banner ${ev.poster ? 'has-poster' : color}"
+                 onclick="openEventDetail('${ev.id}')">
+
+                ${bannerHtml}
+
+                ${d ? `
+                    <div class="ev-date-chip">
+                        <div class="day">${day}</div>
+                        <div class="mon">${mon}</div>
+                    </div>
+                ` : ''}
+
+            </div>
+
+            <div class="ev-body">
+
+                <span class="ev-badge">
+                    ${ev.category || 'Event'}
+                </span>
+
+                <h3>${ev.title}</h3>
+
+                <div class="ev-meta">
+
+                    ${ev.date || ev.time ? `
+                        <span>
+                            <svg viewBox="0 0 16 16"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.5">
+                                <circle cx="8" cy="8" r="6.5"/>
+                                <path d="M8 4.5v4l2.5 1.5"/>
+                            </svg>
+
+                            ${[
+                                formatDate(ev.date),
+                                formatTime(ev.time)
+                            ].filter(Boolean).join(" · ")}
+                        </span>
+                    ` : ''}
+
+                    ${ev.location ? `
+                        <span>
+                            <svg viewBox="0 0 16 16"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.5">
+                                <path d="M8 14s5-4.686 5-8A5 5 0 0 0 3 6c0 3.314 5 8 5 8z"/>
+                                <circle cx="8" cy="6" r="2"/>
+                            </svg>
+
+                            ${ev.location}
+                        </span>
+                    ` : ''}
+
+                </div>
+
+                ${btn}
+
+            </div>
+
+        </div>
+    `;
 }
 
 // ── Render current year ────────────────────────────────────────
