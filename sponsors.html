@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Team | Rotaract Club of Hyderabad East</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+
+    /* ============================================================
+       SPONSORS PAGE
+    ============================================================ */
+
+    .sponsors-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 24px 80px;
+    }
+
+
+    /* ============================================================
+       INTRO
+    ============================================================ */
+
+    .sponsors-intro {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 54px;
+    }
+
+    .sponsors-intro p {
+      color: #718096;
+      font-size: 1rem;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+
+    /* ============================================================
+       SECTION HEADINGS
+    ============================================================ */
+
+    .sponsors-section-head {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+
+      text-align: center;
+
+      margin: 0 0 35px;
+
+      display: block;
+    }
+
+
+    /* ============================================================
+       PARTNERS
+    ============================================================ */
+
+    .featured-sponsors {
+
+      display: flex;
+      flex-wrap: wrap;
+
+      justify-content: center;
+      align-items: stretch;
+
+      gap: 24px;
+
+      margin-bottom: 70px;
+    }
+
+
+    /* ============================================================
+       PARTNER CARD
+    ============================================================ */
+
+    .featured-sponsor {
+
+      background: #fff;
+
+      border-radius: 20px;
+
+      /*
+        Two partner cards side-by-side.
+      */
+
+      width: calc((100% - 24px) / 2);
+
+      min-height: 260px;
+
+      padding: 30px 24px 24px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border: 1px solid rgba(159,122,234,0.10);
+
+      box-shadow:
+        0 4px 20px rgba(0,0,0,0.06);
+
+      text-decoration: none;
+
+      color: inherit;
+
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+
+    .featured-sponsor:hover {
+
+      transform: translateY(-7px);
+
+      box-shadow:
+        0 12px 40px rgba(159,122,234,0.16);
+    }
+
+
+    /* ============================================================
+       PARTNER LOGO
+       Larger than sponsor logos
+    ============================================================ */
+
+    .featured-logo-wrap {
+
+      width: 100%;
+
+      height: 140px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      margin-bottom: 20px;
+    }
+
+
+    .featured-logo {
+
+      max-width: 190px;
+
+      max-height: 115px;
+
+      width: auto;
+
+      height: auto;
+
+      object-fit: contain;
+
+      transition:
+        transform 0.25s ease;
+    }
+
+
+    .featured-sponsor:hover .featured-logo {
+
+      transform: scale(1.04);
+    }
+
+
+    /* ============================================================
+       PARTNER NAME + CONTENT
+    ============================================================ */
+
+    .featured-content {
+
+      width: 100%;
+
+      text-align: center;
+    }
+
+
+    .featured-content h3 {
+
+      font-family: 'Poppins', sans-serif;
+
+      font-size: 0.95rem;
+
+      font-weight: 700;
+
+      color: #1A202C;
+
+      text-align: center;
+
+      margin: 0;
+    }
+
+
+    .featured-content p {
+
+      font-size: 0.75rem;
+
+      color: #718096;
+
+      margin: 5px 0 0;
+
+      text-align: center;
+
+      line-height: 1.6;
+    }
+
+
+    .featured-sponsor:hover .featured-content h3 {
+
+      color: var(--purple);
+    }
+
+    .headquarters-logo {
+      max-width: 260px;
+      max-height: 160px;
+    }
+
+
+    /* ============================================================
+       SPONSORS
+    ============================================================ */
+
+    .sponsors-grid {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      justify-content: center;
+
+      align-items: stretch;
+
+      gap: 24px;
+
+      margin-bottom: 20px;
+    }
+
+
+    /* ============================================================
+       SPONSOR CARD
+    ============================================================ */
+
+    .sponsor-card {
+
+      background: #fff;
+
+      border-radius: 20px;
+
+      /*
+        Three cards per row.
+
+        FLEX + justify-content:center means:
+        1 card = centered
+        2 cards = centered together
+        3 cards = three across
+      */
+
+      width: calc((100% - 48px) / 3);
+
+      min-height: 220px;
+
+      padding: 30px 24px 24px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border: 1px solid rgba(159,122,234,0.10);
+
+      box-shadow:
+        0 4px 20px rgba(0,0,0,0.06);
+
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+    }
+
+
+    .sponsor-card:hover {
+
+      transform: translateY(-7px);
+
+      box-shadow:
+        0 12px 40px rgba(159,122,234,0.16);
+    }
+
+
+    /* ============================================================
+       SPONSOR LOGO
+    ============================================================ */
+
+    .sponsor-logo-wrap {
+
+      width: 100%;
+
+      height: 125px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      margin-bottom: 20px;
+    }
+
+
+    .sponsor-logo {
+
+        max-width: 135px;
+        max-height: 75px;
+
+      width: auto;
+
+      height: auto;
+
+      object-fit: contain;
+
+      transition:
+        transform 0.25s ease;
+    }
+
+
+    .sponsor-card:hover .sponsor-logo {
+
+      transform: scale(1.04);
+    }
+
+
+    /* ============================================================
+       SPONSOR NAME
+    ============================================================ */
+
+    .sponsor-name {
+
+      font-family: 'Poppins', sans-serif;
+
+      font-size: 0.95rem;
+
+      font-weight: 700;
+
+      color: #1A202C;
+
+      text-align: center;
+    }
+
+
+    /* ============================================================
+       SPONSOR TYPE
+    ============================================================ */
+
+    .sponsor-type {
+
+      font-size: 0.75rem;
+
+      color: #718096;
+
+      margin-top: 5px;
+
+      text-align: center;
+    }
+
+
+    /* ============================================================
+       TABLET
+    ============================================================ */
+
+    @media (max-width: 900px) {
+
+      .featured-sponsor {
+
+        width: calc((100% - 24px) / 2);
+
+      }
+
+
+      .sponsor-card {
+
+        width: calc((100% - 24px) / 2);
+
+      }
+
+    }
+
+
+    /* ============================================================
+       MOBILE
+    ============================================================ */
+
+    @media (max-width: 640px) {
+
+      .sponsors-wrap {
+
+        padding:
+          44px
+          18px
+          60px;
+      }
+
+
+      .featured-sponsor {
+
+        width: 100%;
+
+        min-height: 240px;
+      }
+
+
+      .sponsor-card {
+
+        width: 100%;
+
+        min-height: 200px;
+      }
+
+
+      .featured-logo-wrap {
+
+        height: 125px;
+      }
+
+
+      .featured-logo {
+
+        max-width: 180px;
+
+        max-height: 110px;
+      }
+
+
+      .sponsors-section-head {
+
+        font-size: 1.05rem;
+      }
+
+    }
+
+
+    /* ============================================================
+       SMALL MOBILE
+    ============================================================ */
+
+    @media (max-width: 480px) {
+
+      .featured-logo {
+
+        max-width: 165px;
+
+        max-height: 100px;
+      }
+
+
+      .sponsor-logo-wrap {
+
+        height: 110px;
+      }
+
+
+      .sponsor-logo {
+
+        max-width: 135px;
+        max-height: 75px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+<!-- ══ NAVBAR ══════════════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="container"><div class="nav-inner">
+    <a href="index.html" class="nav-badge-img-link" class="nav-logo-link" aria-label="Home"><img src="Rotaract_Hyderabad_East_Logo.png" width="130" height="65" align-items: center alt="Rotaract Club of Hyderabad East"></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="events.html">Events</a></li><li><a href="team.html">Team</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li>
+      <li><a href="sponsors.html" class="active">Sponsors</a></li>
+      <li><a href="ohmyfrndganesha.html" >Oh My Friend Ganesha</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#" class="nav-badge-img-link"><img src="District_3150_Logo.png"  width="130" height="65" align-items: center alt="District 3150 Rotaract"></a>
+      <a href="https://www.rotary.org" target="_blank" rel="noopener" class="nav-badge-img-link"><img src="Rotary_Logo.png" width="120" height="60" align-items: center alt="Rotary International"></a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform" target="_blank" id="joinLinkNav" class="nav-join">Join The Club</a>
+    </div>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div></div>
+</nav>
+
+<!-- ============================================================
+     MOBILE NAVIGATION
+============================================================ -->
+
+<div class="nav-mobile" id="navMobile">
+  <a href="index.html">Home</a><a href="about.html">About</a>
+  <a href="events.html" >Events</a><a href="team.html">Team</a>
+  <a href="gallery.html">Gallery</a><a href="contact.html">Contact</a>
+  <a href="sponsors.html" class="active">Sponsors</a>
+  <a href="ohmyfrndganesha.html" >Oh My Friend Ganesha</a>
+  <div class="nav-mobile-footer">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform" id="joinLinkMobile" target="_blank" class="btn btn-primary btn-sm">Join The Club</a>
+  </div>
+</div>
+
+<main>
+
+
+  <section class="page-hero">
+
+
+    <span class="section-label">
+
+      Our Partners &amp; Supporters
+
+    </span>
+
+
+    <h1>
+
+      Our <span class="grad">Sponsors</span>
+
+    </h1>
+
+
+    <p class="lead">
+
+      We are grateful to the organizations and individuals
+      who support our vision and help us create meaningful
+      impact through service.
+
+    </p>
+
+  </section>
+
+  <div class="sponsors-wrap">
+
+    <div class="sponsors-intro">
+
+      <p>
+
+        Our sponsors make it possible for us to turn ideas
+        into initiatives, support our community, and create
+        opportunities for young leaders to serve.
+
+      </p>
+
+    </div>
+
+    <div class="sponsors-section-head">
+
+      Our Partners
+
+    </div>
+
+    <div class="featured-sponsors">
+    <!-- PARTNER 1 -->
+      <a
+        href="https://theheadquarters.space/"
+        target="_blank"
+        rel="noopener"
+        class="featured-sponsor"
+        aria-label="Visit The Headquarters"
+      >
+
+        <div class="featured-logo-wrap">
+
+          <img
+            src="venuepartner-headquarters.png"
+            alt="The Headquarters"
+            class="featured-logo headquarters-logo"
+          >
+
+        </div>
+
+        <div class="featured-content">
+
+          <h3>
+
+            The Headquarters
+
+          </h3>
+          <p>
+
+            Our Venue Partner
+
+          </p>
+
+        </div>
+      </a>
+       <!-- PARTNER 2 -->
+      <a
+        href="https://www.facebook.com/swarnaphotography/"
+        target="_blank"
+        rel="noopener"
+        class="featured-sponsor"
+        aria-label="Visit Swarna Photography"
+      >
+        <div class="featured-logo-wrap">
+          <img
+            src="mediapartner-swarna.png"
+            alt="Swarna Photography"
+            class="featured-logo"
+          >
+        </div>
+
+        <div class="featured-content">
+
+          <h3>
+
+            Swarna Photography
+
+          </h3>
+          <p>
+
+            Our Media Partner
+
+          </p>
+        </div>
+      </a>
+    </div>
+
+    <!-- ========================================================
+         SPONSORS
+    ========================================================= -->
+
+    <div class="sponsors-section-head">
+
+      Our Sponsors
+
+    </div>
+
+    <div class="sponsors-grid">
+
+
+      <!-- ======================================================
+           SPONSOR 1
+      ======================================================= -->
+
+      <div class="sponsor-card">
+
+
+        <!-- LOGO -->
+
+        <div class="sponsor-logo-wrap">
+
+          <img
+            src="sponsor-code6.png"
+            alt="Sponsor 1"
+            class="sponsor-logo"
+          >
+
+        </div>
+
+        <!-- NAME -->
+
+        <div class="sponsor-name">
+
+          Code 6
+        </div>
+
+
+        <!-- TYPE -->
+
+        <div class="sponsor-type">
+
+          Supporting Partner
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ======================================================
+           ADD SPONSOR 2
+           
+           Just remove the comments when needed.
+      ======================================================= -->
+
+      <!--
+
+      <div class="sponsor-card">
+
+        <div class="sponsor-logo-wrap">
+
+          <img
+            src="sponsor-4.png"
+            alt="Sponsor 4"
+            class="sponsor-logo"
+          >
+
+        </div>
+
+
+        <div class="sponsor-name">
+
+          Sponsor Name
+
+        </div>
+
+
+        <div class="sponsor-type">
+
+          Supporting Partner
+
+        </div>
+
+      </div>
+
+      -->
+
+
+
+      <!-- ======================================================
+           ADD SPONSOR 3
+      ======================================================= -->
+
+      <!--
+
+      <div class="sponsor-card">
+
+        <div class="sponsor-logo-wrap">
+
+          <img
+            src="sponsor-5.png"
+            alt="Sponsor 5"
+            class="sponsor-logo"
+          >
+
+        </div>
+
+
+        <div class="sponsor-name">
+
+          Sponsor Name
+
+        </div>
+
+
+        <div class="sponsor-type">
+
+          Supporting Partner
+
+        </div>
+
+      </div>
+
+      -->
+
+
+    </div>
+
+  </div>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+
+<footer class="footer">
+
+  <div class="footer-inner">
+
+
+    <div class="footer-grid">
+
+
+      <!-- ======================================================
+           FOOTER BRAND
+      ======================================================= -->
+
+      <div class="footer-brand">
+
+
+        <a href="index.html">
+
+
+          <img
+            src="Rotaract_Hyderabad_East_Logo.png"
+            alt="Rotaract HE"
+            class="footer-brand-logo"
+            style="opacity:0.9;"
+          >
+
+
+        </a>
+
+
+        <p>
+
+          Empowering young leaders through service,
+          fellowship, and professional development since 2007.
+
+        </p>
+
+
+
+        <!-- SOCIAL LINKS -->
+
+        <div class="footer-social-row">
+
+
+          <a
+            href="https://www.instagram.com/rchyderabadeast"
+            target="_blank"
+            rel="noopener"
+            class="footer-social-btn"
+            aria-label="Instagram"
+          >
+
+            Instagram
+
+          </a>
+
+
+          <a
+            href="https://www.linkedin.com/company/rotaract-club-of-hyderabad-east/"
+            target="_blank"
+            rel="noopener"
+            class="footer-social-btn"
+            aria-label="LinkedIn"
+          >
+
+            LinkedIn
+
+          </a>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ======================================================
+           QUICK LINKS
+      ======================================================= -->
+
+      <div class="footer-col">
+
+
+        <h5>
+
+          Quick Links
+
+        </h5>
+
+
+        <ul class="footer-links">
+
+
+          <li>
+
+            <a href="about.html">
+
+              About Us
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a href="events.html">
+
+              Events
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a href="team.html">
+
+              Our Team
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a href="gallery.html">
+
+              Gallery
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a href="sponsors.html">
+
+              Sponsors
+
+            </a>
+
+          </li>
+
+
+        </ul>
+
+
+      </div>
+
+
+
+      <!-- ======================================================
+           GET INVOLVED
+      ======================================================= -->
+
+      <div class="footer-col">
+
+
+        <h5>
+
+          Get Involved
+
+        </h5>
+
+
+        <ul class="footer-links">
+
+
+          <li>
+
+            <a
+              href="#"
+              id="ftJoinLink"
+            >
+
+              Join the Club
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a href="contact.html">
+
+              Partner With Us
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <a href="donate.jpeg">
+
+              Donate
+
+            </a>
+
+          </li>
+
+
+        </ul>
+
+
+      </div>
+
+
+
+      <!-- ======================================================
+           CONTACT
+      ======================================================= -->
+
+      <div class="footer-col">
+
+
+        <h5>
+
+          Contact
+
+        </h5>
+
+
+        <div class="footer-contact-item">
+
+
+          <a href="mailto:rchyderabadeast@gmail.com">
+
+            rchyderabadeast@gmail.com
+
+          </a>
+
+
+        </div>
+
+
+        <div class="footer-contact-item">
+
+
+          <a href="tel:+919951143775">
+
+            +91 99511 43775
+
+          </a>
+
+
+        </div>
+
+
+        <div class="footer-contact-item">
+
+
+          <span>
+
+            Hyderabad, Telangana
+
+          </span>
+
+
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+
+
+    <!-- ========================================================
+         FOOTER DIVIDER
+    ========================================================= -->
+
+    <div class="footer-divider"></div>
+
+
+
+    <!-- ========================================================
+         FOOTER BOTTOM
+    ========================================================= -->
+
+    <div class="footer-bottom-bar">
+
+
+      <span>
+
+        © 2026 Rotaract Club of Hyderabad East.
+        All rights reserved.
+
+      </span>
+
+
+      <span>
+
+        Proudly part of
+
+
+        <a
+          href="https://rotaract3150.in"
+          target="_blank"
+          rel="noopener"
+        >
+
+          Rotaract District 3150
+
+        </a>
+
+
+      </span>
+
+
+    </div>
+
+
+
+    <!-- ========================================================
+         FOOTER END
+    ========================================================= -->
+
+    <div class="footer-end-row">
+
+
+      <span class="footer-passion">
+
+        Made with passion for service
+
+      </span>
+
+
+      <img
+        src="RCHE4EVER.png"
+        alt="#RCHE4EVR"
+        class="footer-rche"
+      >
+
+
+    </div>
+
+
+  </div>
+
+</footer>
+
+
+
+<!-- ============================================================
+     NAVBAR JAVASCRIPT
+============================================================ -->
+
+<script>
+
+
+  /* ============================================================
+     NAVBAR SCROLL EFFECT
+  ============================================================ */
+
+  const navbar =
+    document.getElementById('navbar');
+
+
+  window.addEventListener(
+    'scroll',
+    () => {
+
+      navbar.classList.toggle(
+        'scrolled',
+        window.scrollY > 20
+      );
+
+    },
+    { passive: true }
+  );
+
+
+
+  /* ============================================================
+     MOBILE MENU
+  ============================================================ */
+
+  const ham =
+    document.getElementById('hamburger');
+
+
+  const mob =
+    document.getElementById('navMobile');
+
+
+  ham.addEventListener(
+    'click',
+    () => {
+
+      const open =
+        mob.classList.toggle('open');
+
+
+      const sp =
+        ham.querySelectorAll('span');
+
+
+      if (open) {
+
+
+        sp[0].style.transform =
+          'rotate(45deg) translate(5px,5px)';
+
+
+        sp[1].style.opacity =
+          '0';
+
+
+        sp[2].style.transform =
+          'rotate(-45deg) translate(5px,-5px)';
+
+
+      }
+
+      else {
+
+
+        sp.forEach(
+          s => {
+
+            s.style.transform =
+              '';
+
+            s.style.opacity =
+              '';
+
+          }
+        );
+
+
+      }
+
+    }
+  );
+
+
+
+  /* ============================================================
+     CLOSE MOBILE MENU WHEN CLICKING OUTSIDE
+  ============================================================ */
+
+  document.addEventListener(
+    'click',
+    e => {
+
+
+      if (
+        !ham.contains(e.target) &&
+        !mob.contains(e.target)
+      ) {
+
+
+        mob.classList.remove('open');
+
+
+        ham
+          .querySelectorAll('span')
+          .forEach(
+            s => {
+
+              s.style.transform =
+                '';
+
+              s.style.opacity =
+                '';
+
+            }
+          );
+
+
+      }
+
+    }
+  );
+
+
+</script>
+
+
+</body>
+
+</html>
