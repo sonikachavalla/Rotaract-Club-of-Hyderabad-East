@@ -23,15 +23,25 @@
     .ev-card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.06);border:1px solid rgba(159,122,234,0.1);transition:all 0.25s}
     .ev-card:hover{transform:translateY(-8px);box-shadow:0 12px 40px rgba(159,122,234,0.15)}
     
-   .ev-banner{
+.ev-banner{
     height:220px;
     position:relative;
     overflow:hidden;
     padding:0;
     background:#f7f4ff;
     box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
-
+.ev-banner > span{
+    font-family:'Poppins', sans-serif;
+    font-size:3.5rem;
+    font-weight:800;
+    color:#fff;
+    line-height:1;
+    text-align:center;
+}
 .ev-banner.has-poster{
     background:#f7f4ff;
 }
