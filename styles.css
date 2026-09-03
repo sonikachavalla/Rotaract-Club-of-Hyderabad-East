@@ -1090,31 +1090,260 @@ textarea.form-control { resize: vertical; min-height: 130px; }
 }
 
 /* ============================================================
-   NAVBAR — STABLE VERTICAL ALIGNMENT
+   FINAL NAVBAR LAYOUT
+   Stable 3-section header
    ============================================================ */
 
-.navbar .nav-inner {
+.navbar {
+    height: var(--nav-h);
     display: flex;
     align-items: center;
-    height: 100%;
 }
 
-.navbar .nav-links {
+.navbar > .container {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
-    height: 100%;
 }
 
-.navbar .nav-links li {
+.nav-inner {
+    width: 100%;
+    height: 100%;
+
     display: flex;
     align-items: center;
-    height: 100%;
+
+    gap: 0;
 }
 
-.navbar .nav-links a {
+
+/* ============================================================
+   LEFT — CLUB LOGO
+   ============================================================ */
+
+.nav-logo-link {
+    flex: 0 0 150px;
+
+    height: 100%;
+
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+
+    margin-right: 10px;
+}
+
+.nav-logo-link img {
+    width: 135px;
+    height: auto;
+
+    display: block;
+    object-fit: contain;
+}
+
+
+/* ============================================================
+   CENTER — NAVIGATION
+   ============================================================ */
+
+.nav-links {
+    flex: 1;
+
+    min-width: 0;
+
     height: 100%;
-    padding-top: 0;
-    padding-bottom: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 2px;
+
+    margin: 0;
+    padding: 0;
+
+    white-space: nowrap;
+}
+
+.nav-links li {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a {
+    display: flex;
+    align-items: center;
+
+    height: 100%;
+
+    padding: 0 11px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   RIGHT — DISTRICT + ROTARY + JOIN
+   ============================================================ */
+
+.nav-right {
+    flex: 0 0 auto;
+
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-left: 10px;
+}
+
+
+/* District logo */
+
+.nav-right .nav-badge-img-link:first-child img {
+    width: 120px;
+    height: auto;
+
+    display: block;
+}
+
+
+/* Rotary logo */
+
+.nav-right .nav-badge-img-link:nth-child(2) img {
+    width: 115px;
+    height: auto;
+
+    display: block;
+}
+
+
+/* Join button */
+
+.nav-join {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
+}
+
+
+/* ============================================================
+   TABLET
+   ============================================================ */
+
+@media (max-width: 1200px) {
+
+    .nav-logo-link {
+        flex-basis: 135px;
+    }
+
+    .nav-logo-link img {
+        width: 125px;
+    }
+
+    .nav-links a {
+        padding-left: 8px;
+        padding-right: 8px;
+        font-size: 0.82rem;
+    }
+
+    .nav-right {
+        gap: 7px;
+    }
+
+    .nav-right .nav-badge-img-link:first-child img {
+        width: 105px;
+    }
+
+    .nav-right .nav-badge-img-link:nth-child(2) img {
+        width: 100px;
+    }
+
+    .nav-join {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+
+}
+
+
+/* ============================================================
+   SMALLER DESKTOP / LARGE TABLET
+   ============================================================ */
+
+@media (max-width: 1050px) {
+
+    .nav-logo-link {
+        flex-basis: 120px;
+    }
+
+    .nav-logo-link img {
+        width: 115px;
+    }
+
+    .nav-links {
+        gap: 0;
+    }
+
+    .nav-links a {
+        padding-left: 6px;
+        padding-right: 6px;
+        font-size: 0.78rem;
+    }
+
+    .nav-right .nav-badge-img-link:first-child img {
+        width: 95px;
+    }
+
+    .nav-right .nav-badge-img-link:nth-child(2) img {
+        width: 90px;
+    }
+
+    .nav-join {
+        padding: 9px 14px;
+        font-size: 0.8rem;
+    }
+
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 900px) {
+
+    .nav-links,
+    .nav-right {
+        display: none;
+    }
+
+    .nav-logo-link {
+        flex: 0 0 auto;
+        margin-right: 0;
+    }
+
+    .nav-logo-link img {
+        width: 130px;
+    }
+
+    .nav-inner {
+        justify-content: space-between;
+    }
+
+    .nav-hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
 }
