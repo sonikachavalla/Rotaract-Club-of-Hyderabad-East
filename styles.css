@@ -1089,3 +1089,32 @@ textarea.form-control { resize: vertical; min-height: 130px; }
   .exec-grid { grid-template-columns: 1fr; }
 }
 
+/* ============================================================
+   NAVBAR — STABLE VERTICAL ALIGNMENT
+   ============================================================ */
+
+.navbar .nav-inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar .nav-links li {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.navbar .nav-links a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+}
