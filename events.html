@@ -605,13 +605,19 @@ let pa = [];
 
 if (selectedYear === currentYear) {
     // Current RI Year
-    up = filteredEvents.filter(e => e.status === "upcoming");
+    up = filteredEvents
+        .filter(e => e.status === "upcoming")
+        .sort((a, b) => {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return dateA - dateB;
+        });
+
     pa = filteredEvents.filter(e => e.status === "past");
 } else {
     // Archived RI Years
     pa = filteredEvents;
 }
-
     // Show Upcoming section only for current RI Year
     const upcomingSection = document.getElementById("upcomingSection");
 
