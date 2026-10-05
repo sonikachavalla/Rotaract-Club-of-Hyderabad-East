@@ -513,12 +513,21 @@ function evCardHtml(ev, idx) {
                 alt="${ev.title}">`
         : `<span>${init}</span>`;
 
-    const btn = `
+    const btn = (ev.status === "upcoming" && ev.registration_link)
+    ? `
+        <a class="ev-btn"
+           href="${ev.registration_link}"
+           target="_blank"
+           rel="noopener">
+            Register Now →
+        </a>
+      `
+    : `
         <button class="ev-btn outline"
                 onclick="openEventDetail('${ev.id}')">
             View Details →
         </button>
-    `;
+      `;
 
     return `
         <div class="ev-card">
