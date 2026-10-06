@@ -31,25 +31,28 @@
        ========================================================= */
 
     .trip-hero {
-      position: relative;
-      background:
-        linear-gradient(
-          90deg,
-          rgba(20, 18, 35, 0.92) 0%,
-          rgba(20, 18, 35, 0.76) 42%,
-          rgba(20, 18, 35, 0.20) 100%
-        ),
-        url("https://vl-prod-static.b-cdn.net/system/images/000/726/415/140be675a10dd05f07278f3a189cb13a/original/Gokarna_Murudeshwar_Tour_From_Mumbai_by_Mischief_Treks_Banner.jpg");
+  position: relative;
 
-      background-size: cover;
-      background-position: center;
-      min-height: 570px;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(20, 18, 35, 0.92) 0%,
+      rgba(20, 18, 35, 0.76) 42%,
+      rgba(20, 18, 35, 0.20) 100%
+    ),
+    url("murudeshwar.jpg");
 
-      display: flex;
-      align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-      color: #fff;
-    }
+  min-height: 570px;
+
+  display: flex;
+  align-items: center;
+
+  color: #fff;
+}
 
     .trip-hero-inner {
       width: 100%;
@@ -1521,9 +1524,11 @@ fellowship, and memories that will last a lifetime.
 
         <a
           href="https://docs.google.com/forms/d/e/1FAIpQLScog5Xuug8ToWGwd8KeDiAeBNeEff1dBZcHu49C37nTUMm1gw/viewform"
+          target="_blank"
+          rel="noopener noreferrer"
           class="btn btn-primary"
         >
-          Book now->
+          Book now →
         </a>
 
         <a
@@ -2057,7 +2062,7 @@ fellowship, and memories that will last a lifetime.
             </h3>
 
             <p>
-              Arrive in Hyderabad
+              Arrival in Hyderabad
             </p>
 
           </div>
@@ -2382,7 +2387,10 @@ fellowship, and memories that will last a lifetime.
      TRIP NOTES
      ========================================================= -->
 
-<section class="trip-section trip-section-light">
+<section
+  class="trip-section trip-section-light"
+  id="tripnotes"
+>
 
   <div class="trip-section-inner">
 
@@ -2549,10 +2557,11 @@ fellowship, and memories that will last a lifetime.
 
 <script>
 
-  /* Navbar scroll effect */
+  /* =========================================================
+     NAVBAR SCROLL EFFECT
+  ========================================================= */
 
-  const navbar =
-    document.getElementById('navbar');
+  const navbar = document.getElementById('navbar');
 
   window.addEventListener(
     'scroll',
@@ -2568,7 +2577,9 @@ fellowship, and memories that will last a lifetime.
   );
 
 
-  /* Mobile menu */
+  /* =========================================================
+     MOBILE MENU
+  ========================================================= */
 
   const hamburger =
     document.getElementById('hamburger');
@@ -2637,30 +2648,234 @@ fellowship, and memories that will last a lifetime.
     });
 
 
-  /* Smooth internal navigation */
+  /* =========================================================
+     TRIP NAVIGATION
+  ========================================================= */
 
-  document
-    .querySelectorAll('.trip-nav a')
-    .forEach(link => {
+  const tripNavLinks =
+    Array.from(
+      document.querySelectorAll('.trip-nav a')
+    );
 
-      link.addEventListener(
-        'click',
-        function () {
 
-          document
-            .querySelectorAll('.trip-nav a')
-            .forEach(item =>
-              item.classList.remove('active')
-            );
+  const tripSections =
+    tripNavLinks
+      .map(link => {
 
-          this.classList.add('active');
+        const id =
+          link.getAttribute('href');
 
+        if (
+          !id ||
+          !id.startsWith('#')
+        ) {
+          return null;
         }
+
+        return document.querySelector(id);
+
+      })
+      .filter(Boolean);
+
+
+  /* =========================================================
+     SET ACTIVE TAB
+  ========================================================= */
+
+  function setActiveTripNav(id) {
+
+    tripNavLinks.forEach(link => {
+
+      const target =
+        link.getAttribute('href');
+
+      link.classList.toggle(
+        'active',
+        target === `#${id}`
       );
 
     });
 
-</script>
+  }
 
+
+  /* =========================================================
+     SMOOTH SCROLL WHEN CLICKING
+  ========================================================= */
+
+  tripNavLinks.forEach(link => {
+
+    link.addEventListener(
+      'click',
+      function(event) {
+
+        const targetId =
+          this.getAttribute('href');
+
+        if (
+          !targetId ||
+          !targetId.startsWith('#')
+        ) {
+          return;
+        }
+
+        const target =
+          document.querySelector(targetId);
+
+        if (!target) {
+          return;
+        }
+
+        event.preventDefault();
+
+
+        const navWrap =
+          document.querySelector('.trip-nav-wrap');
+
+        const navHeight =
+          navWrap
+            ? navWrap.offsetHeight
+            : 0;
+
+
+        const navbarHeight =
+          navbar
+            ? navbar.offsetHeight
+            : 0;
+
+
+        const targetTop =
+          target.getBoundingClientRect().top +
+          window.scrollY -
+          navHeight -
+          navbarHeight -
+          12;
+
+
+        window.scrollTo({
+
+          top: Math.max(0, targetTop),
+
+          behavior: 'smooth'
+
+        });
+
+
+        setActiveTripNav(
+          target.id
+        );
+
+      }
+    );
+
+  });
+
+
+  /* =========================================================
+     CHANGE ACTIVE TAB WHILE SCROLLING
+  ========================================================= */
+
+  let ticking = false;
+
+
+  function updateTripNavOnScroll() {
+
+    if (ticking) {
+      return;
+    }
+
+    ticking = true;
+
+
+    window.requestAnimationFrame(() => {
+
+      const navWrap =
+        document.querySelector('.trip-nav-wrap');
+
+
+      const navHeight =
+        navWrap
+          ? navWrap.offsetHeight
+          : 0;
+
+
+      const navbarHeight =
+        navbar
+          ? navbar.offsetHeight
+          : 0;
+
+
+      /*
+        Start checking below both the main navbar
+        and the sticky Trip navigation.
+      */
+
+      const triggerPoint =
+        navbarHeight +
+        navHeight +
+        40;
+
+
+      let currentSection =
+        tripSections[0];
+
+
+      tripSections.forEach(section => {
+
+        const sectionTop =
+          section.getBoundingClientRect().top;
+
+
+        if (
+          sectionTop <= triggerPoint
+        ) {
+
+          currentSection =
+            section;
+
+        }
+
+      });
+
+
+      if (currentSection) {
+
+        setActiveTripNav(
+          currentSection.id
+        );
+
+      }
+
+
+      ticking = false;
+
+    });
+
+  }
+
+
+  /* Listen for scrolling */
+
+  window.addEventListener(
+    'scroll',
+    updateTripNavOnScroll,
+    { passive: true }
+  );
+
+
+  /* Recalculate if window size changes */
+
+  window.addEventListener(
+    'resize',
+    updateTripNavOnScroll
+  );
+
+
+  /* Set correct tab when page loads */
+
+  updateTripNavOnScroll();
+
+
+</script>
 </body>
 </html>
