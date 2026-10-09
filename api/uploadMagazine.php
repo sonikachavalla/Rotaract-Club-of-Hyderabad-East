@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
  */
 
 $displayName = trim($_POST["display_name"] ?? "");
+error_log("Magazine POST fields: " . json_encode(array_keys($_POST)));
 $yearName = trim($_POST["year_name"] ?? "");
 
 if ($displayName === "" || strlen($displayName) > 150) {
