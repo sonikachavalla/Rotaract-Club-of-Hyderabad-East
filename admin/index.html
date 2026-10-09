@@ -849,13 +849,27 @@ async function saveMagazine() {
   const formData = new FormData();
   formData.append('display_name', name);
   formData.append('year_name', year);
-  formData.append('magazine', file);
+  formData.append('pdf', file);
 
   try {
-    const response = await fetch('../api/uploadMagazine.php', {
-      method: 'POST',
-      body: formData
-    });
+    
+const user = window._fb?.auth?.currentUser;
+
+if (!user) {
+  alert('Please log in again.');
+  return;
+}
+
+const token = await user.getIdToken();
+
+const response = await fetch('../api/uploadMagazine.php', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  },
+  body: formData
+});
+
 
     const result = await response.json();
 
@@ -884,13 +898,25 @@ async function deleteMagazine(id) {
   }
 
   try {
-    const response = await fetch('../api/deleteMagazine.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ id: id })
-    });
+    
+const user = window._fb?.auth?.currentUser;
+
+if (!user) {
+  alert('Please log in again.');
+  return;
+}
+
+const token = await user.getIdToken();
+
+const response = await fetch('../api/deleteMagazine.php', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify({ id: id })
+});
+
 
     const result = await response.json();
 

@@ -7,29 +7,142 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
-    .gallery-wrap{max-width:1320px;margin:0 auto;padding:64px 24px}
-    .gallery-grid{columns:4;column-gap:14px}
-    .gallery-grid-item{break-inside:avoid;margin-bottom:14px;border-radius:12px;overflow:hidden;cursor:pointer;position:relative;background:#EDE9FE;display:block}
-    .gallery-grid-item img{width:100%;display:block;transition:transform 0.4s ease}
-    .gallery-grid-item:hover img{transform:scale(1.05)}
-    .gallery-grid-item .overlay{position:absolute;inset:0;background:rgba(124,58,237,0.4);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s}
-    .gallery-grid-item:hover .overlay{opacity:1}
-    .gallery-grid-item .overlay svg{width:32px;height:32px;color:#fff}
-    .empty-gallery{text-align:center;padding:80px 24px;color:#a0aec0}
-    .empty-gallery .icon{font-size:4rem;margin-bottom:16px}
-    .empty-gallery h3{font-family:'Poppins',sans-serif;font-size:1.2rem;color:#4a5568;margin-bottom:8px}
-    /* Lightbox */
-    .lb-bg{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:3000;display:none;align-items:center;justify-content:center;padding:20px}
-    .lb-bg.open{display:flex}
-    .lb-img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.6)}
-    .lb-close{position:fixed;top:20px;right:24px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);color:#fff;border:none;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
-    .lb-close:hover{background:rgba(255,255,255,0.25)}
-    .lb-nav{position:fixed;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.15);color:#fff;border:none;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
-    .lb-nav:hover{background:rgba(255,255,255,0.25)}
-    .lb-prev{left:16px}.lb-next{right:16px}
-    @media(max-width:900px){.gallery-grid{columns:3}}
-    @media(max-width:600px){.gallery-grid{columns:2}}
-    @media(max-width:360px){.gallery-grid{columns:2}}
+    
+/* =========================================
+   GALLERY PAGE — MAGAZINES ONLY
+   ========================================= */
+
+.gallery-wrap {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 72px 24px 110px;
+}
+
+.gallery-section-head {
+  text-align: center;
+  margin-bottom: 54px;
+}
+
+.gallery-section-head h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 14px;
+}
+
+.gallery-section-head p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Three equal-width columns centered on page */
+
+.magazine-list {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 28px;
+}
+
+/* Each magazine occupies one table-like cell */
+
+.magazine-item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 14px;
+
+  width: 100%;
+  min-height: 76px;
+  padding: 18px 14px;
+
+  color: var(--text-dark);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(159, 122, 234, 0.2);
+
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.magazine-item:hover {
+  background: rgba(159, 122, 234, 0.05);
+  color: var(--purple-dark);
+}
+
+.magazine-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+
+  background: var(--text-dark);
+  color: white;
+
+  font-size: 17px;
+  line-height: 1;
+}
+
+.magazine-item:hover .magazine-icon {
+  background: var(--purple-dark);
+}
+
+.magazine-title {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: inherit;
+  text-align: left;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .magazine-list {
+    max-width: 680px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 560px) {
+  .gallery-wrap {
+    padding: 48px 18px 75px;
+  }
+
+  .gallery-section-head {
+    margin-bottom: 32px;
+  }
+
+  .magazine-list {
+    max-width: 420px;
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+
+  .magazine-item {
+    min-height: 64px;
+    padding: 14px 12px;
+  }
+
+  .magazine-title {
+    font-size: 0.94rem;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -63,29 +176,44 @@
 </div>
 
 <main>
+
+  <!-- PAGE HERO -->
   <section class="page-hero">
-    <span class="section-label">Memories</span>
+    <span class="section-label">Memories &amp; Stories</span>
+
     <h1>Our <span class="grad">Gallery</span></h1>
-    <p class="lead">Capturing moments of impact, fellowship, and service.</p>
+
+    <p class="lead">
+      Explore the stories, activities, and milestones
+      of Rotaract Club of Hyderabad East.
+    </p>
   </section>
 
+  <!-- MAGAZINES -->
   <div class="gallery-wrap">
-    <div class="gallery-grid" id="galleryGrid"></div>
-    <div class="empty-gallery" id="galleryEmpty" style="display:none">
-      <div class="icon">📸</div>
-      <h3>No photos yet</h3>
-      <p>Photos uploaded from the admin panel will appear here.</p>
-    </div>
-  </div>
-</main>
 
-<!-- Lightbox -->
-<div class="lb-bg" id="lbBg">
-  <button class="lb-close" onclick="closeLb()">✕</button>
-  <button class="lb-nav lb-prev" onclick="lbNav(-1)">&#8249;</button>
-  <img class="lb-img" id="lbImg" src="" alt="">
-  <button class="lb-nav lb-next" onclick="lbNav(1)">&#8250;</button>
+    <section id="magazines">
+
+      <div class="gallery-section-head">
+        <h2>Magazines</h2>
+
+        <p>
+          Read our monthly magazines and explore the stories,
+          activities, and moments from our Rotaract journey.
+        </p>
+      </div>
+
+      <div class="magazine-list" id="magazineList">
+    <p style="grid-column:1/-1;text-align:center;">
+        Loading magazines…
+    </p>
 </div>
+
+    </section>
+
+  </div>
+
+</main>
 
 <!-- ══ FOOTER ═══════════════════════════════════════════ -->
 <footer class="footer">
@@ -119,101 +247,65 @@
   </div>
 </footer>
 
-<script type="module">
-// ══════════════════════════════════════════════════════════════
-//  gallery.html — Firebase Firestore data loading
-// ══════════════════════════════════════════════════════════════
-import { db } from "./firebase-config.js";
-import { collection, getDocs, doc, getDoc }
-  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+<script>
+async function loadMagazines() {
+    const container = document.getElementById("magazineList");
+    if (!container) return;
 
-const DEFAULT_JOIN = 'https://docs.google.com/forms/d/e/1FAIpQLSeJU6e7tgw97S5mSkZkR2-9IyYKRAs1qU9m6-kW6QkzhjderA/viewform';
+    try {
+        const response = await fetch("api/getMagazines.php");
+        if (!response.ok) throw new Error("Request failed");
 
-let lbPhotos = [], lbIdx = 0;
+        const result = await response.json();
+        if (!result.success) throw new Error("Could not load magazines");
 
-async function renderGallery() {
-  let photos = [], settings = {};
-  try {
-    const [galSnap, settSnap] = await Promise.all([
-      getDocs(collection(db, 'gallery')),
-      getDoc(doc(db, 'settings', 'global'))
-    ]);
-    photos   = galSnap.docs.map(d => ({ id: d.id, ...d.data() }));
-    settings = settSnap.exists() ? settSnap.data() : {};
-  } catch(e) {
-    console.warn('Firestore error:', e);
-  }
+        if (!result.magazines.length) {
+            container.innerHTML =
+                '<p style="grid-column:1/-1;text-align:center;">No magazines available yet.</p>';
+            return;
+        }
 
-  const grid  = document.getElementById('galleryGrid');
-  const empty = document.getElementById('galleryEmpty');
-  if (!photos.length) { grid.style.display='none'; empty.style.display='block'; }
-  else {
-    grid.style.display = ''; empty.style.display = 'none';
-    lbPhotos = photos.map(p => p.src);
-    grid.innerHTML = photos.map((p, i) => `
-      <div class="gallery-grid-item" onclick="openLb(${i})">
-        <img src="${p.src}" alt="Gallery photo" loading="lazy">
-        <div class="overlay"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
-      </div>`).join('');
-  }
+        container.innerHTML = result.magazines.map(magazine => {
+            // Only allow links to PDFs in our own magazine folder.
+            const path = String(magazine.pdf_path || "");
+            if (!/^uploads\/magazines\/[A-Za-z0-9_.-]+\.pdf$/i.test(path)) {
+                return "";
+            }
 
-  // Apply settings
-  const joinUrl = settings.joinform || DEFAULT_JOIN;
-  ['joinLinkNav','joinLinkMobile','ftJoinLink'].forEach(id => {
-    const el = document.getElementById(id); if (el) el.href = joinUrl;
-  });
-  if (settings.instagram) { const el=document.getElementById('ftInstagram'); if(el) el.href=settings.instagram; }
-  if (settings.linkedin)  { const el=document.getElementById('ftLinkedin');  if(el) el.href=settings.linkedin; }
-  if (settings.email)     { const el=document.getElementById('ftEmail');     if(el) { el.href='mailto:'+settings.email; el.textContent=settings.email; } }
-  if (settings.phone)     { const el=document.getElementById('ftPhone');     if(el) { el.href='tel:'+settings.phone.replace(/\s/g,''); el.textContent=settings.phone; } }
+            const name = String(magazine.display_name || "Magazine");
+            const year = String(magazine.year_name || "");
+
+            const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[char]);
+
+            return `
+                <a href="${escapeHTML(path)}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="magazine-item">
+                    <span class="magazine-icon" aria-hidden="true">➜</span>
+                    <div>
+                        <h3 class="magazine-title">${escapeHTML(name)}</h3>
+                        <small>RI Year ${escapeHTML(year)}</small>
+                    </div>
+                </a>
+            `;
+        }).join("");
+
+    } catch (error) {
+        console.error("Magazine loading failed:", error);
+        container.innerHTML =
+            '<p style="grid-column:1/-1;text-align:center;">Unable to load magazines. Please try again later.</p>';
+    }
 }
 
-window.openLb = function(idx) {
-  lbIdx = idx;
-  document.getElementById('lbImg').src = lbPhotos[idx];
-  document.getElementById('lbBg').classList.add('open');
-  document.body.style.overflow = 'hidden';
-};
-window.closeLb = function() {
-  document.getElementById('lbBg').classList.remove('open');
-  document.getElementById('lbImg').src = '';
-  document.body.style.overflow = '';
-};
-window.lbNav = function(delta) {
-  lbIdx = (lbIdx + delta + lbPhotos.length) % lbPhotos.length;
-  document.getElementById('lbImg').src = lbPhotos[lbIdx];
-};
-
-document.getElementById('lbBg').addEventListener('click', e => { if(e.target.id==='lbBg') closeLb(); });
-document.addEventListener('keydown', e => {
-  if (e.key==='Escape')      closeLb();
-  if (e.key==='ArrowRight')  lbNav(1);
-  if (e.key==='ArrowLeft')   lbNav(-1);
-});
-
-// ── Navbar ─────────────────────────────────────────────────────
-const navbar = document.getElementById('navbar');
-window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 20), {passive:true});
-const ham = document.getElementById('hamburger'), mob = document.getElementById('navMobile');
-ham.addEventListener('click', () => {
-  const open = mob.classList.toggle('open'), sp = ham.querySelectorAll('span');
-  if (open) { sp[0].style.transform='rotate(45deg) translate(5px,5px)'; sp[1].style.opacity='0'; sp[2].style.transform='rotate(-45deg) translate(5px,-5px)'; }
-  else { sp.forEach(s => { s.style.transform=''; s.style.opacity=''; }); }
-});
-document.addEventListener('click', e => {
-  if (!ham.contains(e.target) && !mob.contains(e.target)) {
-    mob.classList.remove('open');
-    ham.querySelectorAll('span').forEach(s => { s.style.transform=''; s.style.opacity=''; });
-  }
-});
-
-// ── Init ───────────────────────────────────────────────────────
-document.body.style.opacity = '0';
-document.body.style.transition = 'opacity 0.35s ease';
-window.addEventListener('load', async () => {
-  document.body.style.opacity = '1';
-  await renderGallery();
-});
+document.addEventListener("DOMContentLoaded", loadMagazines);
 </script>
+
 </body>
 </html>
