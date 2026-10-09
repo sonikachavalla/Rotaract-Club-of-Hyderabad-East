@@ -488,7 +488,7 @@ textarea.form-input{resize:vertical;min-height:90px}
   </div>
 </div>
 
-<!-- Magazine Modal -->
+<!-- Magazine Modal
 <div class="modal-overlay" id="magazineModal">
   <div class="modal">
     <div class="modal-header">
@@ -514,6 +514,44 @@ textarea.form-input{resize:vertical;min-height:90px}
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('magazineModal')">Cancel</button>
       <button class="btn btn-primary" onclick="saveMagazine()">Upload Magazine</button>
+    </div>
+  </div>
+</div> -->
+
+
+<!-- MAGAZINE MODAL -->
+<div class="modal-bg" id="magazineModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Add Magazine</h3>
+      <button class="modal-close" onclick="closeModal('magazineModal')">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label" for="magazineName">Magazine Name</label>
+        <input class="form-input" type="text" id="magazineName"
+               placeholder="e.g. Monthly Magazine">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="magazineYear">RI Year</label>
+        <input class="form-input" type="text" id="magazineYear"
+               placeholder="2026-2027">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="magazineFile">Magazine PDF</label>
+        <input class="form-input" type="file" id="magazineFile"
+               accept=".pdf,application/pdf">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-outline-sm btn-sm"
+              onclick="closeModal('magazineModal')">Cancel</button>
+      <button class="save-btn btn-sm"
+              onclick="saveMagazine()">Upload Magazine</button>
     </div>
   </div>
 </div>
