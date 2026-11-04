@@ -420,6 +420,220 @@
       .zonal-overview-grid { grid-template-columns: 1fr; }
       .zonal-hero h1 { font-size: 2.45rem; }
     }
+
+    /* ==============================
+   DISTRICT TEAM SECTION
+============================== */
+
+.district-team-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.district-team-card {
+  grid-column: span 3;
+  min-width: 0;
+  min-height: 285px;
+  padding: 30px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: #fff;
+  border: 1px solid rgba(159,122,234,.13);
+  border-top: 5px solid var(--team-accent, #9F7AEA);
+  border-radius: 22px;
+  box-shadow: 0 4px 18px rgba(0,0,0,.045);
+}
+
+/* First card centred on its own row */
+.district-team-card:nth-child(1) {
+  grid-column: 2 / span 4;
+}
+
+/* Individual card accent colours */
+.district-team-card:nth-child(2) {
+  --team-accent: #D76BA7;
+}
+
+.district-team-card:nth-child(3) {
+  --team-accent: #6C9BE0;
+}
+
+.district-team-card:nth-child(4) {
+  --team-accent: #54B8A5;
+}
+
+.district-team-card:nth-child(5) {
+  --team-accent: #E2AE4D;
+}
+
+/* Initials profile circles */
+.district-team-avatar {
+  width: 112px;
+  height: 112px;
+  flex: 0 0 112px;
+  display: grid;
+  place-items: center;
+  margin: 7px auto 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #EDE9FE, #FCE7F3);
+  color: #7046C6;
+  font: 800 1.75rem 'Poppins', sans-serif;
+  box-shadow: 0 10px 28px rgba(159,122,234,.15);
+}
+
+.district-team-card:nth-child(2) .district-team-avatar {
+  background: linear-gradient(135deg,#FCE7F3,#F9D8E9);
+  color: #B83E80;
+}
+
+.district-team-card:nth-child(3) .district-team-avatar {
+  background: linear-gradient(135deg,#E4EEFF,#D8E8FF);
+  color: #376DB5;
+}
+
+.district-team-card:nth-child(4) .district-team-avatar {
+  background: linear-gradient(135deg,#DDF7F0,#C8EEE4);
+  color: #25816F;
+}
+
+.district-team-card:nth-child(5) .district-team-avatar {
+  background: linear-gradient(135deg,#FFF3D8,#FCE6B8);
+  color: #9C6B16;
+}
+
+.district-team-card h3 {
+  margin: 0 0 10px;
+  color: var(--text-dark, #252238);
+  font: 800 clamp(1rem, 1.7vw, 1.3rem)/1.35 'Poppins', sans-serif;
+  overflow-wrap: anywhere;
+}
+
+.district-team-card p {
+  margin: 0;
+  color: var(--team-accent, #9F7AEA);
+  font: 700 .98rem/1.5 'Poppins', sans-serif;
+}
+
+/* TABLET AND MOBILE */
+@media (max-width: 768px) {
+
+  .district-team-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .district-team-card,
+  .district-team-card:nth-child(1),
+  .district-team-card:nth-child(2),
+  .district-team-card:nth-child(3),
+  .district-team-card:nth-child(4),
+  .district-team-card:nth-child(5) {
+    grid-column: span 1;
+    min-height: 250px;
+    padding: 23px 13px;
+  }
+
+  .district-team-card:nth-child(1) {
+    grid-column: 1 / -1;
+    width: min(100%, 420px);
+    justify-self: center;
+  }
+
+  .district-team-avatar {
+    width: 88px;
+    height: 88px;
+    flex-basis: 88px;
+    margin-bottom: 15px;
+    font-size: 1.45rem;
+  }
+
+  .district-team-card h3 {
+    font-size: .98rem;
+  }
+
+  .district-team-card p {
+    font-size: .82rem;
+  }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 420px) {
+
+  .district-team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .district-team-card,
+  .district-team-card:nth-child(1),
+  .district-team-card:nth-child(2),
+  .district-team-card:nth-child(3),
+  .district-team-card:nth-child(4),
+  .district-team-card:nth-child(5) {
+    grid-column: 1;
+    width: 100%;
+  }
+}
+
+/* ABOUT DROPDOWN */
+
+.nav-dropdown {
+  position: relative;
+}
+
+.dropdown-trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dropdown-arrow {
+  font-size: 14px;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  padding: 10px 0;
+  margin: 0;
+  list-style: none;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  z-index: 1000;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 11px 18px;
+  color: #555;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-menu li a:hover {
+  background: #f5efff;
+  color: #8655db;
+}
+
+/* Show dropdown on hover and keyboard focus */
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown:focus-within .dropdown-menu {
+  display: block;
+}
+
+.nav-dropdown:hover .dropdown-arrow {
+  transform: rotate(180deg);
+}
   </style>
 </head>
 
@@ -430,10 +644,24 @@
   <div class="container"><div class="nav-inner">
     <a href="index.html" class="nav-badge-img-link" class="nav-logo-link" aria-label="Home"><img src="Rotaract_Hyderabad_East_Logo.png" width="130" height="65" align-items: center alt="Rotaract Club of Hyderabad East"></a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-dropdown">
+          <a href="about.html" class="dropdown-trigger">
+            About <span class="dropdown-arrow">⌄</span>
+          </a>
+
+          <ul class="dropdown-menu">
+            <li>
+              <a href="about.html">About Us</a>
+            </li>
+            <li>
+              <a href="sponsors.html">Sponsors</a>
+            </li>
+          </ul>
+        </li>
       <li><a href="events.html" >Events</a></li><li><a href="team.html" >Team</a></li>
       <li><a href="gallery.html" >Gallery</a></li><li><a href="contact.html">Contact</a></li>
-       <li><a href="sponsors.html">Sponsors</a></li><li><a href="trip.html">Trips</a></li>
+      <li><a href="trip.html">Trips</a></li>
        <a href="zonalmeet.html" class="active">ZonalMeet</a></li>
     </ul>
     <div class="nav-right">
@@ -450,7 +678,7 @@
   <a href="events.html">Events</a><a href="team.html">Team</a>
   <a href="gallery.html">Gallery</a><a href="contact.html">Contact</a>
   <a href="sponsors.html">Sponsors</a><a href="trip.html">Trips</a>
-  
+
   <div class="nav-mobile-footer">
     <a href="https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform" id="joinLinkMobile" target="_blank" class="btn btn-primary btn-sm">Join The Club</a>
   </div>
@@ -513,7 +741,7 @@
         <article class="zonal-info-card">
           <div class="zonal-info-icon" aria-hidden="true">🗓️</div>
           <small>Date & Time</small>
-          <strong>29 November | 8:30 AM</strong>
+          <strong>29 November <br> 8:30 AM</strong>
         </article>
         <article class="zonal-info-card">
           <div class="zonal-info-icon" aria-hidden="true">🤝</div>
@@ -528,6 +756,56 @@
       </div>
     </div>
   </section>
+
+  <!-- DISTRICT TEAM -->
+<section class="zonal-section white" id="district-team">
+
+  <div class="zonal-inner">
+
+    <div class="zonal-heading">
+      <span class="section-label">District 3150</span>
+      <h2>District <span class="grad">Team</span></h2>
+      <p>Meet the district and Kakatiya Zone leaders.</p>
+    </div>
+
+    <div class="district-team-grid">
+
+      <!-- FIRST ROW: ONE MEMBER -->
+      <article class="district-team-card">
+        <div class="district-team-avatar">SM</div>
+        <h3>Rtr. Sudheeshna Muthyapu</h3>
+        <p>District Rotaract Representative</p>
+      </article>
+
+      <!-- SECOND ROW: TWO MEMBERS -->
+      <article class="district-team-card">
+        <div class="district-team-avatar">BT</div>
+        <h3>Rtr. Bharath Teja</h3>
+        <p>District Secretary General</p>
+      </article>
+
+      <article class="district-team-card">
+        <div class="district-team-avatar">SP</div>
+        <h3>Rtr. Sai Pranay</h3>
+        <p>District Secretary – Avenues</p>
+      </article>
+
+      <!-- THIRD ROW: TWO MEMBERS -->
+      <article class="district-team-card">
+        <div class="district-team-avatar">NM</div>
+        <h3>Rtr. Nandini Mulley</h3>
+        <p>Zone Rotaract Representative – Kakatiya</p>
+      </article>
+
+      <article class="district-team-card">
+        <div class="district-team-avatar">MSB</div>
+        <h3>Rtr. Mohan Sai Bharath</h3>
+        <p>Zone Rotaract Secretary – Kakatiya</p>
+      </article>
+
+    </div>
+  </div>
+</section>
 
   <!-- Clubs -->
   <section class="zonal-section soft" id="clubs">
@@ -553,33 +831,33 @@
             </tr>
           </thead>
           <tbody id="clubsTableBody">
-            <tr><td>1</td><td>Hyderabad East</td><td>77962</td></tr>
-            <tr><td>2</td><td>Hyderabad The Legends</td><td>8825105</td></tr>
-            <tr><td>3</td><td>In Bhadra Sarapaka</td><td>57139</td></tr>
-            <tr><td>4</td><td>BVRIT Hyderabad College of Engineering for Women</td><td>8825322</td></tr>
-            <tr><td>5</td><td>Hyderabad Corporates</td><td>8824520</td></tr>
-            <tr><td>6</td><td>St. Peters Engineering College</td><td>90953</td></tr>
-            <tr><td>7</td><td>Mahindra University</td><td>8826951</td></tr>
-            <tr><td>8</td><td>Apollo Medical College</td><td>218646</td></tr>
-            <tr><td>9</td><td>G. Narayanamma Institute of Technology &amp; Science</td><td>91376</td></tr>
-            <tr><td>10</td><td>Hyderabad Medicos</td><td>8826412</td></tr>
-            <tr><td>11</td><td>Malineni Lakshmaiah Women's Engineering College Guntur</td><td>8827968</td></tr>
-            <tr><td>12</td><td>SFC Hyderabad Pearls</td><td>8825453</td></tr>
-            <tr><td>13</td><td>Mamata Academy of Medical Sciences</td><td>8826415</td></tr>
-            <tr><td>14</td><td>Sunrise</td><td>84497</td></tr>
-            <tr><td>15</td><td>Guntur (Main)</td><td>7675</td></tr>
-            <tr><td>16</td><td>Hyderabad Royals</td><td>8828015</td></tr>
-            <tr><td>17</td><td>Institute of Hotel Management</td><td>214391</td></tr>
-            <tr><td>18</td><td>Martur</td><td>8827778</td></tr>
-            <tr><td>19</td><td>Narasaraopet</td><td>7613</td></tr>
-            <tr><td>20</td><td>New Age Engineers</td><td>91856</td></tr>
-            <tr><td>21</td><td>QIS Thunders</td><td>8824587</td></tr>
-            <tr><td>22</td><td>Sri Harshini Degree College</td><td>8827926</td></tr>
-            <tr><td>23</td><td>VJ Degree College</td><td>8827528</td></tr>
-            <tr><td>24</td><td>Woxsen University</td><td>8827312</td></tr>
-            <tr><td>25</td><td>Gokaraju Rangaraju Institute of Engineering and Technology Hyderabad (Rotaract Club)</td><td>8828378</td></tr>
-            <tr><td>26</td><td>Kokapet Aureum (Rotaract Club)</td><td>8828323</td></tr>
-          </tbody>
+  <tr><td>1</td><td>Rotaract Club of Apollo Medical College</td><td>218646</td></tr>
+  <tr><td>2</td><td>Rotaract Club of BVRIT Hyderabad College of Engineering for Women</td><td>8825322</td></tr>
+  <tr><td>3</td><td>Rotaract Club of G. Narayanamma Institute of Technology &amp; Science</td><td>91376</td></tr>
+  <tr><td>4</td><td>Rotaract Club of Gokaraju Rangaraju Institute of Engineering and Technology Hyderabad</td><td>8828378</td></tr>
+  <tr><td>5</td><td>Rotaract Club of Guntur (Main)</td><td>7675</td></tr>
+  <tr><td>6</td><td>Rotaract Club of Hyderabad Corporates</td><td>8824520</td></tr>
+  <tr><td>7</td><td>Rotaract Club of Hyderabad East</td><td>77962</td></tr>
+  <tr><td>8</td><td>Rotaract Club of Hyderabad Medicos</td><td>8826412</td></tr>
+  <tr><td>9</td><td>Rotaract Club of Hyderabad Royals</td><td>8828015</td></tr>
+  <tr><td>10</td><td>Rotaract Club of Hyderabad The Legends</td><td>8825105</td></tr>
+  <tr><td>11</td><td>Rotaract Club of In Bhadra Sarapaka</td><td>57139</td></tr>
+  <tr><td>12</td><td>Rotaract Club of Institute of Hotel Management</td><td>214391</td></tr>
+  <tr><td>13</td><td>Rotaract Club of Kokapet Aureum</td><td>8828323</td></tr>
+  <tr><td>14</td><td>Rotaract Club of Mahindra University</td><td>8826951</td></tr>
+  <tr><td>15</td><td>Rotaract Club of Malineni Lakshmaiah Women's Engineering College Guntur</td><td>8827968</td></tr>
+  <tr><td>16</td><td>Rotaract Club of Mamata Academy of Medical Sciences</td><td>8826415</td></tr>
+  <tr><td>17</td><td>Rotaract Club of Martur</td><td>8827778</td></tr>
+  <tr><td>18</td><td>Rotaract Club of Narasaraopet</td><td>7613</td></tr>
+  <tr><td>19</td><td>Rotaract Club of New Age Engineers</td><td>91856</td></tr>
+  <tr><td>20</td><td>Rotaract Club of QIS Thunders</td><td>8824587</td></tr>
+  <tr><td>21</td><td>Rotaract Club of SFC Hyderabad Pearls</td><td>8825453</td></tr>
+  <tr><td>22</td><td>Rotaract Club of Sri Harshini Degree College</td><td>8827926</td></tr>
+  <tr><td>23</td><td>Rotaract Club of St. Peters Engineering College</td><td>90953</td></tr>
+  <tr><td>24</td><td>Rotaract Club of Sunrise</td><td>84497</td></tr>
+  <tr><td>25</td><td>Rotaract Club of VJ Degree College</td><td>8827528</td></tr>
+  <tr><td>26</td><td>Rotaract Club of Woxsen University</td><td>8827312</td></tr>
+</tbody>
         </table>
         <div class="clubs-table-empty" id="clubsEmpty" hidden>No matching clubs found.</div>
       </div>
@@ -628,24 +906,62 @@
       </div>
 
       <div class="agenda-wrap">
-        <div class="agenda-list">
-          <div class="agenda-item">
-            <span class="agenda-dot" aria-hidden="true"></span>
-            <div class="agenda-card"><strong>Agenda to be announced</strong></div>
-          </div>
-        </div>
-        <p class="agenda-note">The session titles and timings will be added here once the event schedule is finalised.</p>
+  <div class="agenda-list">
+
+    <div class="agenda-item">
+      <span class="agenda-dot" aria-hidden="true"></span>
+      <div class="agenda-card">
+        <strong>08:55 – 09:00 | Welcome Address</strong>
       </div>
+    </div>
+
+    <div class="agenda-item">
+      <span class="agenda-dot" aria-hidden="true"></span>
+      <div class="agenda-card">
+        <strong>09:00 – 09:15 | Calling the Dignitaries on the Dais</strong>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <span class="agenda-dot" aria-hidden="true"></span>
+      <div class="agenda-card">
+        <strong>09:15 – 09:20 | Collaring of the DRR &amp; the Host President</strong>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <span class="agenda-dot" aria-hidden="true"></span>
+      <div class="agenda-card">
+        <strong>09:20 – 09:22 | Meeting Call to Order by the Event Chair, DRR Rtr. Sudheeshna M</strong>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <span class="agenda-dot" aria-hidden="true"></span>
+      <div class="agenda-card">
+        <strong>09:22 – 09:27 | Rotary Four Way Test by Host Club Secretary Rtr. Rishitha Amagoni</strong>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <span class="agenda-dot" aria-hidden="true"></span>
+      <div class="agenda-card">
+        <strong>09:27 – 09:32 | Welcome Address by Host Club President Rtr. Sai Venkat Ponakala</strong>
+      </div>
+    </div>
+
+    <div class="agenda-item">
+      <span class="agenda-dot" aria-hidden="true"></span>
+      <div class="agenda-card">
+        <strong>09:32 – 09:45 | Lighting of the Lamp by the Dignitaries</strong>
+      </div>
+    </div>
+
+  </div>
+</div>
     </div>
   </section>
 
-  <!-- Registration CTA -->
-  <section class="zonal-cta" id="registration">
-    <h2>Be Part of the Kakatiya Zonal Meet</h2>
-    <p>Join fellow Rotaractors from across Kakatiya Zone for a day of connection and fellowship.</p>
-    <!-- TODO: Replace this anchor with the official registration form URL. -->
-    <a href="mailto:rchyderabadeast@gmail.com?subject=Kakatiya%20Zonal%20Meet%20Registration" class="btn btn-white">Register Now →</a>
-  </section>
 </main>
 
 <!-- Existing website footer style -->
