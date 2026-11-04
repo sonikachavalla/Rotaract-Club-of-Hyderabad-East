@@ -427,17 +427,17 @@
 
 .district-team-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 480px));
+  justify-content: center;
   gap: 22px;
-  max-width: 1120px;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
 .district-team-card {
-  grid-column: span 3;
-  min-width: 0;
-  min-height: 285px;
-  padding: 30px 22px;
+  width: 100%;
+  min-height: 360px;
+  padding: 28px 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -449,9 +449,11 @@
   box-shadow: 0 4px 18px rgba(0,0,0,.045);
 }
 
-/* First card centred on its own row */
+/* First member centred */
 .district-team-card:nth-child(1) {
-  grid-column: 2 / span 4;
+  grid-column: 1 / -1;
+  width: min(100%, 480px);
+  justify-self: center;
 }
 
 /* Individual card accent colours */
@@ -473,12 +475,10 @@
 
 /* Initials profile circles */
 .district-team-avatar {
-  width: 112px;
-  height: 112px;
-  flex: 0 0 112px;
-  display: grid;
-  place-items: center;
-  margin: 7px auto 20px;
+  width: 130px;
+  height: 130px;
+  flex: 0 0 130px;
+  margin: 12px auto 22px;
   border-radius: 50%;
   background: linear-gradient(135deg, #EDE9FE, #FCE7F3);
   color: #7046C6;
@@ -507,59 +507,51 @@
 }
 
 .district-team-card h3 {
-  margin: 0 0 10px;
-  color: var(--text-dark, #252238);
-  font: 800 clamp(1rem, 1.7vw, 1.3rem)/1.35 'Poppins', sans-serif;
-  overflow-wrap: anywhere;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  margin-bottom: 10px;
 }
 
+/* Designation */
 .district-team-card p {
-  margin: 0;
-  color: var(--team-accent, #9F7AEA);
-  font: 700 .98rem/1.5 'Poppins', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
-/* TABLET AND MOBILE */
+/* Mobile */
 @media (max-width: 768px) {
-
   .district-team-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
   }
 
   .district-team-card,
-  .district-team-card:nth-child(1),
-  .district-team-card:nth-child(2),
-  .district-team-card:nth-child(3),
-  .district-team-card:nth-child(4),
-  .district-team-card:nth-child(5) {
-    grid-column: span 1;
-    min-height: 250px;
-    padding: 23px 13px;
+  .district-team-card:nth-child(1) {
+    width: 100%;
+    min-height: 290px;
+    padding: 20px 12px;
   }
 
   .district-team-card:nth-child(1) {
     grid-column: 1 / -1;
-    width: min(100%, 420px);
-    justify-self: center;
+    width: min(100%, 400px);
   }
 
   .district-team-avatar {
-    width: 88px;
-    height: 88px;
-    flex-basis: 88px;
-    margin-bottom: 15px;
-    font-size: 1.45rem;
+    width: 90px;
+    height: 90px;
+    flex-basis: 90px;
   }
 
   .district-team-card h3 {
-    font-size: .98rem;
+    font-size: 1rem;
   }
 
   .district-team-card p {
     font-size: .82rem;
   }
 }
+
 
 /* SMALL MOBILE */
 @media (max-width: 420px) {
