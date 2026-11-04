@@ -421,7 +421,8 @@
       .zonal-hero h1 { font-size: 2.45rem; }
     }
 
-    /* ==============================
+  
+/* ==============================
    DISTRICT TEAM SECTION
 ============================== */
 
@@ -462,21 +463,34 @@
 .district-team-card:nth-child(4) { --team-accent: #54B8A5; }
 .district-team-card:nth-child(5) { --team-accent: #E2AE4D; }
 
-/* Profile circles */
+/* ==============================
+   PROFILE IMAGES
+============================== */
+
 .district-team-avatar {
-  width: 75px;
-  height: 75px;
-  flex: 0 0 75px;
+  width: 85px;
+  height: 85px;
+  min-width: 85px;
+  min-height: 85px;
+  flex: 0 0 85px;
+
   display: grid;
   place-items: center;
-  margin: 5px auto 12px;
+
+  margin: 8px auto 14px;
+  padding: 0;
+
   border-radius: 50%;
+  overflow: hidden;
+
   background: linear-gradient(135deg, #EDE9FE, #FCE7F3);
   color: #7046C6;
+
   font: 800 1.25rem 'Poppins', sans-serif;
   box-shadow: 0 6px 18px rgba(159,122,234,.12);
 }
 
+/* Individual avatar backgrounds */
 .district-team-card:nth-child(2) .district-team-avatar {
   background: linear-gradient(135deg,#FCE7F3,#F9D8E9);
   color: #B83E80;
@@ -497,39 +511,47 @@
   color: #9C6B16;
 }
 
-/* Names */
+/* Actual member photographs */
+.district-team-avatar img {
+  width: 100% !important;
+  height: 100% !important;
+
+  min-width: 100%;
+  min-height: 100%;
+
+  max-width: none;
+  max-height: none;
+
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center;
+
+  border-radius: 50%;
+  display: block;
+}
+
+/* ==============================
+   MEMBER NAMES
+============================== */
+
 .district-team-card h3 {
   font-size: 1rem;
   line-height: 1.35;
   margin: 0 0 7px;
 }
 
-/* Designations */
 .district-team-card p {
   font-size: .8rem;
   line-height: 1.4;
   margin: 0;
 }
 
-.district-team-avatar {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 12px auto 22px;
-    flex-shrink: 0;
-}
+/* ==============================
+   MOBILE
+============================== */
 
-.district-team-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    display: block;
-}
-
-/* MOBILE */
 @media (max-width: 768px) {
+
   .district-team-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
@@ -548,10 +570,12 @@
   }
 
   .district-team-avatar {
-    width: 65px;
-    height: 65px;
-    flex-basis: 65px;
-    font-size: 1.1rem;
+    width: 75px;
+    height: 75px;
+    min-width: 75px;
+    min-height: 75px;
+    flex-basis: 75px;
+    margin: 6px auto 12px;
   }
 
   .district-team-card h3 {
@@ -563,8 +587,12 @@
   }
 }
 
-/* SMALL MOBILE */
+/* ==============================
+   SMALL MOBILE
+============================== */
+
 @media (max-width: 420px) {
+
   .district-team-grid {
     grid-template-columns: 1fr;
   }
@@ -578,6 +606,7 @@
     grid-column: 1;
     width: 100%;
   }
+
 }
 
 /* ABOUT DROPDOWN */
