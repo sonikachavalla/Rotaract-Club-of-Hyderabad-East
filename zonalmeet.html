@@ -427,63 +427,54 @@
 
 .district-team-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 480px));
+  grid-template-columns: repeat(2, minmax(0, 340px));
   justify-content: center;
-  gap: 22px;
-  max-width: 1000px;
+  gap: 16px;
+  max-width: 720px;
   margin: 0 auto;
 }
 
 .district-team-card {
   width: 100%;
-  min-height: 360px;
-  padding: 28px 22px;
+  min-height: 230px;
+  padding: 16px 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   background: #fff;
   border: 1px solid rgba(159,122,234,.13);
-  border-top: 5px solid var(--team-accent, #9F7AEA);
-  border-radius: 22px;
-  box-shadow: 0 4px 18px rgba(0,0,0,.045);
+  border-top: 4px solid var(--team-accent, #9F7AEA);
+  border-radius: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.045);
 }
 
 /* First member centred */
 .district-team-card:nth-child(1) {
   grid-column: 1 / -1;
-  width: min(100%, 480px);
+  width: min(100%, 340px);
   justify-self: center;
 }
 
-/* Individual card accent colours */
-.district-team-card:nth-child(2) {
-  --team-accent: #D76BA7;
-}
+/* Card accent colours */
+.district-team-card:nth-child(2) { --team-accent: #D76BA7; }
+.district-team-card:nth-child(3) { --team-accent: #6C9BE0; }
+.district-team-card:nth-child(4) { --team-accent: #54B8A5; }
+.district-team-card:nth-child(5) { --team-accent: #E2AE4D; }
 
-.district-team-card:nth-child(3) {
-  --team-accent: #6C9BE0;
-}
-
-.district-team-card:nth-child(4) {
-  --team-accent: #54B8A5;
-}
-
-.district-team-card:nth-child(5) {
-  --team-accent: #E2AE4D;
-}
-
-/* Initials profile circles */
+/* Profile circles */
 .district-team-avatar {
-  width: 130px;
-  height: 130px;
-  flex: 0 0 130px;
-  margin: 12px auto 22px;
+  width: 75px;
+  height: 75px;
+  flex: 0 0 75px;
+  display: grid;
+  place-items: center;
+  margin: 5px auto 12px;
   border-radius: 50%;
   background: linear-gradient(135deg, #EDE9FE, #FCE7F3);
   color: #7046C6;
-  font: 800 1.75rem 'Poppins', sans-serif;
-  box-shadow: 0 10px 28px rgba(159,122,234,.15);
+  font: 800 1.25rem 'Poppins', sans-serif;
+  box-shadow: 0 6px 18px rgba(159,122,234,.12);
 }
 
 .district-team-card:nth-child(2) .district-team-avatar {
@@ -506,56 +497,57 @@
   color: #9C6B16;
 }
 
+/* Names */
 .district-team-card h3 {
-  font-size: 1.3rem;
-  line-height: 1.4;
-  margin-bottom: 10px;
-}
-
-/* Designation */
-.district-team-card p {
   font-size: 1rem;
-  line-height: 1.5;
+  line-height: 1.35;
+  margin: 0 0 7px;
 }
 
-/* Mobile */
+/* Designations */
+.district-team-card p {
+  font-size: .8rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
   .district-team-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
+    gap: 12px;
   }
 
   .district-team-card,
   .district-team-card:nth-child(1) {
     width: 100%;
-    min-height: 290px;
-    padding: 20px 12px;
+    min-height: 200px;
+    padding: 14px 9px;
   }
 
   .district-team-card:nth-child(1) {
     grid-column: 1 / -1;
-    width: min(100%, 400px);
+    width: min(100%, 300px);
   }
 
   .district-team-avatar {
-    width: 90px;
-    height: 90px;
-    flex-basis: 90px;
+    width: 65px;
+    height: 65px;
+    flex-basis: 65px;
+    font-size: 1.1rem;
   }
 
   .district-team-card h3 {
-    font-size: 1rem;
+    font-size: .88rem;
   }
 
   .district-team-card p {
-    font-size: .82rem;
+    font-size: .72rem;
   }
 }
 
-
 /* SMALL MOBILE */
 @media (max-width: 420px) {
-
   .district-team-grid {
     grid-template-columns: 1fr;
   }
@@ -625,6 +617,132 @@
 
 .nav-dropdown:hover .dropdown-arrow {
   transform: rotate(180deg);
+}
+
+/* ==============================
+   AGENDA NUMBERED TIMELINE
+============================== */
+
+.agenda-timeline {
+  max-width: 850px;
+  margin: 40px auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Individual agenda row */
+.agenda-item {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  align-items: center;
+  gap: 18px;
+  position: relative;
+}
+
+/* Vertical connecting line */
+.agenda-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  left: 26px;
+  top: 58px;
+  height: calc(100% + 18px);
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    #A78BFA,
+    #E9D5FF
+  );
+}
+
+/* Number circle */
+.agenda-number {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8B5CF6, #D76BA7);
+  color: white;
+  font-size: 1rem;
+  font-weight: 800;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 5px 15px rgba(139,92,246,.2);
+}
+
+/* Agenda card */
+.agenda-content {
+  background: #fff;
+  border: 1px solid rgba(159,122,234,.15);
+  border-left: 4px solid #9F7AEA;
+  border-radius: 15px;
+  padding: 17px 22px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.04);
+  text-align: left;
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.agenda-content:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 22px rgba(159,122,234,.12);
+}
+
+/* Time */
+.agenda-time {
+  display: block;
+  color: #9564DC;
+  font-size: .82rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+/* Activity */
+.agenda-content h3 {
+  color: #202033;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .agenda-timeline {
+    margin: 25px 12px;
+    gap: 14px;
+  }
+
+  .agenda-item {
+    grid-template-columns: 42px 1fr;
+    gap: 12px;
+  }
+
+  .agenda-number {
+    width: 40px;
+    height: 40px;
+    font-size: .85rem;
+  }
+
+  .agenda-item:not(:last-child)::after {
+    left: 19px;
+    top: 45px;
+    height: calc(100% + 14px);
+  }
+
+  .agenda-content {
+    padding: 13px 14px;
+  }
+
+  .agenda-content h3 {
+    font-size: .88rem;
+  }
+
+  .agenda-time {
+    font-size: .75rem;
+  }
 }
   </style>
 </head>
@@ -898,58 +1016,65 @@
       </div>
 
       <div class="agenda-wrap">
-  <div class="agenda-list">
+  <div class="agenda-timeline">
 
-    <div class="agenda-item">
-      <span class="agenda-dot" aria-hidden="true"></span>
-      <div class="agenda-card">
-        <strong>08:55 – 09:00 | Welcome Address</strong>
-      </div>
+  <div class="agenda-item">
+    <div class="agenda-number">01</div>
+    <div class="agenda-content">
+      <span class="agenda-time">08:55 – 09:00</span>
+      <h3>Welcome Address</h3>
     </div>
-
-    <div class="agenda-item">
-      <span class="agenda-dot" aria-hidden="true"></span>
-      <div class="agenda-card">
-        <strong>09:00 – 09:15 | Calling the Dignitaries on the Dais</strong>
-      </div>
-    </div>
-
-    <div class="agenda-item">
-      <span class="agenda-dot" aria-hidden="true"></span>
-      <div class="agenda-card">
-        <strong>09:15 – 09:20 | Collaring of the DRR &amp; the Host President</strong>
-      </div>
-    </div>
-
-    <div class="agenda-item">
-      <span class="agenda-dot" aria-hidden="true"></span>
-      <div class="agenda-card">
-        <strong>09:20 – 09:22 | Meeting Call to Order by the Event Chair, DRR Rtr. Sudheeshna M</strong>
-      </div>
-    </div>
-
-    <div class="agenda-item">
-      <span class="agenda-dot" aria-hidden="true"></span>
-      <div class="agenda-card">
-        <strong>09:22 – 09:27 | Rotary Four Way Test by Host Club Secretary Rtr. Rishitha Amagoni</strong>
-      </div>
-    </div>
-
-    <div class="agenda-item">
-      <span class="agenda-dot" aria-hidden="true"></span>
-      <div class="agenda-card">
-        <strong>09:27 – 09:32 | Welcome Address by Host Club President Rtr. Sai Venkat Ponakala</strong>
-      </div>
-    </div>
-
-    <div class="agenda-item">
-      <span class="agenda-dot" aria-hidden="true"></span>
-      <div class="agenda-card">
-        <strong>09:32 – 09:45 | Lighting of the Lamp by the Dignitaries</strong>
-      </div>
-    </div>
-
   </div>
+
+  <div class="agenda-item">
+    <div class="agenda-number">02</div>
+    <div class="agenda-content">
+      <span class="agenda-time">09:00 – 09:15</span>
+      <h3>Calling the Dignitaries on the Dais</h3>
+    </div>
+  </div>
+
+  <div class="agenda-item">
+    <div class="agenda-number">03</div>
+    <div class="agenda-content">
+      <span class="agenda-time">09:15 – 09:20</span>
+      <h3>Collaring of the DRR &amp; the Host President</h3>
+    </div>
+  </div>
+
+  <div class="agenda-item">
+    <div class="agenda-number">04</div>
+    <div class="agenda-content">
+      <span class="agenda-time">09:20 – 09:22</span>
+      <h3>Meeting Call to Order by the Event Chair, DRR Rtr. Sudheeshna M</h3>
+    </div>
+  </div>
+
+  <div class="agenda-item">
+    <div class="agenda-number">05</div>
+    <div class="agenda-content">
+      <span class="agenda-time">09:22 – 09:27</span>
+      <h3>Rotary Four Way Test by Host Club Secretary Rtr. Rishitha Amagoni</h3>
+    </div>
+  </div>
+
+  <div class="agenda-item">
+    <div class="agenda-number">06</div>
+    <div class="agenda-content">
+      <span class="agenda-time">09:27 – 09:32</span>
+      <h3>Welcome Address by Host Club President Rtr. Sai Venkat Ponakala</h3>
+    </div>
+  </div>
+
+  <div class="agenda-item">
+    <div class="agenda-number">07</div>
+    <div class="agenda-content">
+      <span class="agenda-time">09:32 – 09:45</span>
+      <h3>Lighting of the Lamp by the Dignitaries</h3>
+    </div>
+  </div>
+
+</div>
 </div>
     </div>
   </section>
