@@ -106,7 +106,13 @@
       line-height: 1.85;
     }
 
-    .zonal-hero-actions { display: flex; flex-wrap: wrap; gap: 13px; }
+    .zonal-hero-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
     .zonal-hero-actions .btn { min-width: 155px; justify-content: center; }
 
     .zonal-host-line {
@@ -822,7 +828,9 @@
   background: rgba(255,255,255,.14);
   backdrop-filter: blur(12px);
   box-shadow: 0 20px 55px rgba(0,0,0,.25);
+    margin-top: -35px;
 }
+
 
 .zonal-hero-photo img {
   display: block;
