@@ -796,6 +796,162 @@
     font-weight: 800;
     color: #7650D8;
 }
+
+/* =========================================
+   HERO: TWO-COLUMN LAYOUT WITH PHOTO
+========================================= */
+
+.zonal-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 55px;
+  max-width: 1400px;
+}
+
+.zonal-hero-content {
+  max-width: 680px;
+}
+
+/* Photo card - similar to Trips page */
+
+.zonal-hero-photo {
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 28px;
+  background: rgba(255,255,255,.14);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 55px rgba(0,0,0,.25);
+}
+
+.zonal-hero-photo img {
+  display: block;
+  width: 100%;
+  height: 430px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 19px;
+}
+
+.zonal-photo-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 8px 5px;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-size: .9rem;
+}
+
+.zonal-photo-caption span:last-child {
+  color: rgba(255,255,255,.7);
+  font-size: .8rem;
+}
+
+/* Countdown */
+
+.registration-countdown {
+  margin: 28px 0 25px;
+  max-width: 490px;
+}
+
+.countdown-heading {
+  margin-bottom: 13px;
+  color: rgba(255,255,255,.9);
+  font: 600 1rem 'Poppins', sans-serif;
+}
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.countdown-unit {
+  padding: 15px 8px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 14px;
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(8px);
+}
+
+.countdown-unit strong {
+  display: block;
+  color: #fff;
+  font: 800 clamp(1.5rem, 3vw, 2rem) 'Poppins', sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-unit span {
+  display: block;
+  margin-top: 4px;
+  color: rgba(255,255,255,.75);
+  font: 600 .68rem 'Poppins', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* Registration button after countdown */
+
+.registration-open-message {
+  margin: 28px 0 25px;
+}
+
+.registration-open-message p {
+  color: #fff;
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+  .zonal-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .zonal-hero-content {
+    max-width: 100%;
+  }
+
+  .zonal-hero-photo {
+    max-width: 650px;
+  }
+
+  .zonal-hero-photo img {
+    height: 350px;
+  }
+}
+
+@media (max-width: 560px) {
+  .countdown-grid {
+    gap: 6px;
+  }
+
+  .countdown-unit {
+    padding: 12px 4px;
+  }
+
+  .countdown-unit strong {
+    font-size: 1.35rem;
+  }
+
+  .countdown-unit span {
+    font-size: .58rem;
+  }
+
+  .zonal-hero-photo img {
+    height: 240px;
+  }
+
+  .zonal-photo-caption {
+    font-size: .76rem;
+  }
+}
+
   </style>
 </head>
 
@@ -848,23 +1004,110 @@
 
 <main>
   <!-- Hero -->
-  <section class="zonal-hero" id="top">
-    <div class="zonal-hero-inner">
-      <div class="zonal-hero-content">
-        <div class="zonal-eyebrow">Rotaract District 3150 · Zone Kakatiya</div>
-        <h1>AURELIA<br><span class="grad">Zonal Rotaract Meet Kakatiya</span></h1>
-        <p class="zonal-hero-description">
-          A Zonal Meet in Rotaract is an annual gathering of Rotaractors from different clubs within a particular zone, aimed at bringing members together to connect,  collaborate, recognise the clubs and celebrate the spirit of Rotaract. It provides a platform to share ideas, exchange experiences, participate in fun activities, build friendships and strengthen bonds between clubs. More than just an event, a Zonal Meet is an opportunity to experience fellowship, teamwork, and the true essence of Rotaract.
-        </p>
-        <div class="zonal-hero-actions">
-          <!-- Replace #registration with the live registration form URL when available. -->
-          <a href="#registration" class="btn btn-primary">Register Now →</a>
-          <a href="#overview" class="btn btn-ghost-white">About the Event</a>
-        </div>
-        <div class="zonal-host-line">Hosted by <strong>Rotaract Club of Hyderabad East</strong></div>
+
+<section class="zonal-hero" id="top">
+  <div class="zonal-hero-inner">
+
+    <!-- LEFT SIDE -->
+    <div class="zonal-hero-content">
+
+      <div class="zonal-eyebrow">
+        Rotaract District 3150 · Zone Kakatiya
       </div>
+
+      <h1>
+        AURELIA<br>
+        <span class="grad">Zonal Rotaract Meet Kakatiya</span>
+      </h1>
+
+      <p class="zonal-hero-description">
+        A Zonal Meet in Rotaract is an annual gathering of Rotaractors
+        from different clubs within a particular zone, aimed at bringing
+        members together to connect, collaborate, recognise the clubs
+        and celebrate the spirit of Rotaract. It provides a platform to
+        share ideas, exchange experiences, participate in fun activities,
+        build friendships and strengthen bonds between clubs. More than
+        just an event, a Zonal Meet is an opportunity to experience
+        fellowship, teamwork, and the true essence of Rotaract.
+      </p>
+
+      <!-- COUNTDOWN: visible before 15 November -->
+      <div class="registration-countdown" id="registrationCountdown">
+
+        <div class="countdown-heading">
+          Registration opens in
+        </div>
+
+        <div class="countdown-grid">
+
+          <div class="countdown-unit">
+            <strong id="countDays">00</strong>
+            <span>Days</span>
+          </div>
+
+          <div class="countdown-unit">
+            <strong id="countHours">00</strong>
+            <span>Hours</span>
+          </div>
+
+          <div class="countdown-unit">
+            <strong id="countMinutes">00</strong>
+            <span>Minutes</span>
+          </div>
+
+          <div class="countdown-unit">
+            <strong id="countSeconds">00</strong>
+            <span>Seconds</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Appears automatically when registration opens -->
+      <div class="registration-open-message"
+           id="registrationOpen"
+           hidden>
+
+        <p>Registration is now open!</p>
+
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLScKs8Pe6m1cH_j-xbV-IwZirnyT-BbqlAzRIWNvzcWeVcrKdA/viewform"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-primary">
+          Register Now →
+        </a>
+
+      </div>
+
+      <div class="zonal-hero-actions">
+        <a href="#overview" class="btn btn-ghost-white">
+          About the Event
+        </a>
+      </div>
+
+      <div class="zonal-host-line">
+        Hosted by <strong>Rotaract Club of Hyderabad East</strong>
+      </div>
+
     </div>
-  </section>
+
+    <!-- RIGHT SIDE PHOTO -->
+    <div class="zonal-hero-photo">
+
+      <img
+        src="zonal-meet.jpg"
+        alt="Aurelia Zonal Rotaract Meet Kakatiya">
+
+      <div class="zonal-photo-caption">
+        <strong>AURELIA · Kakatiya</strong>
+        <span>District 3150</span>
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
   <!-- Section navigation -->
   <div class="zonal-nav-wrap">
@@ -1250,6 +1493,71 @@
   window.addEventListener('scroll', updateActiveSection, { passive: true });
   window.addEventListener('resize', updateActiveSection);
   updateActiveSection();
+
+
+/* =========================================
+   REGISTRATION COUNTDOWN
+   15 November 2026, 12:00 AM IST
+========================================= */
+
+const registrationStart = new Date(
+  "2026-11-15T00:00:00+05:30"
+).getTime();
+
+function updateRegistrationCountdown() {
+
+  const now = Date.now();
+  const difference = registrationStart - now;
+
+  const countdown = document.getElementById("registrationCountdown");
+  const registrationOpen = document.getElementById("registrationOpen");
+
+  if (!countdown || !registrationOpen) return;
+
+  // Registration has opened
+  if (difference <= 0) {
+
+    countdown.hidden = true;
+    registrationOpen.hidden = false;
+
+    return;
+  }
+
+  // Calculate remaining time
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+
+  const hours = Math.floor(
+    (difference % (1000 * 60 * 60 * 24)) /
+    (1000 * 60 * 60)
+  );
+
+  const minutes = Math.floor(
+    (difference % (1000 * 60 * 60)) /
+    (1000 * 60)
+  );
+
+  const seconds = Math.floor(
+    (difference % (1000 * 60)) /
+    1000
+  );
+
+  document.getElementById("countDays").textContent =
+    String(days).padStart(2, "0");
+
+  document.getElementById("countHours").textContent =
+    String(hours).padStart(2, "0");
+
+  document.getElementById("countMinutes").textContent =
+    String(minutes).padStart(2, "0");
+
+  document.getElementById("countSeconds").textContent =
+    String(seconds).padStart(2, "0");
+}
+
+// Run immediately and update every second
+updateRegistrationCountdown();
+setInterval(updateRegistrationCountdown, 1000);
+
 </script>
 </body>
 </html>
