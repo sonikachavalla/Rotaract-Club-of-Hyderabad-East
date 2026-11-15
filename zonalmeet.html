@@ -434,26 +434,21 @@
 
 .district-team-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 340px));
-  justify-content: center;
-  gap: 16px;
-  max-width: 720px;
-  margin: 0 auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1000px;
+  margin: 60px auto;
 }
 
 .district-team-card {
-  width: 100%;
-  min-height: 230px;
-  padding: 16px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
   background: #fff;
-  border: 1px solid rgba(159,122,234,.13);
-  border-top: 4px solid var(--team-accent, #9F7AEA);
-  border-radius: 18px;
-  box-shadow: 0 4px 15px rgba(0,0,0,.045);
+  border: 1px solid #eeeaf5;
+  border-top: 4px solid #8b78e6;
+  border-radius: 24px;
+  padding: 36px 20px;
+  min-height: 260px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
 }
 
 /* First member centred */
@@ -468,6 +463,7 @@
 .district-team-card:nth-child(3) { --team-accent: #6C9BE0; }
 .district-team-card:nth-child(4) { --team-accent: #54B8A5; }
 .district-team-card:nth-child(5) { --team-accent: #E2AE4D; }
+.district-team-card:nth-child(6) { --team-accent: #4199eb; }
 
 /* ==============================
    PROFILE IMAGES
@@ -1185,6 +1181,64 @@
         margin-top: 24px;
     }
 }
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1000px;
+  margin: 60px auto;
+}
+
+.team-card {
+  background: #fff;
+  border: 1px solid #eeeaf5;
+  border-top: 4px solid #8b78e6;
+  border-radius: 24px;
+  padding: 36px 20px;
+  min-height: 260px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+}
+
+.team-card img {
+  width: 115px;
+  height: 115px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 16px;
+}
+
+.team-card h3 {
+  font-size: 20px;
+  margin: 0 0 10px;
+  color: #171927;
+}
+
+.team-card p {
+  font-size: 17px;
+  color: #526078;
+  margin: 0;
+}
+
+/* First two cards centered */
+.row-single {
+  grid-column: 1 / -1;
+  width: 50%;
+  justify-self: center;
+}
+
+/* Mobile layout */
+@media (max-width: 650px) {
+  .team-grid {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+
+  .row-single {
+    width: 100%;
+  }
+}
   </style>
 </head>
 
@@ -1255,7 +1309,7 @@
       </h1>
 
       <p class="zonal-hero-description">
-        A Zonal Meet in Rotaract is an annual gathering of Rotaractors
+        A Zonal Meet in Rotaract is a gathering of Rotaractors
         from different clubs within a particular zone, aimed at bringing
         members together to connect, collaborate, recognise the clubs
         and celebrate the spirit of Rotaract. It provides a platform to
@@ -1427,47 +1481,49 @@
       <p>Meet the district and Kakatiya Zone leaders.</p>
     </div>
 
-    <div class="district-team-grid">
+  <div class="team-grid">
 
-      <!-- FIRST ROW: ONE MEMBER -->
-      <article class="district-team-card">
-        <div class="district-team-avatar"><img src="sudheeshna.jpeg"
-         alt="Rtr. Sudheeshna Muthyapu"></div>
-        <h3>Rtr. Sudheeshna Muthyapu</h3>
-        <p>District Rotaract Representative</p>
-      </article>
-
-      <!-- SECOND ROW: TWO MEMBERS -->
-      <article class="district-team-card">
-        <div class="district-team-avatar"><img src="bharath.jpeg"
-         alt="Rtr. Bhrath Teja"></div>
-        <h3>Rtr. Bharath Teja</h3>
-        <p>District Secretary – General</p>
-      </article>
-
-      <article class="district-team-card">
-        <div class="district-team-avatar"><img src="pranay.jpeg"
-         alt="Rtr. Sai Pranay"></div>
-        <h3>Rtr. Sai Pranay</h3>
-        <p>District Secretary – Avenues</p>
-      </article>
-
-      <!-- THIRD ROW: TWO MEMBERS -->
-      <article class="district-team-card">
-        <div class="district-team-avatar"><img src="nandini.jpeg"
-         alt="Rtr. Nandini Mulley"></div>
-        <h3>Rtr. Nandini Mulley</h3>
-        <p>Zone Rotaract Representative – Kakatiya</p>
-      </article>
-
-      <article class="district-team-card">
-        <div class="district-team-avatar"><img src="mohan.jpg"
-         alt="Rtr. Mohan Sai Bharath"></div>
-        <h3>Rtr. Mohan Sai Bharath</h3>
-        <p>Zone Rotaract Secretary – Kakatiya</p>
-      </article>
-
+    <!-- Row 1 -->
+    <div class="team-card row-single">
+      <img src="images/drcc.png" alt="Dr. G S S Prakash">
+      <h3>Dr. G S S Prakash</h3>
+      <p>District Rotaract Chair</p>
     </div>
+    
+
+    <!-- Row 2 -->
+    <div class="team-card row-single">
+      <img src="images/sudheeshna.png" alt="Sudheeshna Muthyapu">
+      <h3>Rtr. Sudheeshna Muthyapu</h3>
+      <p>District Rotaract Representative</p>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="team-card">
+      <img src="images/bharath.png" alt="Bharath Teja">
+      <h3>Rtr. Bharath Teja</h3>
+      <p>District Secretary – General</p>
+    </div>
+
+    <div class="team-card">
+      <img src="images/pran​​ay.png" alt="Sai Pranay">
+      <h3>Rtr. Sai Pranay</h3>
+      <p>District Secretary – Avenues</p>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="team-card">
+      <img src="images/nandini.png" alt="Nandini Mulley">
+      <h3>Rtr. Nandini Mulley</h3>
+      <p>Zone Rotaract Representative – Kakatiya</p>
+    </div>
+
+    <div class="team-card">
+      <img src="images/mohan.png" alt="Mohan Sai Bharath">
+      <h3>Rtr. Mohan Sai Bharath</h3>
+      <p>Zone Rotaract Secretary – Kakatiya</p>
+    </div>
+
   </div>
 </section>
 
@@ -1629,7 +1685,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // Set the registration opening time in IST
-    const registrationStart = new Date("2026-11-14T02:49:00+05:30").getTime();
+    const registrationStart = new Date("2026-11-16T12:00:00+05:30").getTime();
 
     const countdown = document.getElementById("registrationCountdown");
     const registrationOpen = document.getElementById("registrationOpen");
