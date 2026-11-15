@@ -1022,6 +1022,169 @@
 .registration-countdown .zonal-hero-actions {
     margin-top: 24px;
 }
+
+
+/* =========================================
+   AURELIA HERO PHOTO CARD
+========================================= */
+
+.zonal-hero-photo {
+    width: 100%;
+    max-width: 560px;
+    height: auto;
+    min-height: 0;
+    padding: 12px;
+    margin-top: 0;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.zonal-hero-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: contain;
+    object-position: center;
+    border-radius: 16px;
+    background: transparent;
+}
+
+/* Poster slideshow */
+.zonal-slideshow {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    flex: none;
+
+    overflow: hidden;
+    border-radius: 18px;
+    background: transparent;
+}
+
+/* Full poster visible without cropping */
+.zonal-slide {
+    position: absolute;
+    inset: 0;
+
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.zonal-slide.active {
+    opacity: 1;
+}
+
+/* Caption */
+.zonal-photo-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px 2px;
+    margin: 0;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .zonal-hero-photo {
+        max-width: 520px;
+        margin: 20px auto 0;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .zonal-hero-photo {
+        width: 100%;
+        max-width: 430px;
+        margin: 20px auto 0;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .zonal-hero {
+        height: auto;
+        min-height: 0;
+        padding: 45px 20px 40px;
+        overflow: visible;
+    }
+
+    .zonal-hero-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        height: auto;
+    }
+
+    .zonal-hero-content {
+        width: 100%;
+        order: 1;
+    }
+
+    /* Keep the countdown separate from the poster */
+    .registration-countdown {
+        position: relative;
+        margin: 24px 0 28px;
+        width: 100%;
+    }
+
+    .countdown-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+    }
+
+    .countdown-unit {
+        min-width: 0;
+    }
+
+    /* Keep About the Event visible before the poster */
+    .zonal-hero-actions {
+        display: flex !important;
+        flex-direction: row;
+        margin: 24px 0 30px;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .zonal-hero-actions .btn {
+        margin: 0;
+    }
+
+    .zonal-hero-photo {
+        order: 2;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        height: auto;
+    }
+
+    .zonal-hero-photo img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 5;
+        object-fit: contain;
+    }
+
+    .zonal-host-line {
+        margin-top: 24px;
+    }
+}
   </style>
 </head>
 
@@ -1167,18 +1330,40 @@
 </div>
 </div>
     <!-- RIGHT SIDE PHOTO -->
-    <div class="zonal-hero-photo">
+    <!-- RIGHT SIDE IMAGE SLIDESHOW -->
+<div class="zonal-hero-photo">
 
-      <img
-        src="zonal-meet.png"
-        alt="Aurelia Zonal Rotaract Meet Kakatiya">
+  <div class="zonal-slideshow" id="zonalSlideshow">
 
-      <div class="zonal-photo-caption">
-        <strong>AURELIA · Kakatiya</strong>
-        <span>District 3150</span>
-      </div>
+    <img
+      src="aurelia-logo.png"
+      alt="Aurelia Zonal Rotaract Meet Kakatiya"
+      class="zonal-slide active">
 
-    </div>
+    <img
+      src="lucky-number-gift.png"
+      alt="Lucky Number Gift"
+      class="zonal-slide">
+
+    <img
+      src="best-dressed-award.png"
+      alt="Best Dressed Award"
+      class="zonal-slide">
+
+    <img
+      src="performances-award.png"
+      alt="Performances Award"
+      class="zonal-slide">
+
+
+  </div>
+
+  <div class="zonal-photo-caption">
+    <strong>AURELIA · Kakatiya</strong>
+    <span>District 3150</span>
+  </div>
+
+</div>
 
   </div>
 </section>
@@ -1444,7 +1629,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     // Set the registration opening time in IST
-    const registrationStart = new Date("2026-11-15T18:00:00+05:30").getTime();
+    const registrationStart = new Date("2026-11-14T02:49:00+05:30").getTime();
 
     const countdown = document.getElementById("registrationCountdown");
     const registrationOpen = document.getElementById("registrationOpen");
@@ -1490,6 +1675,28 @@ document.addEventListener("DOMContentLoaded", function () {
     updateRegistrationCountdown();
 
     setInterval(updateRegistrationCountdown, 1000);
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const slides = document.querySelectorAll(".zonal-slide");
+
+  if (!slides.length) return;
+
+  let currentSlide = 0;
+
+  function showNextSlide() {
+
+    slides[currentSlide].classList.remove("active");
+
+    currentSlide = (currentSlide + 1) % slides.length;
+
+    slides[currentSlide].classList.add("active");
+  }
+
+  // Change image every 4 seconds
+  setInterval(showNextSlide, 4000);
 
 });
 

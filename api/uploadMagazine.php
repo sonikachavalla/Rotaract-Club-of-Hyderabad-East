@@ -47,7 +47,7 @@ if ($file["error"] !== UPLOAD_ERR_OK) {
     respond(false, "Upload failed. Please check the file size and try again.");
 }
 
-$maxSize = 25 * 1024 * 1024; // 25 MB
+$maxSize = 100 * 1024 * 1024; // 25 MB
 
 if ($file["size"] <= 0 || $file["size"] > $maxSize) {
     respond(false, "The PDF must be smaller than 25 MB.");
