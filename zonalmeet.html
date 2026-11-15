@@ -1182,6 +1182,7 @@
     }
 }
 
+/* Team grid */
 .team-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1191,34 +1192,31 @@
 }
 
 .team-card {
-  background: #fff;
-  border: 1px solid #eeeaf5;
-  border-top: 4px solid #8b78e6;
-  border-radius: 24px;
-  padding: 36px 20px;
-  min-height: 260px;
-  text-align: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 36px 20px;
 }
 
 .team-card img {
-  width: 115px;
-  height: 115px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 16px;
+    display: block;
+    width: 115px;
+    height: 115px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 16px;
 }
 
 .team-card h3 {
-  font-size: 20px;
-  margin: 0 0 10px;
-  color: #171927;
+    text-align: center;
+    margin: 0 0 10px;
 }
 
 .team-card p {
-  font-size: 17px;
-  color: #526078;
-  margin: 0;
+    text-align: center;
+    margin: 0;
 }
 
 /* First two cards centered */
@@ -1226,15 +1224,6 @@
   grid-column: 1 / -1;
   width: 50%;
   justify-self: center;
-}
-
-.team-avatar {
- aspect-ratio: 1 / 1;
-  object-fit: cover;
-  object-position: center;
-
-  border-radius: 50%;
-  display: block;
 }
 
 /* Mobile layout */
@@ -1494,7 +1483,7 @@
 
     <!-- Row 1 -->
     <div class="team-card row-single">
-      <img class="team-avatar" src="images/drcc.png" alt="Dr. G S S Prakash">
+      <img src="images/drcc.png" alt="Dr. G S S Prakash">
       <h3>Dr. G S S Prakash</h3>
       <p>District Rotaract Chair</p>
     </div>
@@ -1502,33 +1491,33 @@
 
     <!-- Row 2 -->
     <div class="team-card row-single">
-      <img class="team-avatar" src="images/sudheeshna.jpeg" alt="Sudheeshna Muthyapu">
+      <img src="images/sudheeshna.jpeg" alt="Sudheeshna Muthyapu">
       <h3>Rtr. Sudheeshna Muthyapu</h3>
       <p>District Rotaract Representative</p>
     </div>
 
     <!-- Row 3 -->
     <div class="team-card">
-      <img class="team-avatar" src="images/bharath.jpeg" alt="Bharath Teja">
+      <img src="images/bharath.jpeg" alt="Bharath Teja">
       <h3>Rtr. Bharath Teja</h3>
       <p>District Secretary – General</p>
     </div>
 
     <div class="team-card">
-      <img class="team-avatar" src="images/pran​​ay.jpeg" alt="Sai Pranay">
+      <img src="images/pranay.jpeg" alt="Sai Pranay">
       <h3>Rtr. Sai Pranay</h3>
       <p>District Secretary – Avenues</p>
     </div>
 
     <!-- Row 4 -->
     <div class="team-card">
-      <img class="team-avatar" src="images/nandini.jpeg" alt="Nandini Mulley">
+      <img src="images/nandini.jpeg" alt="Nandini Mulley">
       <h3>Rtr. Nandini Mulley</h3>
       <p>Zone Rotaract Representative – Kakatiya</p>
     </div>
 
     <div class="team-card">
-      <img class="team-avatar" src="images/mohan.jpeg" alt="Mohan Sai Bharath">
+      <img src="images/mohan.jpg" alt="Mohan Sai Bharath">
       <h3>Rtr. Mohan Sai Bharath</h3>
       <p>Zone Rotaract Secretary – Kakatiya</p>
     </div>
