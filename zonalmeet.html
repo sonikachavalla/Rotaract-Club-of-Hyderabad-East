@@ -1186,9 +1186,9 @@
 .team-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
-  max-width: 1000px;
-  margin: 60px auto;
+  gap: 18px;
+  max-width: 800px;
+  margin: 40px auto;
 }
 
 .team-card {
@@ -1197,33 +1197,41 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 36px 20px;
+
+    padding: 24px 18px;
+    min-height: 220px;
+
+    border-radius: 22px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
 }
 
 .team-card img {
-    display: block;
-    width: 115px;
-    height: 115px;
+    width: 95px;
+    height: 95px;
     object-fit: cover;
     border-radius: 50%;
-    margin: 0 auto 16px;
+    margin: 0 auto 12px;
 }
 
 .team-card h3 {
-    text-align: center;
-    margin: 0 0 10px;
+    font-size: 18px;
+    margin: 0 0 8px;
 }
 
 .team-card p {
-    text-align: center;
+    font-size: 15px;
     margin: 0;
 }
 
 /* First two cards centered */
 .row-single {
   grid-column: 1 / -1;
-  width: 50%;
+  width: 45%;
   justify-self: center;
+}
+.team-card:not(.row-single) {
+    width: 95%;
+    box-sizing: border-box;
 }
 
 /* 1. District Rotaract Chair */
@@ -1513,7 +1521,7 @@
     <!-- Row 1 -->
     <div class="team-card row-single">
       <img src="images/drcc.png" alt="Dr. G S S Prakash">
-      <h3>Dr. G S S Prakash</h3>
+      <h3>Rtn. Dr. G S S Prakash</h3>
       <p>District Rotaract Chair</p>
     </div>
     
