@@ -248,6 +248,7 @@
 </footer>
 
 <script>
+// LOAD MAGAZINES
 async function loadMagazines() {
     const container = document.getElementById("magazineList");
     if (!container) return;
@@ -305,6 +306,83 @@ async function loadMagazines() {
 }
 
 document.addEventListener("DOMContentLoaded", loadMagazines);
+// MOBILE NAVBAR SCRIPT
+document.addEventListener("DOMContentLoaded", function () {
+
+    const navbar = document.getElementById("navbar");
+    const hamburger = document.getElementById("hamburger");
+    const mobileNav = document.getElementById("navMobile");
+
+    // Navbar scroll effect
+    if (navbar) {
+        window.addEventListener("scroll", function () {
+            navbar.classList.toggle("scrolled", window.scrollY > 20);
+        }, { passive: true });
+    }
+
+    // Mobile navigation
+    if (!hamburger || !mobileNav) {
+        console.error("Mobile navigation elements not found.");
+        return;
+    }
+
+    function closeMenu() {
+        mobileNav.classList.remove("open");
+        hamburger.setAttribute("aria-expanded", "false");
+
+        hamburger.querySelectorAll("span").forEach(span => {
+            span.style.transform = "";
+            span.style.opacity = "";
+        });
+    }
+
+    hamburger.setAttribute("aria-expanded", "false");
+    hamburger.setAttribute("type", "button");
+
+    hamburger.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        const isOpen = mobileNav.classList.toggle("open");
+
+        hamburger.setAttribute("aria-expanded", String(isOpen));
+
+        const spans = hamburger.querySelectorAll("span");
+
+        if (isOpen) {
+            spans[0].style.transform =
+                "rotate(45deg) translate(5px, 5px)";
+            spans[1].style.opacity = "0";
+            spans[2].style.transform =
+                "rotate(-45deg) translate(5px, -5px)";
+        } else {
+            closeMenu();
+        }
+    });
+
+    // Close after selecting a link
+    mobileNav.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", closeMenu);
+    });
+
+    // Close when clicking outside
+    document.addEventListener("click", function (event) {
+        if (
+            !hamburger.contains(event.target) &&
+            !mobileNav.contains(event.target)
+        ) {
+            closeMenu();
+        }
+    });
+
+    // Close with Escape key
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            closeMenu();
+        }
+    });
+
+});
+
 </script>
 
 </body>
